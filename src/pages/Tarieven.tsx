@@ -1,0 +1,189 @@
+import { Link } from "react-router-dom";
+import { ArrowRight, Clock, Ban, CreditCard, Calendar, Gift } from "lucide-react";
+
+const pricingTiers = [
+  {
+    label: "1 Sessie",
+    exclBTW: { individueel: "€77", duo: "€90" },
+    inclBTW: { individueel: "€93,17", duo: "€108,90" },
+    popular: false,
+  },
+  {
+    label: "5 Sessies",
+    exclBTW: { individueel: "€370", duo: "€440" },
+    inclBTW: { individueel: "€447,70", duo: "€532,40" },
+    popular: true,
+  },
+  {
+    label: "10 Sessies",
+    exclBTW: { individueel: "€670", duo: "€790" },
+    inclBTW: { individueel: "€810,70", duo: "€955,90" },
+    popular: false,
+  },
+];
+
+const policies = [
+  {
+    icon: Clock,
+    title: "1 Uur per Sessie",
+    desc: "Elke sessie duurt één uur.",
+  },
+  {
+    icon: Ban,
+    title: "24u Cancellation",
+    desc: "Een sessie kan maximum 24 uur op voorhand gecancelled worden.",
+  },
+  {
+    icon: CreditCard,
+    title: "Vooraf Betalen",
+    desc: "Sessies en pakketten dienen vooraf betaald te worden.",
+  },
+  {
+    icon: Calendar,
+    title: "3 Maanden Geldig",
+    desc: "Sessies zijn persoonlijk en drie maanden geldig vanaf de factuurdatum.",
+  },
+];
+
+export default function Tarieven() {
+  return (
+    <main className="pt-24">
+      {/* Header */}
+      <section className="bg-muted">
+        <div className="container-wide section-padding py-20 text-center">
+          <p className="font-sans text-xs uppercase tracking-widest text-primary mb-4">Tarieven 2026</p>
+          <h1 className="font-serif text-5xl md:text-6xl font-semibold text-foreground mb-5">
+            Transparante Prijzen
+          </h1>
+          <p className="font-sans text-lg text-muted-foreground max-w-md mx-auto">
+            Kies het pakket dat bij jou past. Alle sessies zijn individueel afgestemd op jouw lichaam en doelen.
+          </p>
+        </div>
+      </section>
+
+      {/* Pricing Table */}
+      <section className="bg-card">
+        <div className="container-wide section-padding">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {pricingTiers.map((tier) => (
+              <div
+                key={tier.label}
+                className={`rounded-2xl border p-8 flex flex-col hover-lift relative ${
+                  tier.popular
+                    ? "bg-sage border-transparent shadow-xl"
+                    : "bg-card border-border shadow-sm"
+                }`}
+              >
+                {tier.popular && (
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="bg-terracotta text-accent-foreground font-sans text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-wide">
+                      Meest Gekozen
+                    </span>
+                  </div>
+                )}
+
+                <h2
+                  className={`font-serif text-2xl font-semibold mb-8 ${
+                    tier.popular ? "text-primary-foreground" : "text-foreground"
+                  }`}
+                >
+                  {tier.label}
+                </h2>
+
+                {/* Individueel */}
+                <div className={`mb-5 pb-5 border-b ${tier.popular ? "border-primary-foreground/20" : "border-border"}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`font-sans text-xs uppercase tracking-wider ${tier.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+                      👤 Individueel
+                    </span>
+                  </div>
+                  <p className={`font-serif text-3xl font-semibold ${tier.popular ? "text-primary-foreground" : "text-foreground"}`}>
+                    {tier.exclBTW.individueel}
+                  </p>
+                  <p className={`font-sans text-sm mt-1 ${tier.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+                    excl. BTW · {tier.inclBTW.individueel} incl.
+                  </p>
+                </div>
+
+                {/* Duo */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`font-sans text-xs uppercase tracking-wider ${tier.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+                      👥 Duo
+                    </span>
+                  </div>
+                  <p className={`font-serif text-3xl font-semibold ${tier.popular ? "text-primary-foreground" : "text-foreground"}`}>
+                    {tier.exclBTW.duo}
+                  </p>
+                  <p className={`font-sans text-sm mt-1 ${tier.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+                    excl. BTW · {tier.inclBTW.duo} incl.
+                  </p>
+                </div>
+
+                <div className="mt-auto">
+                  <Link
+                    to="/contact"
+                    className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-sans text-sm font-medium transition-all min-h-[48px] ${
+                      tier.popular
+                        ? "bg-primary-foreground text-foreground hover:bg-primary-foreground/90"
+                        : "bg-muted text-foreground hover:bg-secondary border border-border"
+                    }`}
+                  >
+                    Boek Nu <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center font-sans text-xs text-muted-foreground mt-8">
+            (*) Prijzen exclusief BTW, niet geldig voor particuliere verkoop.
+          </p>
+        </div>
+      </section>
+
+      {/* Policies */}
+      <section className="bg-muted">
+        <div className="container-wide section-padding">
+          <div className="text-center mb-14">
+            <h2 className="font-serif text-4xl font-semibold text-foreground">Praktische info</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {policies.map((p) => (
+              <div key={p.title} className="bg-card rounded-xl p-6 border border-border hover-lift text-center flex flex-col items-center">
+                <div className="w-12 h-12 rounded-xl bg-sage-light flex items-center justify-center mb-4">
+                  <p.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="font-serif text-lg font-semibold text-foreground mb-2">{p.title}</h3>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gift Voucher */}
+      <section className="bg-terracotta-light">
+        <div className="container-wide section-padding py-14">
+          <div className="max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+            <div className="w-16 h-16 rounded-2xl bg-terracotta/20 flex items-center justify-center shrink-0">
+              <Gift className="h-8 w-8 text-terracotta" />
+            </div>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold text-foreground mb-2">Cadeaubons beschikbaar</h2>
+              <p className="font-sans text-sm text-muted-foreground">
+                Geef het cadeau van bewust bewegen. Cadeaubons voor Pilates sessies bij Spessirits zijn verkrijgbaar. Neem contact op voor meer info.
+              </p>
+            </div>
+            <Link
+              to="/contact"
+              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-terracotta text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
+            >
+              Meer info <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
