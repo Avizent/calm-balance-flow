@@ -81,11 +81,14 @@ export function Navigation() {
     return isHome && activeSection === item.id;
   };
 
+  /* True when nav should show white text (homepage hero visible) */
+  const heroMode = isHome && !scrolled && !menuOpen;
+
   const linkCls = (active: boolean) =>
-    `font-sans text-sm transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-primary after:transition-all after:duration-200 ${
-      active
-        ? "text-primary font-medium after:w-full"
-        : "text-foreground/70 hover:text-foreground after:w-0 hover:after:w-full"
+    `font-sans text-sm transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:transition-all after:duration-200 ${
+      heroMode
+        ? `after:bg-white ${active ? "text-white font-medium after:w-full" : "text-white/80 hover:text-white after:w-0 hover:after:w-full"}`
+        : `after:bg-primary ${active ? "text-primary font-medium after:w-full" : "text-foreground/70 hover:text-foreground after:w-0 hover:after:w-full"}`
     }`;
 
   const mobileLinkCls = (active: boolean) =>
@@ -101,8 +104,8 @@ export function Navigation() {
 
             {/* Logo */}
             <Link to="/" className="flex flex-col leading-tight">
-              <span className="font-serif text-xl font-semibold text-foreground tracking-wide">Spessirits</span>
-              <span className="font-sans text-xs text-muted-foreground tracking-[0.15em] uppercase">Pilates</span>
+              <span className={`font-serif text-xl font-semibold tracking-wide transition-colors duration-300 ${heroMode ? "text-white" : "text-foreground"}`}>Spessirits</span>
+              <span className={`font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${heroMode ? "text-white/70" : "text-muted-foreground"}`}>Pilates</span>
             </Link>
 
             {/* Desktop nav */}
@@ -130,27 +133,27 @@ export function Navigation() {
               <button
                 onClick={() => setLang(lang === "nl" ? "en" : "nl")}
                 aria-label="Switch language"
-                className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-border bg-background/70 hover:bg-muted transition-colors"
+                className={`hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border transition-colors ${heroMode ? "border-white/40 bg-white/10 hover:bg-white/20" : "border-border bg-background/70 hover:bg-muted"}`}
               >
-                <span className={`font-sans text-xs font-semibold transition-colors ${lang === "nl" ? "text-primary" : "text-muted-foreground"}`}>NL</span>
-                <span className="text-muted-foreground/40 font-sans text-xs">/</span>
-                <span className={`font-sans text-xs font-semibold transition-colors ${lang === "en" ? "text-primary" : "text-muted-foreground"}`}>EN</span>
+                <span className={`font-sans text-xs font-semibold transition-colors ${heroMode ? (lang === "nl" ? "text-white" : "text-white/50") : (lang === "nl" ? "text-primary" : "text-muted-foreground")}`}>NL</span>
+                <span className={`font-sans text-xs transition-colors ${heroMode ? "text-white/30" : "text-muted-foreground/40"}`}>/</span>
+                <span className={`font-sans text-xs font-semibold transition-colors ${heroMode ? (lang === "en" ? "text-white" : "text-white/50") : (lang === "en" ? "text-primary" : "text-muted-foreground")}`}>EN</span>
               </button>
 
               <a
                 href="#contact"
                 onClick={e => handleSectionClick(e, "contact")}
-                className="hidden md:inline-flex items-center px-5 py-2.5 rounded-lg bg-accent text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[44px]"
+                className={`hidden md:inline-flex items-center px-5 py-2.5 rounded-lg font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[44px] ${heroMode ? "bg-white/20 text-white border border-white/40 hover:bg-white/30" : "bg-accent text-accent-foreground"}`}
               >
                 {t.nav.bookNow}
               </a>
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="lg:hidden p-2.5 rounded-lg hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className={`lg:hidden p-2.5 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${heroMode ? "hover:bg-white/20" : "hover:bg-muted"}`}
                 aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
               >
-                {menuOpen ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
+                {menuOpen ? <X className={`h-5 w-5 ${heroMode ? "text-white" : "text-foreground"}`} /> : <Menu className={`h-5 w-5 ${heroMode ? "text-white" : "text-foreground"}`} />}
               </button>
             </div>
           </div>
