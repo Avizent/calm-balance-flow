@@ -8,10 +8,6 @@ import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import Index from "./pages/Index";
 import Over from "./pages/Over";
-import Lessen from "./pages/Lessen";
-import Prive from "./pages/Prive";
-import Tarieven from "./pages/Tarieven";
-import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,10 +23,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/over" element={<Over />} />
-            <Route path="/lessen" element={<Lessen />} />
-            <Route path="/prive" element={<Prive />} />
-            <Route path="/tarieven" element={<Tarieven />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
