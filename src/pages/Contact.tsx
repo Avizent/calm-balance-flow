@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface FormData {
   naam: string;
@@ -15,48 +16,40 @@ interface FormErrors {
   bericht?: string;
 }
 
-const contactInfo = [
-  {
-    icon: Phone,
-    label: "Telefoon",
-    value: "+32 472 240 581",
-    href: "tel:+32472240581",
-  },
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: "+32 472 913 917",
-    href: "https://wa.me/32472913917",
-  },
-  {
-    icon: Mail,
-    label: "E-mail",
-    value: "spessiritskine@icloud.com",
-    href: "mailto:spessiritskine@icloud.com",
-  },
-  {
-    icon: MapPin,
-    label: "Adres",
-    value: "Cirkellaan 12, 2970 Schilde",
-    href: "https://maps.google.com/?q=Cirkellaan+12,+2970+Schilde",
-  },
+const contactHrefs = [
+  "tel:+32472240581",
+  "https://wa.me/32472913917",
+  "mailto:spessiritskine@icloud.com",
+  "https://maps.google.com/?q=Cirkellaan+12,+2970+Schilde",
 ];
+
+const contactValues = [
+  "+32 472 240 581",
+  "+32 472 913 917",
+  "spessiritskine@icloud.com",
+  "Cirkellaan 12, 2970 Schilde",
+];
+
+const contactIcons = [Phone, MessageCircle, Mail, MapPin];
 
 export default function Contact() {
   const { toast } = useToast();
+  const { t } = useLanguage();
+  const c = t.contact;
+
   const [form, setForm] = useState<FormData>({ naam: "", email: "", telefoon: "", bericht: "" });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.naam.trim()) newErrors.naam = "Naam is verplicht.";
+    if (!form.naam.trim()) newErrors.naam = c.errNaam;
     if (!form.email.trim()) {
-      newErrors.email = "E-mailadres is verplicht.";
+      newErrors.email = c.errEmail;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Geldig e-mailadres vereist.";
+      newErrors.email = c.errEmailInvalid;
     }
-    if (!form.bericht.trim()) newErrors.bericht = "Bericht is verplicht.";
+    if (!form.bericht.trim()) newErrors.bericht = c.errBericht;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -65,15 +58,11 @@ export default function Contact() {
     e.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    // Simulate network delay
     await new Promise((r) => setTimeout(r, 1200));
     setSubmitting(false);
     setForm({ naam: "", email: "", telefoon: "", bericht: "" });
     setErrors({});
-    toast({
-      title: "Bericht verzonden! 🌿",
-      description: "Cintia neemt zo snel mogelijk contact met je op.",
-    });
+    toast({ title: c.toastTitle, description: c.toastDesc });
   };
 
   const handleChange = (field: keyof FormData, value: string) => {
@@ -93,13 +82,9 @@ export default function Contact() {
       {/* Header */}
       <section className="bg-muted">
         <div className="container-wide section-padding py-20 text-center">
-          <p className="font-sans text-xs uppercase tracking-widest text-primary mb-4">Contact</p>
-          <h1 className="font-serif text-5xl md:text-6xl font-semibold text-foreground mb-5">
-            Neem contact op
-          </h1>
-          <p className="font-sans text-lg text-muted-foreground max-w-md mx-auto">
-            Voor reservaties, vragen over lessen of tarieven — Cintia helpt je graag verder.
-          </p>
+          <p className="font-sans text-xs uppercase tracking-widest text-primary mb-4">{c.tag}</p>
+          <h1 className="font-serif text-5xl md:text-6xl font-semibold text-foreground mb-5">{c.heroTitle}</h1>
+          <p className="font-sans text-lg text-muted-foreground max-w-md mx-auto">{c.heroSub}</p>
         </div>
       </section>
 
@@ -109,32 +94,33 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20">
             {/* Contact Info */}
             <div>
-              <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">
-                Contactgegevens
-              </h2>
+              <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">{c.infoTitle}</h2>
 
               <div className="flex flex-col gap-5 mb-10">
-                {contactInfo.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target={item.label === "Adres" || item.label === "WhatsApp" ? "_blank" : undefined}
-                    rel="noopener noreferrer"
-                    className="flex items-start gap-4 group"
-                  >
-                    <div className="w-11 h-11 rounded-xl bg-sage-light flex items-center justify-center shrink-0 group-hover:bg-sage transition-colors">
-                      <item.icon className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
-                    </div>
-                    <div>
-                      <p className="font-sans text-xs uppercase tracking-wider text-muted-foreground mb-0.5">
-                        {item.label}
-                      </p>
-                      <p className="font-sans text-base text-foreground group-hover:text-primary transition-colors">
-                        {item.value}
-                      </p>
-                    </div>
-                  </a>
-                ))}
+                {c.contactItems.map((item, i) => {
+                  const Icon = contactIcons[i];
+                  return (
+                    <a
+                      key={item.label}
+                      href={contactHrefs[i]}
+                      target={i >= 1 ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-4 group"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-sage-light flex items-center justify-center shrink-0 group-hover:bg-sage transition-colors">
+                        <Icon className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
+                      </div>
+                      <div>
+                        <p className="font-sans text-xs uppercase tracking-wider text-muted-foreground mb-0.5">
+                          {item.label}
+                        </p>
+                        <p className="font-sans text-base text-foreground group-hover:text-primary transition-colors">
+                          {contactValues[i]}
+                        </p>
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
 
               {/* Map Placeholder */}
@@ -149,7 +135,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 mt-2 text-primary font-sans text-sm font-medium hover:underline"
                   >
-                    Open in Google Maps →
+                    {c.mapOpen}
                   </a>
                 </div>
               </div>
@@ -157,55 +143,50 @@ export default function Contact() {
 
             {/* Contact Form */}
             <div>
-              <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">
-                Stuur een bericht
-              </h2>
+              <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">{c.formTitle}</h2>
 
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
                 {/* Naam */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
-                    Naam <span className="text-destructive">*</span>
+                    {c.fieldNaam} <span className="text-destructive">*</span>
                   </label>
                   <input
                     type="text"
                     value={form.naam}
                     onChange={(e) => handleChange("naam", e.target.value)}
-                    placeholder="Jouw naam"
+                    placeholder={c.fieldNaamPlaceholder}
                     className={inputClass(errors.naam)}
                   />
-                  {errors.naam && (
-                    <p className="mt-1.5 font-sans text-xs text-destructive">{errors.naam}</p>
-                  )}
+                  {errors.naam && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.naam}</p>}
                 </div>
 
                 {/* Email */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
-                    E-mail <span className="text-destructive">*</span>
+                    {c.fieldEmail} <span className="text-destructive">*</span>
                   </label>
                   <input
                     type="email"
                     value={form.email}
                     onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="jouw@email.com"
+                    placeholder={c.fieldEmailPlaceholder}
                     className={inputClass(errors.email)}
                   />
-                  {errors.email && (
-                    <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>
-                  )}
+                  {errors.email && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>}
                 </div>
 
                 {/* Telefoon */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
-                    Telefoon <span className="font-normal text-muted-foreground">(optioneel)</span>
+                    {c.fieldTelefoon}{" "}
+                    <span className="font-normal text-muted-foreground">{c.fieldTelefoonOpt}</span>
                   </label>
                   <input
                     type="tel"
                     value={form.telefoon}
                     onChange={(e) => handleChange("telefoon", e.target.value)}
-                    placeholder="+32 ..."
+                    placeholder={c.fieldTelefoonPlaceholder}
                     className={inputClass()}
                   />
                 </div>
@@ -213,18 +194,16 @@ export default function Contact() {
                 {/* Bericht */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
-                    Bericht <span className="text-destructive">*</span>
+                    {c.fieldBericht} <span className="text-destructive">*</span>
                   </label>
                   <textarea
                     rows={5}
                     value={form.bericht}
                     onChange={(e) => handleChange("bericht", e.target.value)}
-                    placeholder="Stel hier jouw vraag of vertel wat je zoekt..."
+                    placeholder={c.fieldBerichtPlaceholder}
                     className={inputClass(errors.bericht)}
                   />
-                  {errors.bericht && (
-                    <p className="mt-1.5 font-sans text-xs text-destructive">{errors.bericht}</p>
-                  )}
+                  {errors.bericht && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.bericht}</p>}
                 </div>
 
                 <button
@@ -235,12 +214,12 @@ export default function Contact() {
                   {submitting ? (
                     <>
                       <span className="animate-spin inline-block w-4 h-4 border-2 border-accent-foreground border-t-transparent rounded-full" />
-                      Versturen...
+                      {c.submitting}
                     </>
                   ) : (
                     <>
                       <Send className="h-4 w-4" />
-                      Verstuur bericht
+                      {c.submit}
                     </>
                   )}
                 </button>

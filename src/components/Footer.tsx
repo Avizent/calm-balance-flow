@@ -1,7 +1,21 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const navHrefs = ["/", "/over", "/lessen", "/prive", "/tarieven", "/contact"];
 
 export function Footer() {
+  const { t } = useLanguage();
+
+  const navLabels = [
+    t.nav.home,
+    t.nav.over,
+    t.nav.lessen,
+    t.nav.prive,
+    t.nav.tarieven,
+    t.nav.contact,
+  ];
+
   return (
     <footer className="bg-foreground text-primary-foreground">
       <div className="container-wide section-padding py-14">
@@ -13,28 +27,23 @@ export function Footer() {
               <p className="font-sans text-xs tracking-[0.15em] uppercase text-primary-foreground/60 mt-0.5">Pilates</p>
             </div>
             <p className="font-sans text-sm text-primary-foreground/70 leading-relaxed max-w-xs">
-              Verantwoord Pilates — beweging die dient, niet eist. Onder begeleiding van Licentiate Kinesitherapiste Cintia.
+              {t.footer.tagline}
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">Navigatie</p>
+            <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">
+              {t.footer.navigation}
+            </p>
             <nav className="flex flex-col gap-2">
-              {[
-                { label: "Home", href: "/" },
-                { label: "Over Cintia", href: "/over" },
-                { label: "Lessen", href: "/lessen" },
-                { label: "Privé Sessies", href: "/prive" },
-                { label: "Tarieven", href: "/tarieven" },
-                { label: "Contact", href: "/contact" },
-              ].map((link) => (
+              {navLabels.map((label, i) => (
                 <Link
-                  key={link.href}
-                  to={link.href}
+                  key={navHrefs[i]}
+                  to={navHrefs[i]}
                   className="font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
-                  {link.label}
+                  {label}
                 </Link>
               ))}
             </nav>
@@ -42,7 +51,9 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">Contact</p>
+            <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">
+              {t.footer.contact}
+            </p>
             <div className="flex flex-col gap-3">
               <a
                 href="tel:+32472913917"
@@ -68,7 +79,7 @@ export function Footer() {
 
         <div className="border-t border-primary-foreground/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-sans text-xs text-primary-foreground/40">
-            © {new Date().getFullYear()} Spessirits Pilates. Alle rechten voorbehouden.
+            © {new Date().getFullYear()} Spessirits Pilates. {t.footer.rights}
           </p>
           <p className="font-sans text-xs text-primary-foreground/40">
             Cirkellaan 12 · 2970 Schilde · België
