@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Over Cintia", href: "/over" },
-  { label: "Lessen", href: "/lessen" },
-  { label: "Privé Sessies", href: "/prive" },
-  { label: "Tarieven", href: "/tarieven" },
-  { label: "Contact", href: "/contact" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Navigation() {
+  const { lang, setLang, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+
+  const navLinks = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.over, href: "/over" },
+    { label: t.nav.lessen, href: "/lessen" },
+    { label: t.nav.prive, href: "/prive" },
+    { label: t.nav.tarieven, href: "/tarieven" },
+    { label: t.nav.contact, href: "/contact" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -72,18 +74,42 @@ export function Navigation() {
               ))}
             </nav>
 
-            {/* CTA + Mobile Toggle */}
-            <div className="flex items-center gap-3">
+            {/* Right side: Lang toggle + CTA + Mobile toggle */}
+            <div className="flex items-center gap-2">
+              {/* Language Toggle */}
+              <button
+                onClick={() => setLang(lang === "nl" ? "en" : "nl")}
+                aria-label="Switch language"
+                className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-border bg-background/70 hover:bg-muted transition-colors"
+              >
+                <span
+                  className={`font-sans text-xs font-semibold transition-colors ${
+                    lang === "nl" ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  NL
+                </span>
+                <span className="text-muted-foreground/40 font-sans text-xs">/</span>
+                <span
+                  className={`font-sans text-xs font-semibold transition-colors ${
+                    lang === "en" ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  EN
+                </span>
+              </button>
+
               <Link
                 to="/contact"
                 className="hidden md:inline-flex items-center px-5 py-2.5 rounded-lg bg-accent text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[44px]"
               >
-                Boek Nu
+                {t.nav.bookNow}
               </Link>
+
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="lg:hidden p-2.5 rounded-lg hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-                aria-label="Menu openen"
+                aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
               >
                 {menuOpen ? (
                   <X className="h-5 w-5 text-foreground" />
@@ -116,7 +142,7 @@ export function Navigation() {
             <button
               onClick={() => setMenuOpen(false)}
               className="p-2 rounded-lg hover:bg-muted transition-colors"
-              aria-label="Menu sluiten"
+              aria-label={t.nav.menuClose}
             >
               <X className="h-5 w-5 text-foreground" />
             </button>
@@ -136,6 +162,30 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Mobile language toggle */}
+            <div className="mt-4 px-4">
+              <button
+                onClick={() => setLang(lang === "nl" ? "en" : "nl")}
+                className="flex items-center gap-2 w-full py-3 px-0"
+              >
+                <span
+                  className={`font-sans text-sm font-semibold transition-colors ${
+                    lang === "nl" ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  NL
+                </span>
+                <span className="text-muted-foreground/40 font-sans text-sm">/</span>
+                <span
+                  className={`font-sans text-sm font-semibold transition-colors ${
+                    lang === "en" ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  EN
+                </span>
+              </button>
+            </div>
           </nav>
 
           <div className="p-6 border-t border-border">
@@ -143,7 +193,7 @@ export function Navigation() {
               to="/contact"
               className="flex items-center justify-center w-full px-5 py-3 rounded-lg bg-accent text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
             >
-              Boek Nu
+              {t.nav.bookNow}
             </Link>
           </div>
         </div>
