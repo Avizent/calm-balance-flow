@@ -1,200 +1,211 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+/* Sections on the homepage that get smooth-scroll treatment */
+const SECTION_IDS = ["lessen", "prive", "tarieven", "contact"];
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export function Navigation() {
   const { lang, setLang, t } = useLanguage();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+  const [scrolled, setScrolled]       = useState(false);
+  const [menuOpen, setMenuOpen]       = useState(false);
+  const [activeSection, setSection]   = useState<string>("");
+  const location  = useLocation();
+  const navigate  = useNavigate();
+  const isHome    = location.pathname === "/";
 
-  const navLinks = [
-    { label: t.nav.home, href: "/" },
-    { label: t.nav.over, href: "/over" },
-    { label: t.nav.lessen, href: "/lessen" },
-    { label: t.nav.prive, href: "/prive" },
-    { label: t.nav.tarieven, href: "/tarieven" },
-    { label: t.nav.contact, href: "/contact" },
-  ];
-
+  /* Scroll → solid header */
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location]);
+  /* Close drawer on route change */
+  useEffect(() => { setMenuOpen(false); }, [location]);
 
+  /* Lock body scroll when drawer is open */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const isActive = (href: string) =>
-    href === "/" ? location.pathname === "/" : location.pathname.startsWith(href);
+  /* Track which section is in view (only on homepage) */
+  useEffect(() => {
+    if (!isHome) { setSection(""); return; }
+    const observers: IntersectionObserver[] = [];
+    SECTION_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setSection(id); },
+        { rootMargin: "-30% 0px -60% 0px" }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, [isHome]);
+
+  /* Click handler for section links */
+  const handleSectionClick = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    if (isHome) {
+      scrollToSection(sectionId);
+    } else {
+      navigate("/", { state: { scrollTo: sectionId } });
+    }
+  };
+
+  /* Nav items config */
+  const navItems = [
+    { label: t.nav.home,     type: "route",   href: "/" },
+    { label: t.nav.over,     type: "route",   href: "/over" },
+    { label: t.nav.lessen,   type: "section", id: "lessen" },
+    { label: t.nav.prive,    type: "section", id: "prive" },
+    { label: t.nav.tarieven, type: "section", id: "tarieven" },
+    { label: t.nav.contact,  type: "section", id: "contact" },
+  ] as const;
+
+  const isActive = (item: typeof navItems[number]) => {
+    if (item.type === "route") {
+      return item.href === "/" ? (isHome && activeSection === "") : location.pathname.startsWith(item.href);
+    }
+    return isHome && activeSection === item.id;
+  };
+
+  const linkCls = (active: boolean) =>
+    `font-sans text-sm transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-primary after:transition-all after:duration-200 ${
+      active
+        ? "text-primary font-medium after:w-full"
+        : "text-foreground/70 hover:text-foreground after:w-0 hover:after:w-full"
+    }`;
+
+  const mobileLinkCls = (active: boolean) =>
+    `py-3 px-4 rounded-lg font-sans text-base transition-colors duration-150 min-h-[48px] flex items-center cursor-pointer ${
+      active ? "bg-sage-light text-primary font-medium" : "text-foreground/80 hover:bg-muted hover:text-foreground"
+    }`;
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled || menuOpen ? "glass-nav shadow-sm" : "bg-transparent"
-        }`}
-      >
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || menuOpen ? "glass-nav shadow-sm" : "bg-transparent"}`}>
         <div className="container-wide px-6 md:px-10">
           <div className="flex items-center justify-between h-18 py-4">
+
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="flex flex-col leading-tight">
-                <span className="font-serif text-xl font-semibold text-foreground tracking-wide">
-                  Spessirits
-                </span>
-                <span className="font-sans text-xs text-muted-foreground tracking-[0.15em] uppercase">
-                  Pilates
-                </span>
-              </div>
+            <Link to="/" className="flex flex-col leading-tight">
+              <span className="font-serif text-xl font-semibold text-foreground tracking-wide">Spessirits</span>
+              <span className="font-sans text-xs text-muted-foreground tracking-[0.15em] uppercase">Pilates</span>
             </Link>
 
-            {/* Desktop Nav */}
+            {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className={`font-sans text-sm transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-primary after:transition-all after:duration-200 ${
-                    isActive(link.href)
-                      ? "text-primary font-medium after:w-full"
-                      : "text-foreground/70 hover:text-foreground after:w-0 hover:after:w-full"
-                  }`}
-                >
-                  {link.label}
-                </Link>
+              {navItems.map(item => (
+                item.type === "route" ? (
+                  <Link key={item.href} to={item.href} className={linkCls(isActive(item))}>
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={e => handleSectionClick(e, item.id)}
+                    className={linkCls(isActive(item))}
+                  >
+                    {item.label}
+                  </a>
+                )
               ))}
             </nav>
 
-            {/* Right side: Lang toggle + CTA + Mobile toggle */}
+            {/* Right: lang toggle + CTA + hamburger */}
             <div className="flex items-center gap-2">
-              {/* Language Toggle */}
               <button
                 onClick={() => setLang(lang === "nl" ? "en" : "nl")}
                 aria-label="Switch language"
                 className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-border bg-background/70 hover:bg-muted transition-colors"
               >
-                <span
-                  className={`font-sans text-xs font-semibold transition-colors ${
-                    lang === "nl" ? "text-primary" : "text-muted-foreground"
-                  }`}
-                >
-                  NL
-                </span>
+                <span className={`font-sans text-xs font-semibold transition-colors ${lang === "nl" ? "text-primary" : "text-muted-foreground"}`}>NL</span>
                 <span className="text-muted-foreground/40 font-sans text-xs">/</span>
-                <span
-                  className={`font-sans text-xs font-semibold transition-colors ${
-                    lang === "en" ? "text-primary" : "text-muted-foreground"
-                  }`}
-                >
-                  EN
-                </span>
+                <span className={`font-sans text-xs font-semibold transition-colors ${lang === "en" ? "text-primary" : "text-muted-foreground"}`}>EN</span>
               </button>
 
-              <Link
-                to="/contact"
+              <a
+                href="#contact"
+                onClick={e => handleSectionClick(e, "contact")}
                 className="hidden md:inline-flex items-center px-5 py-2.5 rounded-lg bg-accent text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[44px]"
               >
                 {t.nav.bookNow}
-              </Link>
+              </a>
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="lg:hidden p-2.5 rounded-lg hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
               >
-                {menuOpen ? (
-                  <X className="h-5 w-5 text-foreground" />
-                ) : (
-                  <Menu className="h-5 w-5 text-foreground" />
-                )}
+                {menuOpen ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer Overlay */}
-      {menuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-slate-warm/30 backdrop-blur-sm lg:hidden"
-          onClick={() => setMenuOpen(false)}
-        />
-      )}
+      {/* Overlay */}
+      {menuOpen && <div className="fixed inset-0 z-40 bg-slate-warm/30 backdrop-blur-sm lg:hidden" onClick={() => setMenuOpen(false)} />}
 
-      {/* Mobile Drawer */}
-      <div
-        className={`fixed top-0 right-0 z-50 h-full w-72 bg-card shadow-2xl lg:hidden transition-transform duration-350 ease-out ${
-          menuOpen ? "translate-x-0 animate-slide-in-right" : "translate-x-full"
-        }`}
-      >
+      {/* Mobile drawer */}
+      <div className={`fixed top-0 right-0 z-50 h-full w-72 bg-card shadow-2xl lg:hidden transition-transform duration-350 ease-out ${menuOpen ? "translate-x-0 animate-slide-in-right" : "translate-x-full"}`}>
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b border-border">
             <span className="font-serif text-lg font-semibold text-foreground">Menu</span>
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="p-2 rounded-lg hover:bg-muted transition-colors"
-              aria-label={t.nav.menuClose}
-            >
+            <button onClick={() => setMenuOpen(false)} className="p-2 rounded-lg hover:bg-muted transition-colors" aria-label={t.nav.menuClose}>
               <X className="h-5 w-5 text-foreground" />
             </button>
           </div>
 
           <nav className="flex flex-col p-6 gap-1 flex-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`py-3 px-4 rounded-lg font-sans text-base transition-colors duration-150 min-h-[48px] flex items-center ${
-                  isActive(link.href)
-                    ? "bg-sage-light text-primary font-medium"
-                    : "text-foreground/80 hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
+            {navItems.map(item => (
+              item.type === "route" ? (
+                <Link key={item.href} to={item.href} className={mobileLinkCls(isActive(item))}>
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  onClick={e => handleSectionClick(e, item.id)}
+                  className={mobileLinkCls(isActive(item))}
+                >
+                  {item.label}
+                </a>
+              )
             ))}
 
-            {/* Mobile language toggle */}
+            {/* Mobile lang toggle */}
             <div className="mt-4 px-4">
-              <button
-                onClick={() => setLang(lang === "nl" ? "en" : "nl")}
-                className="flex items-center gap-2 w-full py-3 px-0"
-              >
-                <span
-                  className={`font-sans text-sm font-semibold transition-colors ${
-                    lang === "nl" ? "text-primary" : "text-muted-foreground"
-                  }`}
-                >
-                  NL
-                </span>
-                <span className="text-muted-foreground/40 font-sans text-sm">/</span>
-                <span
-                  className={`font-sans text-sm font-semibold transition-colors ${
-                    lang === "en" ? "text-primary" : "text-muted-foreground"
-                  }`}
-                >
-                  EN
-                </span>
+              <button onClick={() => setLang(lang === "nl" ? "en" : "nl")} className="flex items-center gap-2 w-full py-3">
+                <span className={`font-sans text-sm font-semibold ${lang === "nl" ? "text-primary" : "text-muted-foreground"}`}>NL</span>
+                <span className="text-muted-foreground/40 text-sm">/</span>
+                <span className={`font-sans text-sm font-semibold ${lang === "en" ? "text-primary" : "text-muted-foreground"}`}>EN</span>
               </button>
             </div>
           </nav>
 
           <div className="p-6 border-t border-border">
-            <Link
-              to="/contact"
+            <a
+              href="#contact"
+              onClick={e => handleSectionClick(e, "contact")}
               className="flex items-center justify-center w-full px-5 py-3 rounded-lg bg-accent text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
             >
               {t.nav.bookNow}
-            </Link>
+            </a>
           </div>
         </div>
       </div>
