@@ -27,7 +27,7 @@ export default function Over() {
               </div>
               <div className="mt-9">
                 <Link
-                  to="/contact"
+                  to="/prive"
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-lg bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[48px]"
                 >
                   {o.heroCta} <ArrowRight className="h-4 w-4" />
