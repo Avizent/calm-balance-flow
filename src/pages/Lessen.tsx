@@ -35,7 +35,7 @@ export default function Lessen() {
                 <h3 className="font-serif text-xl font-semibold text-foreground mb-3">{a.title}</h3>
                 <p className="font-sans text-sm text-muted-foreground leading-relaxed flex-1">{a.desc}</p>
                 <Link
-                  to="/contact"
+                  to="/boeken"
                   className="mt-5 inline-flex items-center gap-1.5 text-primary font-sans text-sm font-medium hover:gap-2.5 transition-all"
                 >
                   {l.bookNow} <ArrowRight className="h-3.5 w-3.5" />
