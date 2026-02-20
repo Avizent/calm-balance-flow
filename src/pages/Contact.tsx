@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface FormData {
@@ -33,13 +32,11 @@ const contactValues = [
 const contactIcons = [Phone, MessageCircle, Mail, MapPin];
 
 export default function Contact() {
-  const { toast } = useToast();
   const { t } = useLanguage();
   const c = t.contact;
 
   const [form, setForm] = useState<FormData>({ naam: "", email: "", telefoon: "", bericht: "" });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [submitting, setSubmitting] = useState(false);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -54,15 +51,16 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
+    const subject = encodeURIComponent(`Contactformulier – ${form.naam}`);
+    const body = encodeURIComponent(
+      `Naam: ${form.naam}\nE-mail: ${form.email}${form.telefoon ? `\nTelefoon: ${form.telefoon}` : ""}\n\nBericht:\n${form.bericht}`
+    );
+    window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
     setForm({ naam: "", email: "", telefoon: "", bericht: "" });
     setErrors({});
-    toast({ title: c.toastTitle, description: c.toastDesc });
   };
 
   const handleChange = (field: keyof FormData, value: string) => {
@@ -208,20 +206,10 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-60 min-h-[52px] mt-2"
+                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2"
                 >
-                  {submitting ? (
-                    <>
-                      <span className="animate-spin inline-block w-4 h-4 border-2 border-accent-foreground border-t-transparent rounded-full" />
-                      {c.submitting}
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      {c.submit}
-                    </>
-                  )}
+                  <Send className="h-4 w-4" />
+                  {c.submit}
                 </button>
               </form>
             </div>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Send, CalendarClock } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BookingForm {
@@ -21,7 +20,6 @@ interface BookingErrors {
 }
 
 export default function Boeken() {
-  const { toast } = useToast();
   const { lang } = useLanguage();
 
   const isNl = lang === "nl";
@@ -95,7 +93,6 @@ export default function Boeken() {
     opmerking: "",
   });
   const [errors, setErrors] = useState<BookingErrors>({});
-  const [submitting, setSubmitting] = useState(false);
 
   const validate = (): boolean => {
     const e: BookingErrors = {};
@@ -112,15 +109,16 @@ export default function Boeken() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = async (ev: React.FormEvent) => {
+  const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
+    const subject = encodeURIComponent(`Reservatieaanvraag – ${form.naam}`);
+    const body = encodeURIComponent(
+      `Naam: ${form.naam}\nE-mail: ${form.email}\nTelefoon: ${form.telefoon}\nSessie: ${form.sessieType}\nFormaat: ${form.format}${form.opmerking ? `\n\nOpmerkingen:\n${form.opmerking}` : ""}`
+    );
+    window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
     setForm({ naam: "", email: "", telefoon: "", sessieType: "", format: "", opmerking: "" });
     setErrors({});
-    toast({ title: copy.toastTitle, description: copy.toastDesc });
   };
 
   const set = (field: keyof BookingForm, value: string) => {
@@ -278,20 +276,10 @@ export default function Boeken() {
 
               <button
                 type="submit"
-                disabled={submitting}
-                className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-60 min-h-[52px] mt-2"
+                className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2"
               >
-                {submitting ? (
-                  <>
-                    <span className="animate-spin inline-block w-4 h-4 border-2 border-accent-foreground border-t-transparent rounded-full" />
-                    {copy.submitting}
-                  </>
-                ) : (
-                  <>
-                    <Send className="h-4 w-4" />
-                    {copy.submit}
-                  </>
-                )}
+                <Send className="h-4 w-4" />
+                {copy.submit}
               </button>
 
               <p className="text-center font-sans text-xs text-muted-foreground">
