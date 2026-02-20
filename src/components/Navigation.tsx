@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-/* Sections on the homepage that get smooth-scroll treatment */
-const SECTION_IDS = ["lessen", "prive", "tarieven", "contact"];
+const SECTION_IDS = ["lessen", "prive", "contact"];
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id);
@@ -13,12 +12,17 @@ function scrollToSection(id: string) {
 
 export function Navigation() {
   const { lang, setLang, t } = useLanguage();
-  const [scrolled, setScrolled]       = useState(false);
-  const [menuOpen, setMenuOpen]       = useState(false);
-  const [activeSection, setSection]   = useState<string>("");
-  const location  = useLocation();
-  const navigate  = useNavigate();
-  const isHome    = location.pathname === "/";
+  const [scrolled, setScrolled]     = useState(false);
+  const [menuOpen, setMenuOpen]     = useState(false);
+  const [activeSection, setSection] = useState<string>("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome   = location.pathname === "/";
+
+  /* Sliding underline state */
+  const navRef   = useRef<HTMLElement>(null);
+  const itemRefs = useRef<(HTMLElement | null)[]>([]);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, opacity: 0 });
 
   /* Scroll → solid header */
   useEffect(() => {
@@ -36,7 +40,7 @@ export function Navigation() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  /* Track which section is in view (only on homepage) */
+  /* Track which section is in view */
   useEffect(() => {
     if (!isHome) { setSection(""); return; }
     const observers: IntersectionObserver[] = [];
@@ -53,7 +57,62 @@ export function Navigation() {
     return () => observers.forEach(o => o.disconnect());
   }, [isHome]);
 
-  /* Click handler for section links */
+  /* Nav items — 5 items as requested */
+  const navItems = [
+    { label: t.nav.home,    type: "route",   href: "/" },
+    { label: t.nav.over,    type: "route",   href: "/over" },
+    { label: t.nav.lessen,  type: "section", id: "lessen" },
+    { label: lang === "nl" ? "Sessies" : "Sessions", type: "section", id: "prive" },
+    { label: t.nav.contact, type: "section", id: "contact" },
+  ] as const;
+
+  const isActive = (item: typeof navItems[number]) => {
+    if (item.type === "route") {
+      return item.href === "/" ? (isHome && activeSection === "") : location.pathname.startsWith(item.href);
+    }
+    return isHome && activeSection === item.id;
+  };
+
+  /* Update sliding indicator position */
+  const updateIndicator = useCallback(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const activeIdx = navItems.findIndex((item) => isActive(item));
+    if (activeIdx === -1) {
+      setIndicator(prev => ({ ...prev, opacity: 0 }));
+      return;
+    }
+    const el = itemRefs.current[activeIdx];
+    if (!el) return;
+    const navRect = nav.getBoundingClientRect();
+    const elRect  = el.getBoundingClientRect();
+    setIndicator({
+      left:    elRect.left - navRect.left,
+      width:   elRect.width,
+      opacity: 1,
+    });
+  }, [activeSection, location.pathname, isHome]);
+
+  useEffect(() => {
+    // Small delay lets layout settle after route changes
+    const id = requestAnimationFrame(updateIndicator);
+    return () => cancelAnimationFrame(id);
+  }, [updateIndicator]);
+
+  const heroMode = isHome && !scrolled && !menuOpen;
+
+  const linkCls = (active: boolean) =>
+    `font-sans text-sm transition-colors duration-200 py-1 ${
+      heroMode
+        ? active ? "text-white font-medium" : "text-white/80 hover:text-white"
+        : active ? "text-primary font-medium" : "text-foreground/70 hover:text-foreground"
+    }`;
+
+  const mobileLinkCls = (active: boolean) =>
+    `py-3 px-4 rounded-lg font-sans text-base transition-colors duration-150 min-h-[48px] flex items-center cursor-pointer ${
+      active ? "bg-sage-light text-primary font-medium" : "text-foreground/80 hover:bg-muted hover:text-foreground"
+    }`;
+
   const handleSectionClick = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
     setMenuOpen(false);
@@ -64,38 +123,6 @@ export function Navigation() {
     }
   };
 
-  /* Nav items config */
-  const navItems = [
-    { label: t.nav.home,     type: "route",   href: "/" },
-    { label: t.nav.over,     type: "route",   href: "/over" },
-    { label: t.nav.lessen,   type: "section", id: "lessen" },
-    { label: t.nav.prive,    type: "section", id: "prive" },
-    { label: t.nav.tarieven, type: "section", id: "tarieven" },
-    { label: t.nav.contact,  type: "section", id: "contact" },
-  ] as const;
-
-  const isActive = (item: typeof navItems[number]) => {
-    if (item.type === "route") {
-      return item.href === "/" ? (isHome && activeSection === "") : location.pathname.startsWith(item.href);
-    }
-    return isHome && activeSection === item.id;
-  };
-
-  /* True when nav should show white text (homepage hero visible) */
-  const heroMode = isHome && !scrolled && !menuOpen;
-
-  const linkCls = (active: boolean) =>
-    `font-sans text-sm transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:transition-all after:duration-200 ${
-      heroMode
-        ? `after:bg-white ${active ? "text-white font-medium after:w-full" : "text-white/80 hover:text-white after:w-0 hover:after:w-full"}`
-        : `after:bg-primary ${active ? "text-primary font-medium after:w-full" : "text-foreground/70 hover:text-foreground after:w-0 hover:after:w-full"}`
-    }`;
-
-  const mobileLinkCls = (active: boolean) =>
-    `py-3 px-4 rounded-lg font-sans text-base transition-colors duration-150 min-h-[48px] flex items-center cursor-pointer ${
-      active ? "bg-sage-light text-primary font-medium" : "text-foreground/80 hover:bg-muted hover:text-foreground"
-    }`;
-
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || menuOpen ? "glass-nav shadow-sm" : "bg-transparent"}`}>
@@ -103,22 +130,28 @@ export function Navigation() {
           <div className="flex items-center justify-between h-18 py-4">
 
             {/* Logo */}
-            <Link to="/" className="flex flex-col leading-tight">
+            <Link to="/" className="flex flex-col leading-tight shrink-0">
               <span className={`font-serif text-xl font-semibold tracking-wide transition-colors duration-300 ${heroMode ? "text-white" : "text-foreground"}`}>Spessirits</span>
               <span className={`font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${heroMode ? "text-white/70" : "text-muted-foreground"}`}>Pilates</span>
             </Link>
 
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-8">
-              {navItems.map(item => (
+            {/* Desktop nav with sliding underline */}
+            <nav ref={navRef} className="hidden lg:flex items-center gap-8 relative">
+              {navItems.map((item, i) => (
                 item.type === "route" ? (
-                  <Link key={item.href} to={item.href} className={linkCls(isActive(item))}>
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    ref={el => { itemRefs.current[i] = el; }}
+                    className={linkCls(isActive(item))}
+                  >
                     {item.label}
                   </Link>
                 ) : (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
+                    ref={el => { itemRefs.current[i] = el; }}
                     onClick={e => handleSectionClick(e, item.id)}
                     className={linkCls(isActive(item))}
                   >
@@ -126,10 +159,22 @@ export function Navigation() {
                   </a>
                 )
               ))}
+
+              {/* Sliding underline indicator */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute bottom-0 h-[1.5px] rounded-full transition-all duration-300 ease-in-out"
+                style={{
+                  left:    indicator.left,
+                  width:   indicator.width,
+                  opacity: indicator.opacity,
+                  backgroundColor: heroMode ? "white" : "hsl(var(--primary))",
+                }}
+              />
             </nav>
 
             {/* Right: lang toggle + CTA + hamburger */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setLang(lang === "nl" ? "en" : "nl")}
                 aria-label="Switch language"
@@ -152,7 +197,9 @@ export function Navigation() {
                 className={`lg:hidden p-2.5 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${heroMode ? "hover:bg-white/20" : "hover:bg-muted"}`}
                 aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
               >
-                {menuOpen ? <X className={`h-5 w-5 ${heroMode ? "text-white" : "text-foreground"}`} /> : <Menu className={`h-5 w-5 ${heroMode ? "text-white" : "text-foreground"}`} />}
+                {menuOpen
+                  ? <X   className={`h-5 w-5 ${heroMode ? "text-white" : "text-foreground"}`} />
+                  : <Menu className={`h-5 w-5 ${heroMode ? "text-white" : "text-foreground"}`} />}
               </button>
             </div>
           </div>
@@ -190,7 +237,6 @@ export function Navigation() {
               )
             ))}
 
-            {/* Mobile lang toggle */}
             <div className="mt-4 px-4">
               <button onClick={() => setLang(lang === "nl" ? "en" : "nl")} className="flex items-center gap-2 w-full py-3">
                 <span className={`font-sans text-sm font-semibold ${lang === "nl" ? "text-primary" : "text-muted-foreground"}`}>NL</span>
