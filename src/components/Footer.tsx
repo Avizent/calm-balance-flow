@@ -69,10 +69,15 @@ export function Footer() {
                 <Mail className="h-4 w-4 shrink-0" />
                 spessiritskine@icloud.com
               </a>
-              <div className="flex items-start gap-2.5 font-sans text-sm text-primary-foreground/70">
+              <a
+                href="https://maps.google.com/?q=Cirkellaan+12,+2970+Schilde"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2.5 font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+              >
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
                 Cirkellaan 12, 2970 Schilde
-              </div>
+              </a>
             </div>
           </div>
         </div>
