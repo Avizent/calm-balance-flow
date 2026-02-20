@@ -194,7 +194,7 @@ export function Navigation() {
               </button>
 
               <Link
-                to="/boeken"
+                to="/boeken#reservatie"
                 className={`hidden md:inline-flex items-center px-5 py-2.5 rounded-lg font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[44px] ${heroMode ? "bg-white/20 text-white border border-white/40 hover:bg-white/30" : "bg-accent text-accent-foreground"}`}
               >
                 {t.nav.bookNow}
@@ -261,7 +261,7 @@ export function Navigation() {
 
           <div className="p-6 border-t border-border">
             <Link
-              to="/boeken"
+              to="/boeken#reservatie"
               className="flex items-center justify-center w-full px-5 py-3 rounded-lg bg-accent text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
             >
               {t.nav.bookNow}

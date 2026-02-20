@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, CalendarClock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocation } from "react-router-dom";
 
 interface BookingForm {
   naam: string;
@@ -21,6 +22,23 @@ interface BookingErrors {
 
 export default function Boeken() {
   const { lang } = useLanguage();
+  const location = useLocation();
+
+  /* Scroll to form if navigated with #reservatie hash */
+  useEffect(() => {
+    if (location.hash === "#reservatie") {
+      let attempts = 0;
+      const tryScroll = () => {
+        const el = document.getElementById("reservatie");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (attempts++ < 10) {
+          setTimeout(tryScroll, 80);
+        }
+      };
+      setTimeout(tryScroll, 100);
+    }
+  }, [location.hash]);
 
   const isNl = lang === "nl";
 
@@ -150,7 +168,7 @@ export default function Boeken() {
       </section>
 
       {/* Form section */}
-      <section className="bg-card">
+      <section id="reservatie" className="bg-card">
         <div className="container-wide section-padding">
           <div className="max-w-xl mx-auto">
 
