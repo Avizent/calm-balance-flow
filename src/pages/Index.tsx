@@ -42,11 +42,20 @@ export default function Index() {
   /* Scroll to section if navigated here with state */
   useEffect(() => {
     const state = location.state as { scrollTo?: string } | null;
-    if (state?.scrollTo) {
-      const el = document.getElementById(state.scrollTo);
-      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
-      navigate("/", { replace: true, state: {} });
-    }
+    if (!state?.scrollTo) return;
+    const id = state.scrollTo;
+    navigate("/", { replace: true, state: {} });
+    // Retry until the element is mounted (images etc. may shift layout)
+    let attempts = 0;
+    const tryScroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (attempts++ < 10) {
+        setTimeout(tryScroll, 80);
+      }
+    };
+    setTimeout(tryScroll, 80);
   }, [location.state, navigate]);
 
   /* Contact form state */

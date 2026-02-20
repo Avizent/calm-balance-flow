@@ -113,6 +113,15 @@ export function Navigation() {
       active ? "bg-sage-light text-primary font-medium" : "text-foreground/80 hover:bg-muted hover:text-foreground"
     }`;
 
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (isHome) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setSection("");
+    }
+    setMenuOpen(false);
+  };
+
   const handleSectionClick = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
     setMenuOpen(false);
@@ -130,7 +139,7 @@ export function Navigation() {
           <div className="flex items-center justify-between h-18 py-4">
 
             {/* Logo */}
-            <Link to="/" className="flex flex-col leading-tight shrink-0">
+            <Link to="/" onClick={handleHomeClick} className="flex flex-col leading-tight shrink-0">
               <span className={`font-serif text-xl font-semibold tracking-wide transition-colors duration-300 ${heroMode ? "text-white" : "text-foreground"}`}>Spessirits</span>
               <span className={`font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${heroMode ? "text-white/70" : "text-muted-foreground"}`}>Pilates</span>
             </Link>
@@ -140,7 +149,11 @@ export function Navigation() {
             {navItems.map((item, i) => (
                 <span key={item.type === "route" ? item.href : item.id} ref={el => { itemRefs.current[i] = el; }}>
                   {item.type === "route" ? (
-                    <Link to={item.href} className={linkCls(isActive(item))}>
+                    <Link
+                      to={item.href}
+                      onClick={item.href === "/" ? handleHomeClick : () => setMenuOpen(false)}
+                      className={linkCls(isActive(item))}
+                    >
                       {item.label}
                     </Link>
                   ) : (
@@ -217,7 +230,12 @@ export function Navigation() {
           <nav className="flex flex-col p-6 gap-1 flex-1">
             {navItems.map(item => (
               item.type === "route" ? (
-                <Link key={item.href} to={item.href} className={mobileLinkCls(isActive(item))}>
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={item.href === "/" ? handleHomeClick : () => setMenuOpen(false)}
+                  className={mobileLinkCls(isActive(item))}
+                >
                   {item.label}
                 </Link>
               ) : (
