@@ -136,7 +136,7 @@ export function Navigation() {
             </Link>
 
             {/* Desktop nav with sliding underline */}
-            <nav ref={navRef} className="hidden lg:flex items-center gap-8 relative">
+            <nav ref={navRef} className="hidden md:flex items-center gap-6 relative">
             {navItems.map((item, i) => (
                 <span key={item.type === "route" ? item.href : item.id} ref={el => { itemRefs.current[i] = el; }}>
                   {item.type === "route" ? (
@@ -189,7 +189,7 @@ export function Navigation() {
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className={`lg:hidden p-2.5 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${heroMode ? "hover:bg-white/20" : "hover:bg-muted"}`}
+                className={`md:hidden p-2.5 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${heroMode ? "hover:bg-white/20" : "hover:bg-muted"}`}
                 aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
               >
                 {menuOpen
@@ -202,10 +202,10 @@ export function Navigation() {
       </header>
 
       {/* Overlay */}
-      {menuOpen && <div className="fixed inset-0 z-40 bg-slate-warm/30 backdrop-blur-sm lg:hidden" onClick={() => setMenuOpen(false)} />}
+      {menuOpen && <div className="fixed inset-0 z-40 bg-slate-warm/30 backdrop-blur-sm md:hidden" onClick={() => setMenuOpen(false)} />}
 
       {/* Mobile drawer */}
-      <div className={`fixed top-0 right-0 z-50 h-full w-72 bg-card shadow-2xl lg:hidden transition-transform duration-350 ease-out ${menuOpen ? "translate-x-0 animate-slide-in-right" : "translate-x-full"}`}>
+      <div className={`fixed top-0 right-0 z-50 h-full w-72 bg-card shadow-2xl md:hidden transition-transform duration-350 ease-out ${menuOpen ? "translate-x-0 animate-slide-in-right" : "translate-x-full"}`}>
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b border-border">
             <span className="font-serif text-lg font-semibold text-foreground">Menu</span>
