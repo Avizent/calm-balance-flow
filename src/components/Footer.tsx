@@ -1,17 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export function Footer() {
   const { t, lang } = useLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === "/";
 
-  /* Matches top menu exactly: Home, Over Cintia, Lessen, Sessies, Contact */
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isHome) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/");
+    }
+  };
+
+  const handleSectionClick = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    if (isHome) {
+      scrollToSection(sectionId);
+    } else {
+      // Navigate to homepage then scroll — same pattern as top nav
+      navigate("/", { state: { scrollTo: sectionId } });
+    }
+  };
+
   const navItems = [
-    { label: t.nav.home,    href: "/",        external: false },
-    { label: t.nav.over,    href: "/over",     external: false },
-    { label: t.nav.lessen,  href: "/#lessen",  external: false },
-    { label: lang === "nl" ? "Sessies" : "Sessions", href: "/#prive", external: false },
-    { label: t.nav.contact, href: "/#contact", external: false },
+    { label: t.nav.home,    type: "home"    as const },
+    { label: t.nav.over,    type: "route"   as const, href: "/over" },
+    { label: t.nav.lessen,  type: "section" as const, id: "lessen" },
+    { label: lang === "nl" ? "Sessies" : "Sessions", type: "section" as const, id: "prive" },
+    { label: t.nav.contact, type: "section" as const, id: "contact" },
   ];
 
   return (
@@ -29,21 +55,41 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Links */}
+          {/* Navigation */}
           <div>
             <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">
               {t.footer.navigation}
             </p>
             <nav className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className="font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const cls = "font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors cursor-pointer";
+
+                if (item.type === "home") {
+                  return (
+                    <a key="home" href="/" onClick={handleHomeClick} className={cls}>
+                      {item.label}
+                    </a>
+                  );
+                }
+                if (item.type === "route") {
+                  return (
+                    <Link key={item.href} to={item.href!} className={cls}>
+                      {item.label}
+                    </Link>
+                  );
+                }
+                // section
+                return (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={(e) => handleSectionClick(e, item.id!)}
+                    className={cls}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
             </nav>
           </div>
 
