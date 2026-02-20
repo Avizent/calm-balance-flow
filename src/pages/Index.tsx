@@ -113,9 +113,9 @@ export default function Index() {
             <a href="#contact" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[48px]">
               {h.heroCta} <ArrowRight className="h-4 w-4" />
             </a>
-            <Link to="/over" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg border border-primary-foreground/30 text-primary-foreground font-sans text-sm hover:bg-primary-foreground/10 transition-colors min-h-[48px]">
-              {h.heroSecondary}
-            </Link>
+            <a href="#lessen" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg border border-primary-foreground/30 text-primary-foreground font-sans text-sm hover:bg-primary-foreground/10 transition-colors min-h-[48px]">
+              {lang === "en" ? "Classes" : "Lessen"}
+            </a>
           </div>
         </div>
       </section>
