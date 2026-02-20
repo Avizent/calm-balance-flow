@@ -103,6 +103,15 @@ html {
     transform: translateY(-4px);
     box-shadow: 0 12px 32px hsla(200, 20%, 20%, 0.12);
   }
+  .panel-hover {
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .panel-hover:hover {
+    background-color: hsl(var(--sage-light));
+    border-color: hsl(var(--sage-medium));
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px hsla(200, 20%, 20%, 0.12);
+  }
   .section-padding {
     @apply px-6 py-20 md:px-16 lg:px-24;
   }
