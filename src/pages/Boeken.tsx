@@ -42,52 +42,71 @@ export default function Boeken() {
 
   const isNl = lang === "nl";
   const isFr = lang === "fr";
+  const isPt = lang === "pt";
 
   const copy = {
-    tag: isFr ? "Réservation" : isNl ? "Reservatie" : "Booking Request",
-    heroTitle: isFr ? "Réserver une séance" : isNl ? "Boek een Sessie" : "Book a Session",
-    heroSub: isFr
+    tag: isPt ? "Agendamento" : isFr ? "Réservation" : isNl ? "Reservatie" : "Booking Request",
+    heroTitle: isPt ? "Agendar uma Sessão" : isFr ? "Réserver une séance" : isNl ? "Boek een Sessie" : "Book a Session",
+    heroSub: isPt
+      ? "Preencha o formulário abaixo e a Cintia entrará em contato para definir uma data e horário."
+      : isFr
       ? "Veuillez remplir le formulaire ci-dessous et Cintia vous contactera pour convenir d'une date et d'un horaire."
       : isNl
       ? "Vul het formulier in en Cintia neemt contact met je op om een datum en tijdstip vast te leggen."
       : "Fill in the form and Cintia will get back to you to fix a date and time.",
-    notice: isFr
+    notice: isPt
+      ? "A Cintia entrará em contato o mais breve possível para confirmar uma data e horário que sejam convenientes para você."
+      : isFr
       ? "Cintia vous contactera dans les plus brefs délais pour confirmer ensemble une date et un horaire qui vous conviennent."
       : isNl
       ? "Cintia neemt zo snel mogelijk contact met je op om samen een datum en tijdstip te bevestigen."
       : "Cintia will get back to you as soon as possible to confirm a date and time that works for you.",
-    formTitle: isFr ? "Votre demande de réservation" : isNl ? "Jouw Reservatieaanvraag" : "Your Booking Request",
-    fieldNaam: isFr ? "Nom" : isNl ? "Naam" : "Name",
-    fieldNaamPlaceholder: isFr ? "Votre nom" : isNl ? "Jouw naam" : "Your name",
-    fieldEmail: isFr ? "E-mail" : isNl ? "E-mail" : "Email",
-    fieldEmailPlaceholder: isFr ? "votre@email.com" : "jouw@email.com",
-    fieldTelefoon: isFr ? "Téléphone" : isNl ? "Telefoon" : "Phone",
+    formTitle: isPt ? "A sua solicitação de agendamento" : isFr ? "Votre demande de réservation" : isNl ? "Jouw Reservatieaanvraag" : "Your Booking Request",
+    fieldNaam: isPt ? "Nome" : isFr ? "Nom" : isNl ? "Naam" : "Name",
+    fieldNaamPlaceholder: isPt ? "O seu nome" : isFr ? "Votre nom" : isNl ? "Jouw naam" : "Your name",
+    fieldEmail: "E-mail",
+    fieldEmailPlaceholder: isPt ? "seu@email.com" : isFr ? "votre@email.com" : "jouw@email.com",
+    fieldTelefoon: isPt ? "Telefone" : isFr ? "Téléphone" : isNl ? "Telefoon" : "Phone",
     fieldTelefoonPlaceholder: "+32 ...",
-    fieldSessie: isFr ? "Type de séance" : isNl ? "Type Sessie" : "Session Type",
-    fieldSessiePlaceholder: isFr ? "Choisissez une séance..." : isNl ? "Kies een sessie..." : "Choose a session...",
-    fieldFormat: isFr ? "Format" : isNl ? "Formaat" : "Format",
-    fieldFormatPlaceholder: isFr ? "Choisissez un format..." : isNl ? "Kies een formaat..." : "Choose a format...",
-    fieldOpmerking: isFr ? "Remarques supplémentaires" : isNl ? "Extra opmerkingen" : "Additional notes",
-    fieldOpmerkingPlaceholder: isFr
+    fieldSessie: isPt ? "Tipo de Sessão" : isFr ? "Type de séance" : isNl ? "Type Sessie" : "Session Type",
+    fieldSessiePlaceholder: isPt ? "Escolha uma sessão..." : isFr ? "Choisissez une séance..." : isNl ? "Kies een sessie..." : "Choose a session...",
+    fieldFormat: isPt ? "Formato" : isFr ? "Format" : isNl ? "Formaat" : "Format",
+    fieldFormatPlaceholder: isPt ? "Escolha um formato..." : isFr ? "Choisissez un format..." : isNl ? "Kies een formaat..." : "Choose a format...",
+    fieldOpmerking: isPt ? "Observações adicionais" : isFr ? "Remarques supplémentaires" : isNl ? "Extra opmerkingen" : "Additional notes",
+    fieldOpmerkingPlaceholder: isPt
+      ? "Ex.: queixas específicas, dias preferidos, dúvidas..."
+      : isFr
       ? "Ex. plaintes spécifiques, jours préférés, questions..."
       : isNl
       ? "Bijv. specifieke klachten, voorkeursdagen, vragen..."
       : "E.g. specific complaints, preferred days, questions...",
-    submit: isFr ? "Envoyer la demande" : isNl ? "Stuur Aanvraag" : "Send Request",
-    submitting: isFr ? "Envoi en cours..." : isNl ? "Versturen..." : "Sending...",
-    toastTitle: isFr ? "Demande envoyée ! 🌿" : isNl ? "Aanvraag verzonden! 🌿" : "Request sent! 🌿",
-    toastDesc: isFr
+    submit: isPt ? "Enviar Solicitação" : isFr ? "Envoyer la demande" : isNl ? "Stuur Aanvraag" : "Send Request",
+    submitting: isPt ? "Enviando..." : isFr ? "Envoi en cours..." : isNl ? "Versturen..." : "Sending...",
+    toastTitle: isPt ? "Solicitação enviada! 🌿" : isFr ? "Demande envoyée ! 🌿" : isNl ? "Aanvraag verzonden! 🌿" : "Request sent! 🌿",
+    toastDesc: isPt
+      ? "A Cintia entrará em contato o mais breve possível para confirmar uma data."
+      : isFr
       ? "Cintia vous contactera dans les plus brefs délais pour confirmer une date."
       : isNl
       ? "Cintia neemt zo snel mogelijk contact met je op om een datum te bevestigen."
       : "Cintia will get back to you as soon as possible to confirm a date.",
-    errNaam: isFr ? "Le nom est obligatoire." : isNl ? "Naam is verplicht." : "Name is required.",
-    errEmail: isFr ? "L'adresse e-mail est obligatoire." : isNl ? "E-mailadres is verplicht." : "Email is required.",
-    errEmailInvalid: isFr ? "Une adresse e-mail valide est requise." : isNl ? "Geldig e-mailadres vereist." : "A valid email address is required.",
-    errTelefoon: isFr ? "Le numéro de téléphone est obligatoire." : isNl ? "Telefoonnummer is verplicht." : "Phone number is required.",
-    errSessie: isFr ? "Veuillez choisir un type de séance." : isNl ? "Kies een sessie." : "Please choose a session type.",
-    errFormat: isFr ? "Veuillez choisir un format." : isNl ? "Kies een formaat." : "Please choose a format.",
-    sessieOptions: isFr
+    errNaam: isPt ? "O nome é obrigatório." : isFr ? "Le nom est obligatoire." : isNl ? "Naam is verplicht." : "Name is required.",
+    errEmail: isPt ? "O e-mail é obrigatório." : isFr ? "L'adresse e-mail est obligatoire." : isNl ? "E-mailadres is verplicht." : "Email is required.",
+    errEmailInvalid: isPt ? "É necessário um endereço de e-mail válido." : isFr ? "Une adresse e-mail valide est requise." : isNl ? "Geldig e-mailadres vereist." : "A valid email address is required.",
+    errTelefoon: isPt ? "O número de telefone é obrigatório." : isFr ? "Le numéro de téléphone est obligatoire." : isNl ? "Telefoonnummer is verplicht." : "Phone number is required.",
+    errSessie: isPt ? "Por favor, escolha um tipo de sessão." : isFr ? "Veuillez choisir un type de séance." : isNl ? "Kies een sessie." : "Please choose a session type.",
+    errFormat: isPt ? "Por favor, escolha um formato." : isFr ? "Veuillez choisir un format." : isNl ? "Kies een formaat." : "Please choose a format.",
+    sessieOptions: isPt
+      ? [
+          "Pilates para Iniciantes",
+          "Atletas & Desempenho",
+          "Gestão da Dor & Queixas",
+          "Reabilitação",
+          "Pré-Natal",
+          "Pós-Natal",
+          "Pilates Avançado",
+        ]
+      : isFr
       ? [
           "Pilates débutants",
           "Sportifs & Performance",
@@ -116,7 +135,9 @@ export default function Boeken() {
           "Post-Natal",
           "Advanced Pilates",
         ],
-    formatOptions: isFr
+    formatOptions: isPt
+      ? ["Individual (um a um com a Cintia)", "Duo (2 pessoas)"]
+      : isFr
       ? ["Individuel (en tête-à-tête avec Cintia)", "Duo (2 personnes)"]
       : isNl
       ? ["Individueel (1-op-1 met Cintia)", "Duo (2 personen)"]
@@ -302,7 +323,7 @@ export default function Boeken() {
               <div>
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldOpmerking}{" "}
-                  <span className="font-normal text-muted-foreground">({isFr ? "optionnel" : isNl ? "optioneel" : "optional"})</span>
+                  <span className="font-normal text-muted-foreground">({isPt ? "opcional" : isFr ? "optionnel" : isNl ? "optioneel" : "optional"})</span>
                 </label>
                 <textarea
                   rows={4}
@@ -322,7 +343,7 @@ export default function Boeken() {
               </button>
 
               <p className="text-center font-sans text-xs text-muted-foreground">
-                <span className="text-destructive">*</span> {isFr ? "Champs obligatoires" : isNl ? "Verplichte velden" : "Required fields"}
+                <span className="text-destructive">*</span> {isPt ? "Campos obrigatórios" : isFr ? "Champs obligatoires" : isNl ? "Verplichte velden" : "Required fields"}
               </p>
             </form>
           </div>
