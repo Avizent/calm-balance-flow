@@ -186,7 +186,7 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {l.equipment.map((item, i) => (
-              <div key={item.name} className="bg-card rounded-xl p-6 border border-border hover-lift flex flex-col gap-3">
+              <div key={item.name} className="bg-card rounded-xl p-6 border border-border panel-hover flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                   <span className="w-8 h-8 rounded-full bg-sage-light text-primary flex items-center justify-center text-sm font-serif font-semibold shrink-0">{i + 1}</span>
                   <h4 className="font-serif text-base font-semibold text-foreground">{item.name}</h4>
