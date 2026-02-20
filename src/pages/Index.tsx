@@ -123,7 +123,7 @@ export default function Index() {
               {h.heroCta} <ArrowRight className="h-4 w-4" />
             </Link>
             <a href="#lessen" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg border border-primary-foreground/30 text-primary-foreground font-sans text-sm hover:bg-primary-foreground/10 transition-colors min-h-[48px]">
-              {lang === "en" ? "Classes" : "Lessen"}
+              {lang === "en" ? "Classes" : "Lessen"} <ArrowRight className="h-4 w-4" />
             </a>
           </div>
         </div>
