@@ -137,27 +137,22 @@ export function Navigation() {
 
             {/* Desktop nav with sliding underline */}
             <nav ref={navRef} className="hidden lg:flex items-center gap-8 relative">
-              {navItems.map((item, i) => (
-                item.type === "route" ? (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    ref={el => { itemRefs.current[i] = el; }}
-                    className={linkCls(isActive(item))}
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    ref={el => { itemRefs.current[i] = el; }}
-                    onClick={e => handleSectionClick(e, item.id)}
-                    className={linkCls(isActive(item))}
-                  >
-                    {item.label}
-                  </a>
-                )
+            {navItems.map((item, i) => (
+                <span key={item.type === "route" ? item.href : item.id} ref={el => { itemRefs.current[i] = el; }}>
+                  {item.type === "route" ? (
+                    <Link to={item.href} className={linkCls(isActive(item))}>
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={`#${item.id}`}
+                      onClick={e => handleSectionClick(e, item.id)}
+                      className={linkCls(isActive(item))}
+                    >
+                      {item.label}
+                    </a>
+                  )}
+                </span>
               ))}
 
               {/* Sliding underline indicator */}
