@@ -44,19 +44,20 @@ export default function Index() {
     const state = location.state as { scrollTo?: string } | null;
     if (!state?.scrollTo) return;
     const id = state.scrollTo;
-    navigate("/", { replace: true, state: {} });
-    // Retry until the element is mounted (images etc. may shift layout)
+    // Clear state so this doesn't re-fire; use window.history directly to avoid re-render race
+    window.history.replaceState(null, "", "/");
     let attempts = 0;
     const tryScroll = () => {
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else if (attempts++ < 10) {
-        setTimeout(tryScroll, 80);
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      } else if (attempts++ < 20) {
+        setTimeout(tryScroll, 100);
       }
     };
-    setTimeout(tryScroll, 80);
-  }, [location.state, navigate]);
+    // Wait for homepage to fully render before first attempt
+    setTimeout(tryScroll, 300);
+  }, [location.state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Contact form state */
   const [form, setForm]         = useState<FormData>({ naam: "", email: "", telefoon: "", bericht: "" });
