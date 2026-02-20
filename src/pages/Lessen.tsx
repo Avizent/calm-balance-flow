@@ -58,7 +58,7 @@ export default function Lessen() {
             {l.equipment.map((item, i) => (
               <div
                 key={item.name}
-                className="bg-card rounded-xl p-6 border border-border hover-lift flex flex-col gap-3"
+                className="bg-card rounded-xl p-6 border border-border hover-lift flex flex-col gap-3 transition-colors duration-300 hover:bg-sage-light hover:border-sage-medium"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-8 h-8 rounded-full bg-sage-light text-primary flex items-center justify-center text-sm font-serif font-semibold shrink-0">
