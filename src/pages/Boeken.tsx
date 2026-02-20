@@ -24,21 +24,21 @@ export default function Boeken() {
   const { lang } = useLanguage();
   const location = useLocation();
 
-  /* Scroll to form if navigated with #reservatie hash */
+  /* Scroll to form on mount if #reservatie hash is present */
   useEffect(() => {
-    if (location.hash === "#reservatie") {
-      let attempts = 0;
-      const tryScroll = () => {
-        const el = document.getElementById("reservatie");
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else if (attempts++ < 10) {
-          setTimeout(tryScroll, 80);
-        }
-      };
-      setTimeout(tryScroll, 100);
-    }
-  }, [location.hash]);
+    if (location.hash !== "#reservatie") return;
+    let attempts = 0;
+    const tryScroll = () => {
+      const el = document.getElementById("reservatie");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (attempts++ < 15) {
+        setTimeout(tryScroll, 100);
+      }
+    };
+    // Give the page time to render before first scroll attempt
+    setTimeout(tryScroll, 250);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isNl = lang === "nl";
 

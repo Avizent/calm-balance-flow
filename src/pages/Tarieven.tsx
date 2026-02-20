@@ -96,7 +96,7 @@ export default function Tarieven() {
 
                   <div className="mt-auto">
                     <Link
-                      to="/boeken"
+                      to="/boeken#reservatie"
                       className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-sans text-sm font-medium transition-all min-h-[48px] ${
                         data.popular
                           ? "bg-primary-foreground text-foreground hover:bg-primary-foreground/90"
@@ -150,7 +150,7 @@ export default function Tarieven() {
               <p className="font-sans text-sm text-muted-foreground">{tr.giftDesc}</p>
             </div>
             <Link
-              to="/boeken"
+              to="/boeken#reservatie"
               className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-terracotta text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
             >
               {tr.giftBtn} <ArrowRight className="h-4 w-4" />

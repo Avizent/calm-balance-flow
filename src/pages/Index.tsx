@@ -120,7 +120,7 @@ export default function Index() {
             {h.heroSub}
           </p>
           <div className="flex flex-wrap gap-4 animate-fade-in [animation-delay:0.3s]">
-            <Link to="/boeken" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[48px]">
+            <Link to="/boeken#reservatie" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[48px]">
               {h.heroCta} <ArrowRight className="h-4 w-4" />
             </Link>
             <a href="#lessen" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg border border-primary-foreground/30 text-primary-foreground font-sans text-sm hover:bg-primary-foreground/10 transition-colors min-h-[48px]">
@@ -172,7 +172,7 @@ export default function Index() {
                 <span className="text-4xl mb-4">{a.icon}</span>
                 <h3 className="font-serif text-xl font-semibold text-foreground mb-3">{a.title}</h3>
                 <p className="font-sans text-sm text-muted-foreground leading-relaxed flex-1">{a.desc}</p>
-                <Link to="/boeken" className="mt-5 inline-flex items-center gap-1.5 text-primary font-sans text-sm font-medium hover:gap-2.5 transition-all">
+                <Link to="/boeken#reservatie" className="mt-5 inline-flex items-center gap-1.5 text-primary font-sans text-sm font-medium hover:gap-2.5 transition-all">
                   {l.bookNow} <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
@@ -315,7 +315,7 @@ export default function Index() {
                 </div>
                 <div className="mt-auto">
                   <Link
-                    to="/boeken"
+                    to="/boeken#reservatie"
                     className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-sans text-sm font-medium min-h-[48px] transition-all ${
                       data.popular
                         ? "bg-primary-foreground text-foreground hover:bg-primary-foreground/90"
@@ -355,7 +355,7 @@ export default function Index() {
               <h4 className="font-serif text-xl font-semibold text-foreground mb-2">{tr.giftTitle}</h4>
               <p className="font-sans text-sm text-muted-foreground">{tr.giftDesc}</p>
             </div>
-            <Link to="/boeken" className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-terracotta text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]">
+            <Link to="/boeken#reservatie" className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-terracotta text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]">
               {tr.giftBtn} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
