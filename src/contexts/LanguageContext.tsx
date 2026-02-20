@@ -1,6 +1,15 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type Language = "nl" | "en";
+// ─── Single point of control ───────────────────────────────────────────────
+// Set to false to completely remove French from the site (type, toggle, strings).
+export const ENABLE_FRENCH = true;
+// ───────────────────────────────────────────────────────────────────────────
+
+export type Language = "nl" | "en" | "fr";
+
+export const SUPPORTED_LANGUAGES: Language[] = ENABLE_FRENCH
+  ? ["nl", "en", "fr"]
+  : ["nl", "en"];
 
 export interface Translations {
   nav: {
@@ -641,7 +650,265 @@ const en: Translations = {
   },
 };
 
-export const translations: Record<Language, Translations> = { nl, en };
+// ─── French translations ────────────────────────────────────────────────────
+// Professional, warm tone. 'vous' form throughout. Adapted for Belgian/Dutch
+// professional and sports audience. Remove by setting ENABLE_FRENCH = false.
+const fr: Translations = {
+  nav: {
+    home: "Accueil",
+    over: "À propos de Cintia",
+    lessen: "Cours",
+    prive: "Séances Privées",
+    tarieven: "Tarifs",
+    contact: "Contact",
+    bookNow: "Réserver",
+    menu: "Ouvrir le menu",
+    menuClose: "Fermer le menu",
+  },
+  footer: {
+    tagline:
+      "Pilates responsable — un mouvement qui sert, sans contraindre. Guidé par Cintia, kinésithérapeute licenciée.",
+    navigation: "Navigation",
+    contact: "Contact",
+    rights: "Tous droits réservés.",
+  },
+  home: {
+    heroTag: "Pilates guidé par une kiné · Schilde, Belgique",
+    heroTitle: "Le Pilates comme",
+    heroTitleEm: "art de vivre",
+    heroSub:
+      "N'attendez pas un cours ordinaire — attendez-vous à une attention sincère, un respect du corps et un mouvement qui sert, sans jamais contraindre.",
+    heroCta: "Réserver une séance",
+    heroSecondary: "À propos de Cintia",
+    aboutTag: "À propos de Cintia",
+    aboutTitle: "Kinésithérapeute licenciée & professeure de Pilates",
+    aboutP1:
+      "Je suis kinésithérapeute licenciée et professeure de Pilates, avec plus de 20 ans d'expérience au Brésil, aux États-Unis et en Belgique.",
+    aboutP2:
+      "Le Pilates a toujours été ma grande passion, avec une attention particulière portée au mouvement préventif et conscient. J'ai récemment fait le choix de me consacrer pleinement à l'enseignement du Pilates.",
+    aboutLink: "En savoir plus",
+    audienceTag: "Le Pilates pour tous",
+    audienceTitle: "Un Pilates responsable, adapté à chacun",
+    benefitsTag: "Les bienfaits de la méthode Pilates",
+    ctaTitle: "Prêt(e) à commencer ?",
+    ctaSub: "Contactez-nous et planifiez votre première séance avec Cintia.",
+    ctaBtn: "Réserver une séance",
+    audiences: [
+      {
+        title: "Gestion de la douleur & des plaintes",
+        desc: "Plus de force, de mobilité et une meilleure qualité de mouvement — sans douleurs dorsales ni articulaires.",
+      },
+      {
+        title: "Rééducation",
+        desc: "Un Pilates guidé par une kinésithérapeute, intégré à votre parcours de récupération après une blessure ou une opération.",
+      },
+      {
+        title: "Débutants & Avancés",
+        desc: "Des débutants souhaitant mieux connaître leur corps aux sportifs cherchant à optimiser leurs performances.",
+      },
+      {
+        title: "Pré- & Post-Natal",
+        desc: "Des exercices sûrs et efficaces pour vous aider à bouger, vous préparer et récupérer.",
+      },
+    ],
+    benefits: [
+      "Posture",
+      "Force & Gainage",
+      "Souplesse",
+      "Mobilité",
+      "Coordination",
+      "Réduction du stress",
+      "Pleine conscience",
+      "Respiration",
+    ],
+  },
+  over: {
+    tag: "À propos de Cintia",
+    heroTitle: "Un mouvement ancré dans",
+    heroTitleEm: "la connaissance & la passion",
+    p1: "Je suis kinésithérapeute licenciée et professeure de Pilates, avec plus de 20 ans d'expérience au Brésil, aux États-Unis et en Belgique.",
+    p2: "Le Pilates a toujours été ma grande passion, avec une attention particulière portée au mouvement préventif et conscient.",
+    p3: "J'ai récemment choisi de me consacrer pleinement à l'enseignement du Pilates, en m'appuyant sur mes connaissances approfondies en anatomie et biomécanique pour proposer des séances sûres, réfléchies et efficaces.",
+    heroCta: "Planifier une séance",
+    expertiseTitle: "Expertise & Parcours",
+    quoteTag: "Philosophie",
+    quote: '"Pilates responsable — un mouvement qui sert, sans contraindre."',
+    quoteAuthor: "— Cintia, Spessirits Pilates",
+    ctaTitle: "Prêt(e) pour votre première séance ?",
+    ctaSub: "Contactez Cintia et découvrez comment le Pilates peut vous aider.",
+    ctaBtn: "Contacter Cintia",
+    ctaSecondary: "Voir les tarifs",
+    credentials: [
+      {
+        icon: "🌍",
+        title: "Expérience internationale",
+        desc: "Plus de 20 ans d'expérience pratique au Brésil, aux États-Unis et en Belgique — trois approches différentes, une vision passionnée.",
+      },
+      {
+        icon: "🎓",
+        title: "Kinésithérapeute licenciée",
+        desc: "Une base scientifique solide en anatomie et biomécanique. Chaque séance est fondée sur des connaissances médicales approfondies.",
+      },
+      {
+        icon: "🌿",
+        title: "Professeure de Pilates depuis 20+ ans",
+        desc: "Professeure de Pilates à temps plein, animée par la passion du mouvement préventif et conscient. Des séances sûres, réfléchies et efficaces.",
+      },
+    ],
+  },
+  lessen: {
+    tag: "Cours",
+    heroTitle: "Un Pilates",
+    heroTitleEm: "personnalisé",
+    heroSub:
+      "N'attendez pas un cours ordinaire — attendez-vous à une attention sincère et un respect du corps.",
+    audienceTitle: "Le Pilates pour tous",
+    audienceSub:
+      'C\'est le "Pilates responsable" — qui prévient les blessures à court et long terme.',
+    equipmentTag: "Équipement du Studio",
+    equipmentTitle: "Pilates sur mesure — Individuel et Duo",
+    equipmentSub:
+      "Pratiquer le Pilates sous toutes ses formes crée une façon de bouger plus riche et plus intelligente. Chaque appareil apporte sa propre dimension : soutien là où c'est nécessaire, défi là où c'est possible, et précision jusqu'au moindre détail.",
+    ctaTitle: "Vous souhaitez en savoir plus ?",
+    ctaSub: "Contactez Cintia pour une séance personnalisée.",
+    ctaBtn: "Prendre contact",
+    bookNow: "Réserver",
+    audiences: [
+      {
+        icon: "🌿",
+        title: "Débutants",
+        desc: "Pour ceux qui souhaitent mieux connaître leur corps. Nous progressons à votre rythme, en veillant à une exécution correcte.",
+      },
+      {
+        icon: "🏃",
+        title: "Sportifs",
+        desc: "Pour les sportifs souhaitant optimiser leurs performances. Le Pilates renforce le gainage, améliore la mobilité et aide à prévenir les blessures.",
+      },
+      {
+        icon: "🌸",
+        title: "Seniors",
+        desc: "Pour les seniors souhaitant rester mobiles, forts et autonomes. Un mouvement adapté qui respecte et renforce votre corps.",
+      },
+      {
+        icon: "👶",
+        title: "Pré- & Post-Natal",
+        desc: "Des exercices sûrs et efficaces pour bouger, vous préparer et récupérer pendant et après la grossesse.",
+      },
+    ],
+    equipment: [
+      { name: "Allegro Nextgen Reformer™ with Tower and Mat", role: "Appareil central pour la musculation par résistance et le gainage" },
+      { name: "Ladder Barrel", role: "Extension du dos, souplesse et mouvements latéraux" },
+      { name: "Chair", role: "Équilibre, stabilité et force fonctionnelle" },
+      { name: "Spine Corrector", role: "Correction vertébrale, mobilité thoracique et posture" },
+      { name: "Arc", role: "Soutien du dos et étirement vertébral en profondeur" },
+      { name: "Oov", role: "Activation profonde du gainage et proprioception" },
+      { name: "Konnections® Band", role: "Résistance fonctionnelle et liberté de mouvement" },
+      { name: "Spinefitter® by SISSEL®", role: "Mobilité vertébrale et relaxation" },
+      { name: "Magic Roller®", role: "Relâchement myofascial et régénération musculaire" },
+      { name: "Inflatable Ball", role: "Stabilité, équilibre et soutien en douceur" },
+    ],
+  },
+  prive: {
+    tag: "Séances Privées",
+    heroTitle: "Un Pilates adapté —",
+    heroTitleEm: "Individuel et Duo",
+    heroSub:
+      "Pratiquer le Pilates sous toutes ses formes crée une façon de bouger plus riche et plus intelligente.",
+    approachTag: "Notre approche",
+    approachTitle: "Chaque séance est unique",
+    approachP1:
+      'Chaque appareil apporte sa propre dimension : soutien là où c\'est nécessaire, défi là où c\'est possible, et précision jusqu\'au moindre détail. C\'est le "Pilates responsable", qui prévient les blessures à court et long terme.',
+    approachP2:
+      "N'attendez pas un cours ordinaire — attendez-vous à une attention sincère et un respect du corps. En tant que kinésithérapeute licenciée, Cintia met ses connaissances approfondies en anatomie et biomécanique au service de séances sûres, réfléchies et efficaces.",
+    formatsTitle: "Formats de séance",
+    individualTitle: "Individuel",
+    individualSub: "En tête-à-tête avec Cintia",
+    duoTitle: "Duo",
+    duoSub: "Entraînez-vous avec un(e) partenaire",
+    viewPricing: "Voir les tarifs",
+    ctaTitle: "Planifiez votre séance privée",
+    ctaSub: "Contactez Cintia et commencez votre parcours Pilates personnalisé.",
+    ctaBtn: "Prendre contact",
+    individualBenefits: [
+      "Séance entièrement adaptée à votre corps et à vos objectifs",
+      "Accompagnement approfondi par une kinésithérapeute licenciée",
+      "Prise en charge des plaintes spécifiques, blessures ou rééducation",
+      "Planning flexible à votre rythme",
+      "Accès à tout l'équipement du studio",
+    ],
+    duoBenefits: [
+      "Entraînez-vous avec un(e) partenaire ou ami(e)",
+      "Économies par rapport à deux séances individuelles",
+      "Un mouvement motivant et convivial",
+      "Chaque duo bénéficie d'un programme adapté",
+      "Accès à tout l'équipement du studio",
+    ],
+  },
+  tarieven: {
+    tag: "Tarifs 2026",
+    heroTitle: "Tarifs transparents",
+    heroSub:
+      "Choisissez la formule qui vous convient. Toutes les séances sont individuellement adaptées à votre corps et à vos objectifs.",
+    pricingNote:
+      "(*) Prix hors TVA, non valables pour la vente aux particuliers.",
+    popular: "Le plus choisi",
+    individueel: "Individuel",
+    duo: "Duo",
+    exclLabel: "hors TVA",
+    bookNow: "Réserver",
+    policiesTitle: "Informations pratiques",
+    giftTitle: "Bons cadeaux disponibles",
+    giftDesc:
+      "Offrez le cadeau du mouvement conscient. Des bons cadeaux pour des séances de Pilates chez Spessirits sont disponibles. Contactez-nous pour plus d'informations.",
+    giftBtn: "Plus d'infos",
+    tiers: [{ label: "1 Séance" }, { label: "5 Séances" }, { label: "10 Séances" }],
+    policies: [
+      { title: "1 heure par séance", desc: "Chaque séance dure une heure." },
+      { title: "Annulation 24h", desc: "Une séance peut être annulée jusqu'à 24 heures à l'avance." },
+      { title: "Paiement à l'avance", desc: "Les séances et forfaits doivent être réglés à l'avance." },
+      { title: "Valable 3 mois", desc: "Les séances sont personnelles et valables trois mois à compter de la date de facturation." },
+    ],
+  },
+  contact: {
+    tag: "Contact",
+    heroTitle: "Contactez-nous",
+    heroSub:
+      "Pour les réservations, les questions sur les cours ou les tarifs — Cintia est à votre disposition.",
+    infoTitle: "Coordonnées",
+    formTitle: "Envoyez un message",
+    fieldNaam: "Nom",
+    fieldEmail: "E-mail",
+    fieldTelefoon: "Téléphone",
+    fieldTelefoonOpt: "(optionnel)",
+    fieldBericht: "Message",
+    fieldNaamPlaceholder: "Votre nom",
+    fieldEmailPlaceholder: "votre@email.com",
+    fieldTelefoonPlaceholder: "+32 ...",
+    fieldBerichtPlaceholder: "Posez votre question ou dites-nous ce que vous recherchez...",
+    submit: "Envoyer le message",
+    submitting: "Envoi en cours...",
+    toastTitle: "Message envoyé ! 🌿",
+    toastDesc: "Cintia vous contactera dans les plus brefs délais.",
+    mapOpen: "Ouvrir dans Google Maps →",
+    errNaam: "Le nom est obligatoire.",
+    errEmail: "L'adresse e-mail est obligatoire.",
+    errEmailInvalid: "Une adresse e-mail valide est requise.",
+    errBericht: "Le message est obligatoire.",
+    contactItems: [
+      { label: "Téléphone" },
+      { label: "WhatsApp" },
+      { label: "E-mail" },
+      { label: "Adresse" },
+    ],
+  },
+};
+// ───────────────────────────────────────────────────────────────────────────
+
+const baseTranslations: Record<"nl" | "en", Translations> = { nl, en };
+
+export const translations: Record<Language, Translations> = ENABLE_FRENCH
+  ? { ...baseTranslations, fr }
+  : (baseTranslations as Record<Language, Translations>);
 
 interface LanguageContextValue {
   lang: Language;
