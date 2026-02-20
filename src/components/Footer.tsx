@@ -2,18 +2,16 @@ import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const navHrefs = ["/", "/over", "/lessen", "/prive", "/tarieven", "/contact"];
-
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
-  const navLabels = [
-    t.nav.home,
-    t.nav.over,
-    t.nav.lessen,
-    t.nav.prive,
-    t.nav.tarieven,
-    t.nav.contact,
+  /* Matches top menu exactly: Home, Over Cintia, Lessen, Sessies, Contact */
+  const navItems = [
+    { label: t.nav.home,    href: "/",        external: false },
+    { label: t.nav.over,    href: "/over",     external: false },
+    { label: t.nav.lessen,  href: "/#lessen",  external: false },
+    { label: lang === "nl" ? "Sessies" : "Sessions", href: "/#prive", external: false },
+    { label: t.nav.contact, href: "/#contact", external: false },
   ];
 
   return (
@@ -37,13 +35,13 @@ export function Footer() {
               {t.footer.navigation}
             </p>
             <nav className="flex flex-col gap-2">
-              {navLabels.map((label, i) => (
+              {navItems.map((item) => (
                 <Link
-                  key={navHrefs[i]}
-                  to={navHrefs[i]}
+                  key={item.href}
+                  to={item.href}
                   className="font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
-                  {label}
+                  {item.label}
                 </Link>
               ))}
             </nav>
