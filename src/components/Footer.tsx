@@ -19,7 +19,17 @@ export function Footer() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       navigate("/");
+      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
     }
+  };
+
+  const handleRouteClick = (e: React.MouseEvent, href: string) => {
+    const onSamePage = location.pathname === href;
+    if (onSamePage) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    // Otherwise let the Link navigate normally
   };
 
   const handleSectionClick = (e: React.MouseEvent, sectionId: string) => {
@@ -73,7 +83,12 @@ export function Footer() {
                 }
                 if (item.type === "route") {
                   return (
-                    <Link key={item.href} to={item.href!} className={cls}>
+                    <Link
+                      key={item.href}
+                      to={item.href!}
+                      onClick={(e) => handleRouteClick(e, item.href!)}
+                      className={cls}
+                    >
                       {item.label}
                     </Link>
                   );
