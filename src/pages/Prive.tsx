@@ -111,7 +111,7 @@ export default function Prive() {
           <h2 className="font-serif text-3xl font-semibold text-foreground mb-4">{p.ctaTitle}</h2>
           <p className="font-sans text-muted-foreground mb-8 max-w-sm mx-auto">{p.ctaSub}</p>
           <Link
-            to="/contact"
+            to="/boeken"
             className="inline-flex items-center gap-2 px-7 py-4 rounded-lg bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[48px]"
           >
             {p.ctaBtn} <ArrowRight className="h-4 w-4" />
