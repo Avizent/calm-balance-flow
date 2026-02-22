@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SEO, SITE_URL } from "@/components/SEO";
 
 const sessionImage = "https://static.wixstatic.com/media/f76b6d_cfe6e12cc64048e4b43a09851d0906d0~mv2.jpg/v1/fill/w_501,h_640,al_c,q_80,enc_avif,quality_auto/f76b6d_cfe6e12cc64048e4b43a09851d0906d0~mv2.jpg";
 
@@ -10,6 +11,15 @@ export default function Prive() {
 
   return (
     <main className="pt-24">
+      <SEO
+        title="Privé Sessies — Individueel en Duo Pilates"
+        description="Boek een privé Pilates sessie bij Spessirits: individueel of als duo. Op maat gemaakt door kinesitherapiste Cintia in Schilde."
+        path="/prive"
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Privé Sessies", url: `${SITE_URL}/prive` },
+        ]}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 z-0">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-
+import { SEO, SITE_URL } from "@/components/SEO";
 const cintiaImage = "https://static.wixstatic.com/media/f76b6d_739a2569d5054e4fa82dfe477b6a5492~mv2.jpeg/v1/fill/w_1013,h_1033,al_t,q_85,enc_avif,quality_auto/f76b6d_739a2569d5054e4fa82dfe477b6a5492~mv2.jpeg";
 
 export default function Over() {
@@ -10,6 +10,15 @@ export default function Over() {
 
   return (
     <main className="pt-24">
+      <SEO
+        title="Over Cintia — Kinesitherapiste & Pilatesdocent"
+        description="Leer Cintia kennen: kinesitherapiste met 20+ jaar ervaring in Brazilië, de VS en België. Ontdek haar filosofie van verantwoord Pilates."
+        path="/over"
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Over Cintia", url: `${SITE_URL}/over` },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-muted">
         <div className="container-wide section-padding">

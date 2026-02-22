@@ -1,0 +1,163 @@
+import { Helmet } from "react-helmet-async";
+
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface SEOProps {
+  title: string;
+  description: string;
+  path: string;
+  breadcrumbs?: BreadcrumbItem[];
+  type?: "website" | "article";
+  noindex?: boolean;
+}
+
+const SITE_URL = "https://calm-balance-flow.lovable.app";
+const SITE_NAME = "Spessirits Pilates";
+const OG_IMAGE = "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6d052ecc-6468-4b06-9d13-2bf149eb36ab/id-preview-04cacdbe--a68cefc6-193f-4814-bee3-dc783f86856d.lovable.app-1771546669067.png";
+
+/* ── LocalBusiness + Organization (homepage & contact only) ──────── */
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "HealthAndBeautyBusiness"],
+  "@id": `${SITE_URL}/#business`,
+  name: SITE_NAME,
+  alternateName: "Spessirits",
+  description:
+    "Physio-led Pilates studio in Schilde, Belgium. Individual and duo sessions guided by licensed physiotherapist Cintia with over 20 years of experience.",
+  url: SITE_URL,
+  telephone: "+32472240581",
+  email: "spessiritskine@icloud.com",
+  image: OG_IMAGE,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Cirkellaan 12",
+    addressLocality: "Schilde",
+    postalCode: "2970",
+    addressCountry: "BE",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 51.2456,
+    longitude: 4.5147,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "19:00",
+  },
+  priceRange: "€€",
+  sameAs: ["https://wa.me/32472913917"],
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#org`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: OG_IMAGE,
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+32472240581",
+    contactType: "customer service",
+    availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+  },
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  inLanguage: ["nl", "en", "fr", "pt"],
+};
+
+function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+export function SEO({
+  title,
+  description,
+  path,
+  breadcrumbs,
+  type = "website",
+  noindex = false,
+}: SEOProps) {
+  const canonicalUrl = `${SITE_URL}${path}`;
+  const fullTitle = path === "/" ? title : `${title} — ${SITE_NAME}`;
+  const isHomepage = path === "/";
+  const isContact = path === "/contact";
+
+  return (
+    <Helmet>
+      <title>{fullTitle}</title>
+      <meta name="description" content={description} />
+      <link rel="canonical" href={canonicalUrl} />
+
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+      {/* Open Graph */}
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:type" content={type} />
+      <meta property="og:image" content={OG_IMAGE} />
+      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:locale" content="nl_BE" />
+      <meta property="og:locale:alternate" content="en_GB" />
+      <meta property="og:locale:alternate" content="fr_BE" />
+      <meta property="og:locale:alternate" content="pt_BR" />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={OG_IMAGE} />
+
+      {/* JSON-LD: WebSite (homepage only) */}
+      {isHomepage && (
+        <script type="application/ld+json">
+          {JSON.stringify(websiteSchema)}
+        </script>
+      )}
+
+      {/* JSON-LD: Organization (homepage only) */}
+      {isHomepage && (
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+      )}
+
+      {/* JSON-LD: LocalBusiness (homepage + contact) */}
+      {(isHomepage || isContact) && (
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+      )}
+
+      {/* JSON-LD: BreadcrumbList */}
+      {breadcrumbs && breadcrumbs.length > 0 && (
+        <script type="application/ld+json">
+          {JSON.stringify(buildBreadcrumbSchema(breadcrumbs))}
+        </script>
+      )}
+    </Helmet>
+  );
+}
+
+export { SITE_URL };
