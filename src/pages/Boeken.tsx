@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Send, CalendarClock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
+import { SEO, SITE_URL } from "@/components/SEO";
 
 interface BookingForm {
   naam: string;
@@ -200,6 +201,15 @@ export default function Boeken() {
 
   return (
     <main className="pt-24">
+      <SEO
+        title="Boek een Sessie — Spessirits Pilates"
+        description="Plan je Pilates sessie bij Spessirits in Schilde. Vul het reservatieformulier in en Cintia neemt snel contact met je op."
+        path="/boeken"
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Boeken", url: `${SITE_URL}/boeken` },
+        ]}
+      />
       {/* Header */}
       <section className="bg-muted">
         <div className="container-wide section-padding py-20 text-center">

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SEO, SITE_URL } from "@/components/SEO";
 
 export default function Lessen() {
   const { t } = useLanguage();
@@ -8,6 +9,15 @@ export default function Lessen() {
 
   return (
     <main className="pt-24">
+      <SEO
+        title="Pilates Lessen — Individueel Afgestemd"
+        description="Ontdek het aanbod van Spessirits: Pilates voor beginners, sporters, ouderen en pre/postnataal. Onder begeleiding van kinesitherapiste Cintia."
+        path="/lessen"
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Lessen", url: `${SITE_URL}/lessen` },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-muted">
         <div className="container-wide section-padding py-20 text-center">

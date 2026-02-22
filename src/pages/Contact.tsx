@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SEO, SITE_URL } from "@/components/SEO";
 
 interface FormData {
   naam: string;
@@ -77,6 +78,15 @@ export default function Contact() {
 
   return (
     <main className="pt-24">
+      <SEO
+        title="Contact — Spessirits Pilates Schilde"
+        description="Neem contact op met Spessirits Pilates in Schilde. Bel, WhatsApp of stuur een bericht voor vragen of reservaties."
+        path="/contact"
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Contact", url: `${SITE_URL}/contact` },
+        ]}
+      />
       {/* Header */}
       <section className="bg-muted">
         <div className="container-wide section-padding py-20 text-center">

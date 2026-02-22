@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Clock, Ban, CreditCard, Calendar, Gift } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SEO, SITE_URL } from "@/components/SEO";
 
 const pricingData = [
   {
@@ -28,6 +29,15 @@ export default function Tarieven() {
 
   return (
     <main className="pt-24">
+      <SEO
+        title="Tarieven — Pilates Prijzen Schilde 2026"
+        description="Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies."
+        path="/tarieven"
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Tarieven", url: `${SITE_URL}/tarieven` },
+        ]}
+      />
       {/* Header */}
       <section className="bg-muted">
         <div className="container-wide section-padding py-20 text-center">

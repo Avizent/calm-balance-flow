@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
+import { SEO } from "@/components/SEO";
 
 /* ─── Images ─────────────────────────────────────────────────── */
 const heroImage = "https://static.wixstatic.com/media/f76b6d_739a2569d5054e4fa82dfe477b6a5492~mv2.jpeg/v1/fill/w_1013,h_1033,al_t,q_85,enc_avif,quality_auto/f76b6d_739a2569d5054e4fa82dfe477b6a5492~mv2.jpeg";
@@ -104,7 +105,11 @@ export default function Index() {
 
   return (
     <main>
-
+      <SEO
+        title="Spessirits Pilates — Physio-led Pilates in Schilde"
+        description="Verantwoord Pilates in Schilde, België. Individuele en duo sessies onder begeleiding van kinesitherapiste Cintia. Boek nu."
+        path="/"
+      />
       {/* ══════════ HERO ══════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
