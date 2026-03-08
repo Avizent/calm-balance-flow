@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
+import { ScrollToTop } from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Over from "./pages/Over";
 import Boeken from "./pages/Boeken";
@@ -14,6 +15,7 @@ import Lessen from "./pages/Lessen";
 import Prive from "./pages/Prive";
 import Tarieven from "./pages/Tarieven";
 import Contact from "./pages/Contact";
+import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <LanguageProvider>
+            <ScrollToTop />
             <Navigation />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -35,6 +38,7 @@ const App = () => (
               <Route path="/prive" element={<Prive />} />
               <Route path="/tarieven" element={<Tarieven />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/legal" element={<Legal />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

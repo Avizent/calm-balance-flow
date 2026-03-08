@@ -2,6 +2,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+const legalLabels = {
+  nl: { privacy: "Privacybeleid", legal: "Wettelijke Vermeldingen" },
+  en: { privacy: "Privacy Policy", legal: "Legal Notice" },
+  fr: { privacy: "Confidentialité", legal: "Mentions légales" },
+  pt: { privacy: "Privacidade", legal: "Aviso Legal" },
+};
+
 function scrollToSection(id: string) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -12,6 +19,7 @@ export function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
+  const ll = legalLabels[lang] || legalLabels.nl;
 
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -29,7 +37,6 @@ export function Footer() {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // Otherwise let the Link navigate normally
   };
 
   const handleSectionClick = (e: React.MouseEvent, sectionId: string) => {
@@ -37,7 +44,6 @@ export function Footer() {
     if (isHome) {
       scrollToSection(sectionId);
     } else {
-      // Navigate to homepage then scroll — same pattern as top nav
       navigate("/", { state: { scrollTo: sectionId } });
     }
   };
@@ -145,9 +151,14 @@ export function Footer() {
           <p className="font-sans text-xs text-primary-foreground/40">
             © {new Date().getFullYear()} Spessirits Pilates. {t.footer.rights}
           </p>
-          <p className="font-sans text-xs text-primary-foreground/40">
-            Cirkellaan 12 · 2970 Schilde · België
-          </p>
+          <div className="flex items-center gap-4">
+            <Link to="/legal" className="font-sans text-xs text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
+              {ll.privacy}
+            </Link>
+            <Link to="/legal?tab=legal" className="font-sans text-xs text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
+              {ll.legal}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
