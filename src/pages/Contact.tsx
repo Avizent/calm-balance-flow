@@ -2,19 +2,10 @@ import { useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 
-interface FormData {
-  naam: string;
-  email: string;
-  telefoon: string;
-  bericht: string;
-}
-
-interface FormErrors {
-  naam?: string;
-  email?: string;
-  bericht?: string;
-}
+interface FormData { naam: string; email: string; telefoon: string; bericht: string }
+interface FormErrors { naam?: string; email?: string; bericht?: string; consent?: string }
 
 const contactHrefs = [
   "tel:+32472240581",
@@ -22,22 +13,31 @@ const contactHrefs = [
   "mailto:spessiritskine@icloud.com",
   "https://maps.google.com/?q=Cirkellaan+12,+2970+Schilde",
 ];
-
-const contactValues = [
-  "+32 472 240 581",
-  "+32 472 913 917",
-  "spessiritskine@icloud.com",
-  "Cirkellaan 12, 2970 Schilde",
-];
-
+const contactValues = ["+32 472 240 581", "+32 472 913 917", "spessiritskine@icloud.com", "Cirkellaan 12, 2970 Schilde"];
 const contactIcons = [Phone, MessageCircle, Mail, MapPin];
 
+const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
+  nl: { title: "Contact — Spessirits Pilates Schilde", desc: "Neem contact op met Spessirits Pilates in Schilde. Bel, WhatsApp of stuur een bericht voor vragen of reservaties.", breadcrumb: "Contact" },
+  en: { title: "Contact — Spessirits Pilates Schilde", desc: "Get in touch with Spessirits Pilates in Schilde. Call, WhatsApp or send a message for questions or bookings.", breadcrumb: "Contact" },
+  fr: { title: "Contact — Spessirits Pilates Schilde", desc: "Contactez Spessirits Pilates à Schilde. Appelez, envoyez un WhatsApp ou un message pour vos questions ou réservations.", breadcrumb: "Contact" },
+  pt: { title: "Contato — Spessirits Pilates Schilde", desc: "Entre em contato com a Spessirits Pilates em Schilde. Ligue, envie um WhatsApp ou mensagem para dúvidas ou agendamentos.", breadcrumb: "Contato" },
+};
+
+const consentErrors: Record<string, string> = {
+  nl: "Je moet akkoord gaan met het privacybeleid.",
+  en: "You must agree to the privacy policy.",
+  fr: "Vous devez accepter la politique de confidentialité.",
+  pt: "Você deve concordar com a política de privacidade.",
+};
+
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const c = t.contact;
+  const seo = seoMeta[lang] || seoMeta.nl;
 
   const [form, setForm] = useState<FormData>({ naam: "", email: "", telefoon: "", bericht: "" });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [consent, setConsent] = useState(false);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -48,6 +48,7 @@ export default function Contact() {
       newErrors.email = c.errEmailInvalid;
     }
     if (!form.bericht.trim()) newErrors.bericht = c.errBericht;
+    if (!consent) newErrors.consent = consentErrors[lang] || consentErrors.nl;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -61,6 +62,7 @@ export default function Contact() {
     );
     window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
     setForm({ naam: "", email: "", telefoon: "", bericht: "" });
+    setConsent(false);
     setErrors({});
   };
 
@@ -79,12 +81,13 @@ export default function Contact() {
   return (
     <main className="pt-24">
       <SEO
-        title="Contact — Spessirits Pilates Schilde"
-        description="Neem contact op met Spessirits Pilates in Schilde. Bel, WhatsApp of stuur een bericht voor vragen of reservaties."
+        title={seo.title}
+        description={seo.desc}
         path="/contact"
+        lang={lang}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
-          { name: "Contact", url: `${SITE_URL}/contact` },
+          { name: seo.breadcrumb, url: `${SITE_URL}/contact` },
         ]}
       />
       {/* Header */}
@@ -103,46 +106,29 @@ export default function Contact() {
             {/* Contact Info */}
             <div>
               <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">{c.infoTitle}</h2>
-
               <div className="flex flex-col gap-5 mb-10">
                 {c.contactItems.map((item, i) => {
                   const Icon = contactIcons[i];
                   return (
-                    <a
-                      key={item.label}
-                      href={contactHrefs[i]}
-                      target={i >= 1 ? "_blank" : undefined}
-                      rel="noopener noreferrer"
-                      className="flex items-start gap-4 group"
-                    >
+                    <a key={item.label} href={contactHrefs[i]} target={i >= 1 ? "_blank" : undefined} rel="noopener noreferrer" className="flex items-start gap-4 group">
                       <div className="w-11 h-11 rounded-xl bg-sage-light flex items-center justify-center shrink-0 group-hover:bg-sage transition-colors">
                         <Icon className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
                       </div>
                       <div>
-                        <p className="font-sans text-xs uppercase tracking-wider text-muted-foreground mb-0.5">
-                          {item.label}
-                        </p>
-                        <p className="font-sans text-base text-foreground group-hover:text-primary transition-colors">
-                          {contactValues[i]}
-                        </p>
+                        <p className="font-sans text-xs uppercase tracking-wider text-muted-foreground mb-0.5">{item.label}</p>
+                        <p className="font-sans text-base text-foreground group-hover:text-primary transition-colors">{contactValues[i]}</p>
                       </div>
                     </a>
                   );
                 })}
               </div>
 
-              {/* Map Placeholder */}
               <div className="rounded-2xl overflow-hidden border border-border bg-muted h-52 flex flex-col items-center justify-center gap-3">
                 <MapPin className="h-8 w-8 text-primary" />
                 <div className="text-center">
                   <p className="font-serif text-lg font-semibold text-foreground">Spessirits Pilates</p>
                   <p className="font-sans text-sm text-muted-foreground">Cirkellaan 12, 2970 Schilde</p>
-                  <a
-                    href="https://maps.google.com/?q=Cirkellaan+12,+2970+Schilde"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 mt-2 text-primary font-sans text-sm font-medium hover:underline"
-                  >
+                  <a href="https://maps.google.com/?q=Cirkellaan+12,+2970+Schilde" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-2 text-primary font-sans text-sm font-medium hover:underline">
                     {c.mapOpen}
                   </a>
                 </div>
@@ -152,72 +138,36 @@ export default function Contact() {
             {/* Contact Form */}
             <div>
               <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">{c.formTitle}</h2>
-
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-                {/* Naam */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {c.fieldNaam} <span className="text-destructive">*</span>
                   </label>
-                  <input
-                    type="text"
-                    value={form.naam}
-                    onChange={(e) => handleChange("naam", e.target.value)}
-                    placeholder={c.fieldNaamPlaceholder}
-                    className={inputClass(errors.naam)}
-                  />
+                  <input type="text" value={form.naam} onChange={(e) => handleChange("naam", e.target.value)} placeholder={c.fieldNaamPlaceholder} className={inputClass(errors.naam)} />
                   {errors.naam && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.naam}</p>}
                 </div>
-
-                {/* Email */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {c.fieldEmail} <span className="text-destructive">*</span>
                   </label>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder={c.fieldEmailPlaceholder}
-                    className={inputClass(errors.email)}
-                  />
+                  <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)} placeholder={c.fieldEmailPlaceholder} className={inputClass(errors.email)} />
                   {errors.email && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>}
                 </div>
-
-                {/* Telefoon */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
-                    {c.fieldTelefoon}{" "}
-                    <span className="font-normal text-muted-foreground">{c.fieldTelefoonOpt}</span>
+                    {c.fieldTelefoon} <span className="font-normal text-muted-foreground">{c.fieldTelefoonOpt}</span>
                   </label>
-                  <input
-                    type="tel"
-                    value={form.telefoon}
-                    onChange={(e) => handleChange("telefoon", e.target.value)}
-                    placeholder={c.fieldTelefoonPlaceholder}
-                    className={inputClass()}
-                  />
+                  <input type="tel" value={form.telefoon} onChange={(e) => handleChange("telefoon", e.target.value)} placeholder={c.fieldTelefoonPlaceholder} className={inputClass()} />
                 </div>
-
-                {/* Bericht */}
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {c.fieldBericht} <span className="text-destructive">*</span>
                   </label>
-                  <textarea
-                    rows={5}
-                    value={form.bericht}
-                    onChange={(e) => handleChange("bericht", e.target.value)}
-                    placeholder={c.fieldBerichtPlaceholder}
-                    className={inputClass(errors.bericht)}
-                  />
+                  <textarea rows={5} value={form.bericht} onChange={(e) => handleChange("bericht", e.target.value)} placeholder={c.fieldBerichtPlaceholder} className={inputClass(errors.bericht)} />
                   {errors.bericht && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.bericht}</p>}
                 </div>
-
-                <button
-                  type="submit"
-                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2"
-                >
+                <ConsentCheckbox checked={consent} onCheckedChange={(v) => { setConsent(v); if (errors.consent) setErrors(p => ({ ...p, consent: undefined })); }} error={errors.consent} />
+                <button type="submit" className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2">
                   <Send className="h-4 w-4" />
                   {c.submit}
                 </button>

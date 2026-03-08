@@ -3,6 +3,7 @@ import { Send, CalendarClock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { SEO, SITE_URL } from "@/components/SEO";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 
 interface BookingForm {
   naam: string;
@@ -19,13 +20,28 @@ interface BookingErrors {
   telefoon?: string;
   sessieType?: string;
   format?: string;
+  consent?: string;
 }
+
+const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
+  nl: { title: "Boek een Sessie — Spessirits Pilates", desc: "Plan je Pilates sessie bij Spessirits in Schilde. Vul het reservatieformulier in en Cintia neemt snel contact met je op.", breadcrumb: "Boeken" },
+  en: { title: "Book a Session — Spessirits Pilates", desc: "Plan your Pilates session at Spessirits in Schilde. Fill in the booking form and Cintia will get back to you.", breadcrumb: "Book" },
+  fr: { title: "Réserver une Séance — Spessirits Pilates", desc: "Planifiez votre séance de Pilates chez Spessirits à Schilde. Remplissez le formulaire et Cintia vous recontactera.", breadcrumb: "Réserver" },
+  pt: { title: "Agendar uma Sessão — Spessirits Pilates", desc: "Agende a sua sessão de Pilates na Spessirits em Schilde. Preencha o formulário e a Cintia entrará em contato.", breadcrumb: "Agendar" },
+};
+
+const consentErrors: Record<string, string> = {
+  nl: "Je moet akkoord gaan met het privacybeleid.",
+  en: "You must agree to the privacy policy.",
+  fr: "Vous devez accepter la politique de confidentialité.",
+  pt: "Você deve concordar com a política de privacidade.",
+};
 
 export default function Boeken() {
   const { lang } = useLanguage();
   const location = useLocation();
+  const seo = seoMeta[lang] || seoMeta.nl;
 
-  /* Scroll to form on mount if #reservatie hash is present */
   useEffect(() => {
     if (location.hash !== "#reservatie") return;
     let attempts = 0;
@@ -37,7 +53,6 @@ export default function Boeken() {
         setTimeout(tryScroll, 100);
       }
     };
-    // Give the page time to render before first scroll attempt
     setTimeout(tryScroll, 250);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -50,17 +65,13 @@ export default function Boeken() {
     heroTitle: isPt ? "Agendar uma Sessão" : isFr ? "Réserver une séance" : isNl ? "Boek een Sessie" : "Book a Session",
     heroSub: isPt
       ? "Preencha o formulário abaixo e a Cintia entrará em contato para definir uma data e horário."
-      : isFr
-      ? "Veuillez remplir le formulaire ci-dessous et Cintia vous contactera pour convenir d'une date et d'un horaire."
-      : isNl
-      ? "Vul het formulier in en Cintia neemt contact met je op om een datum en tijdstip vast te leggen."
+      : isFr ? "Veuillez remplir le formulaire ci-dessous et Cintia vous contactera pour convenir d'une date et d'un horaire."
+      : isNl ? "Vul het formulier in en Cintia neemt contact met je op om een datum en tijdstip vast te leggen."
       : "Fill in the form and Cintia will get back to you to fix a date and time.",
     notice: isPt
       ? "A Cintia entrará em contato o mais breve possível para confirmar uma data e horário que sejam convenientes para você."
-      : isFr
-      ? "Cintia vous contactera dans les plus brefs délais pour confirmer ensemble une date et un horaire qui vous conviennent."
-      : isNl
-      ? "Cintia neemt zo snel mogelijk contact met je op om samen een datum en tijdstip te bevestigen."
+      : isFr ? "Cintia vous contactera dans les plus brefs délais pour confirmer ensemble une date et un horaire qui vous conviennent."
+      : isNl ? "Cintia neemt zo snel mogelijk contact met je op om samen een datum en tijdstip te bevestigen."
       : "Cintia will get back to you as soon as possible to confirm a date and time that works for you.",
     formTitle: isPt ? "A sua solicitação de agendamento" : isFr ? "Votre demande de réservation" : isNl ? "Jouw Reservatieaanvraag" : "Your Booking Request",
     fieldNaam: isPt ? "Nome" : isFr ? "Nom" : isNl ? "Naam" : "Name",
@@ -74,23 +85,11 @@ export default function Boeken() {
     fieldFormat: isPt ? "Formato" : isFr ? "Format" : isNl ? "Formaat" : "Format",
     fieldFormatPlaceholder: isPt ? "Escolha um formato..." : isFr ? "Choisissez un format..." : isNl ? "Kies een formaat..." : "Choose a format...",
     fieldOpmerking: isPt ? "Observações adicionais" : isFr ? "Remarques supplémentaires" : isNl ? "Extra opmerkingen" : "Additional notes",
-    fieldOpmerkingPlaceholder: isPt
-      ? "Ex.: queixas específicas, dias preferidos, dúvidas..."
-      : isFr
-      ? "Ex. plaintes spécifiques, jours préférés, questions..."
-      : isNl
-      ? "Bijv. specifieke klachten, voorkeursdagen, vragen..."
+    fieldOpmerkingPlaceholder: isPt ? "Ex.: queixas específicas, dias preferidos, dúvidas..."
+      : isFr ? "Ex. plaintes spécifiques, jours préférés, questions..."
+      : isNl ? "Bijv. specifieke klachten, voorkeursdagen, vragen..."
       : "E.g. specific complaints, preferred days, questions...",
     submit: isPt ? "Enviar Solicitação" : isFr ? "Envoyer la demande" : isNl ? "Stuur Aanvraag" : "Send Request",
-    submitting: isPt ? "Enviando..." : isFr ? "Envoi en cours..." : isNl ? "Versturen..." : "Sending...",
-    toastTitle: isPt ? "Solicitação enviada! 🌿" : isFr ? "Demande envoyée ! 🌿" : isNl ? "Aanvraag verzonden! 🌿" : "Request sent! 🌿",
-    toastDesc: isPt
-      ? "A Cintia entrará em contato o mais breve possível para confirmar uma data."
-      : isFr
-      ? "Cintia vous contactera dans les plus brefs délais pour confirmer une date."
-      : isNl
-      ? "Cintia neemt zo snel mogelijk contact met je op om een datum te bevestigen."
-      : "Cintia will get back to you as soon as possible to confirm a date.",
     errNaam: isPt ? "O nome é obrigatório." : isFr ? "Le nom est obligatoire." : isNl ? "Naam is verplicht." : "Name is required.",
     errEmail: isPt ? "O e-mail é obrigatório." : isFr ? "L'adresse e-mail est obligatoire." : isNl ? "E-mailadres is verplicht." : "Email is required.",
     errEmailInvalid: isPt ? "É necessário um endereço de e-mail válido." : isFr ? "Une adresse e-mail valide est requise." : isNl ? "Geldig e-mailadres vereist." : "A valid email address is required.",
@@ -98,74 +97,30 @@ export default function Boeken() {
     errSessie: isPt ? "Por favor, escolha um tipo de sessão." : isFr ? "Veuillez choisir un type de séance." : isNl ? "Kies een sessie." : "Please choose a session type.",
     errFormat: isPt ? "Por favor, escolha um formato." : isFr ? "Veuillez choisir un format." : isNl ? "Kies een formaat." : "Please choose a format.",
     sessieOptions: isPt
-      ? [
-          "Pilates para Iniciantes",
-          "Atletas & Desempenho",
-          "Gestão da Dor & Queixas",
-          "Reabilitação",
-          "Pré-Natal",
-          "Pós-Natal",
-          "Pilates Avançado",
-        ]
-      : isFr
-      ? [
-          "Pilates débutants",
-          "Sportifs & Performance",
-          "Gestion de la douleur & plaintes",
-          "Rééducation",
-          "Pré-Natal",
-          "Post-Natal",
-          "Pilates avancé",
-        ]
-      : isNl
-      ? [
-          "Beginners Pilates",
-          "Sporters & Prestatie",
-          "Pijnbeheer & Klachten",
-          "Revalidatie",
-          "Pre-Nataal",
-          "Post-Nataal",
-          "Gevorderd Pilates",
-        ]
-      : [
-          "Beginner Pilates",
-          "Athletes & Performance",
-          "Pain Management & Complaints",
-          "Rehabilitation",
-          "Pre-Natal",
-          "Post-Natal",
-          "Advanced Pilates",
-        ],
+      ? ["Pilates para Iniciantes", "Atletas & Desempenho", "Gestão da Dor & Queixas", "Reabilitação", "Pré-Natal", "Pós-Natal", "Pilates Avançado"]
+      : isFr ? ["Pilates débutants", "Sportifs & Performance", "Gestion de la douleur & plaintes", "Rééducation", "Pré-Natal", "Post-Natal", "Pilates avancé"]
+      : isNl ? ["Beginners Pilates", "Sporters & Prestatie", "Pijnbeheer & Klachten", "Revalidatie", "Pre-Nataal", "Post-Nataal", "Gevorderd Pilates"]
+      : ["Beginner Pilates", "Athletes & Performance", "Pain Management & Complaints", "Rehabilitation", "Pre-Natal", "Post-Natal", "Advanced Pilates"],
     formatOptions: isPt
       ? ["Individual (um a um com a Cintia)", "Duo (2 pessoas)"]
-      : isFr
-      ? ["Individuel (en tête-à-tête avec Cintia)", "Duo (2 personnes)"]
-      : isNl
-      ? ["Individueel (1-op-1 met Cintia)", "Duo (2 personen)"]
+      : isFr ? ["Individuel (en tête-à-tête avec Cintia)", "Duo (2 personnes)"]
+      : isNl ? ["Individueel (1-op-1 met Cintia)", "Duo (2 personen)"]
       : ["Individual (1-on-1 with Cintia)", "Duo (2 people)"],
   };
 
-  const [form, setForm] = useState<BookingForm>({
-    naam: "",
-    email: "",
-    telefoon: "",
-    sessieType: "",
-    format: "",
-    opmerking: "",
-  });
+  const [form, setForm] = useState<BookingForm>({ naam: "", email: "", telefoon: "", sessieType: "", format: "", opmerking: "" });
   const [errors, setErrors] = useState<BookingErrors>({});
+  const [consent, setConsent] = useState(false);
 
   const validate = (): boolean => {
     const e: BookingErrors = {};
     if (!form.naam.trim()) e.naam = copy.errNaam;
-    if (!form.email.trim()) {
-      e.email = copy.errEmail;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      e.email = copy.errEmailInvalid;
-    }
+    if (!form.email.trim()) { e.email = copy.errEmail; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { e.email = copy.errEmailInvalid; }
     if (!form.telefoon.trim()) e.telefoon = copy.errTelefoon;
     if (!form.sessieType) e.sessieType = copy.errSessie;
     if (!form.format) e.format = copy.errFormat;
+    if (!consent) e.consent = consentErrors[lang] || consentErrors.nl;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -179,6 +134,7 @@ export default function Boeken() {
     );
     window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
     setForm({ naam: "", email: "", telefoon: "", sessieType: "", format: "", opmerking: "" });
+    setConsent(false);
     setErrors({});
   };
 
@@ -202,15 +158,15 @@ export default function Boeken() {
   return (
     <main className="pt-24">
       <SEO
-        title="Boek een Sessie — Spessirits Pilates"
-        description="Plan je Pilates sessie bij Spessirits in Schilde. Vul het reservatieformulier in en Cintia neemt snel contact met je op."
+        title={seo.title}
+        description={seo.desc}
         path="/boeken"
+        lang={lang}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
-          { name: "Boeken", url: `${SITE_URL}/boeken` },
+          { name: seo.breadcrumb, url: `${SITE_URL}/boeken` },
         ]}
       />
-      {/* Header */}
       <section className="bg-muted">
         <div className="container-wide section-padding py-20 text-center">
           <p className="font-sans text-xs uppercase tracking-widest text-primary mb-4">{copy.tag}</p>
@@ -219,12 +175,9 @@ export default function Boeken() {
         </div>
       </section>
 
-      {/* Form section */}
       <section id="reservatie" className="bg-card">
         <div className="container-wide section-padding">
           <div className="max-w-xl mx-auto">
-
-            {/* Notice banner */}
             <div className="flex items-start gap-3 bg-sage-light border border-primary/20 rounded-xl px-5 py-4 mb-8">
               <CalendarClock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
               <p className="font-sans text-sm text-foreground/80 leading-relaxed">{copy.notice}</p>
@@ -233,121 +186,74 @@ export default function Boeken() {
             <h2 className="font-serif text-3xl font-semibold text-foreground mb-8">{copy.formTitle}</h2>
 
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-
-              {/* Naam */}
               <div>
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldNaam} <span className="text-destructive">*</span>
                 </label>
-                <input
-                  type="text"
-                  value={form.naam}
-                  onChange={(e) => set("naam", e.target.value)}
-                  placeholder={copy.fieldNaamPlaceholder}
-                  className={inputCls(errors.naam)}
-                />
+                <input type="text" value={form.naam} onChange={(e) => set("naam", e.target.value)} placeholder={copy.fieldNaamPlaceholder} className={inputCls(errors.naam)} />
                 {errors.naam && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.naam}</p>}
               </div>
 
-              {/* Email + Telefoon */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {copy.fieldEmail} <span className="text-destructive">*</span>
                   </label>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => set("email", e.target.value)}
-                    placeholder={copy.fieldEmailPlaceholder}
-                    className={inputCls(errors.email)}
-                  />
+                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={copy.fieldEmailPlaceholder} className={inputCls(errors.email)} />
                   {errors.email && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>}
                 </div>
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {copy.fieldTelefoon} <span className="text-destructive">*</span>
                   </label>
-                  <input
-                    type="tel"
-                    value={form.telefoon}
-                    onChange={(e) => set("telefoon", e.target.value)}
-                    placeholder={copy.fieldTelefoonPlaceholder}
-                    className={inputCls(errors.telefoon)}
-                  />
+                  <input type="tel" value={form.telefoon} onChange={(e) => set("telefoon", e.target.value)} placeholder={copy.fieldTelefoonPlaceholder} className={inputCls(errors.telefoon)} />
                   {errors.telefoon && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.telefoon}</p>}
                 </div>
               </div>
 
-              {/* Sessie type dropdown */}
               <div>
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldSessie} <span className="text-destructive">*</span>
                 </label>
                 <div className="relative">
-                  <select
-                    value={form.sessieType}
-                    onChange={(e) => set("sessieType", e.target.value)}
-                    className={selectCls(errors.sessieType)}
-                  >
+                  <select value={form.sessieType} onChange={(e) => set("sessieType", e.target.value)} className={selectCls(errors.sessieType)}>
                     <option value="" disabled>{copy.fieldSessiePlaceholder}</option>
-                    {copy.sessieOptions.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
+                    {copy.sessieOptions.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                    <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                 </div>
                 {errors.sessieType && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.sessieType}</p>}
               </div>
 
-              {/* Format dropdown */}
               <div>
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldFormat} <span className="text-destructive">*</span>
                 </label>
                 <div className="relative">
-                  <select
-                    value={form.format}
-                    onChange={(e) => set("format", e.target.value)}
-                    className={selectCls(errors.format)}
-                  >
+                  <select value={form.format} onChange={(e) => set("format", e.target.value)} className={selectCls(errors.format)}>
                     <option value="" disabled>{copy.fieldFormatPlaceholder}</option>
-                    {copy.formatOptions.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
+                    {copy.formatOptions.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                    <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                 </div>
                 {errors.format && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.format}</p>}
               </div>
 
-              {/* Opmerking */}
               <div>
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldOpmerking}{" "}
                   <span className="font-normal text-muted-foreground">({isPt ? "opcional" : isFr ? "optionnel" : isNl ? "optioneel" : "optional"})</span>
                 </label>
-                <textarea
-                  rows={4}
-                  value={form.opmerking}
-                  onChange={(e) => set("opmerking", e.target.value)}
-                  placeholder={copy.fieldOpmerkingPlaceholder}
-                  className={inputCls()}
-                />
+                <textarea rows={4} value={form.opmerking} onChange={(e) => set("opmerking", e.target.value)} placeholder={copy.fieldOpmerkingPlaceholder} className={inputCls()} />
               </div>
 
-              <button
-                type="submit"
-                className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2"
-              >
+              <ConsentCheckbox checked={consent} onCheckedChange={(v) => { setConsent(v); if (errors.consent) setErrors(p => ({ ...p, consent: undefined })); }} error={errors.consent} />
+
+              <button type="submit" className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2">
                 <Send className="h-4 w-4" />
                 {copy.submit}
               </button>

@@ -12,11 +12,19 @@ interface SEOProps {
   breadcrumbs?: BreadcrumbItem[];
   type?: "website" | "article";
   noindex?: boolean;
+  lang?: string;
 }
 
 const SITE_URL = "https://calm-balance-flow.lovable.app";
 const SITE_NAME = "Spessirits Pilates";
 const OG_IMAGE = "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6d052ecc-6468-4b06-9d13-2bf149eb36ab/id-preview-04cacdbe--a68cefc6-193f-4814-bee3-dc783f86856d.lovable.app-1771546669067.png";
+
+const LOCALE_MAP: Record<string, string> = {
+  nl: "nl_BE",
+  en: "en_GB",
+  fr: "fr_BE",
+  pt: "pt_BR",
+};
 
 /* ── LocalBusiness + Organization (homepage & contact only) ──────── */
 const localBusinessSchema = {
@@ -97,14 +105,18 @@ export function SEO({
   breadcrumbs,
   type = "website",
   noindex = false,
+  lang = "nl",
 }: SEOProps) {
   const canonicalUrl = `${SITE_URL}${path}`;
   const fullTitle = path === "/" ? title : `${title} — ${SITE_NAME}`;
   const isHomepage = path === "/";
   const isContact = path === "/contact";
+  const ogLocale = LOCALE_MAP[lang] || "nl_BE";
+  const alternateLocales = Object.values(LOCALE_MAP).filter((l) => l !== ogLocale);
 
   return (
     <Helmet>
+      <html lang={lang} />
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonicalUrl} />
@@ -118,10 +130,10 @@ export function SEO({
       <meta property="og:type" content={type} />
       <meta property="og:image" content={OG_IMAGE} />
       <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:locale" content="nl_BE" />
-      <meta property="og:locale:alternate" content="en_GB" />
-      <meta property="og:locale:alternate" content="fr_BE" />
-      <meta property="og:locale:alternate" content="pt_BR" />
+      <meta property="og:locale" content={ogLocale} />
+      {alternateLocales.map((loc) => (
+        <meta key={loc} property="og:locale:alternate" content={loc} />
+      ))}
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
