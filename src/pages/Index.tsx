@@ -1,17 +1,15 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight, CheckCircle, Clock, Ban, CreditCard, Calendar, Gift,
   Phone, Mail, MapPin, MessageCircle, Send,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useToast } from "@/hooks/use-toast";
 import { SEO } from "@/components/SEO";
-
-/* ─── Images ─────────────────────────────────────────────────── */
-const heroImage = "https://static.wixstatic.com/media/f76b6d_739a2569d5054e4fa82dfe477b6a5492~mv2.jpeg/v1/fill/w_1013,h_1033,al_t,q_85,enc_avif,quality_auto/f76b6d_739a2569d5054e4fa82dfe477b6a5492~mv2.jpeg";
-const heroBg   = "https://static.wixstatic.com/media/f76b6d_b20d70f0cd8c423bad5e52f8629d5825~mv2.jpg/v1/fill/w_491,h_795,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/f76b6d_b20d70f0cd8c423bad5e52f8629d5825~mv2.jpg";
-const priveImg = "https://static.wixstatic.com/media/f76b6d_cfe6e12cc64048e4b43a09851d0906d0~mv2.jpg/v1/fill/w_501,h_640,al_c,q_80,enc_avif,quality_auto/f76b6d_cfe6e12cc64048e4b43a09851d0906d0~mv2.jpg";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
+import heroImage from "@/assets/cintia-portrait.jpg";
+import heroBg from "@/assets/hero-bg.jpg";
+import priveImg from "@/assets/prive-session.jpg";
 
 /* ─── Pricing data (numbers don't translate) ──────────────────── */
 const pricingData = [
@@ -31,12 +29,26 @@ const contactValues = ["+32 472 240 581", "+32 472 913 917", "spessiritskine@icl
 
 /* ─── Form types ─────────────────────────────────────────────── */
 interface FormData   { naam: string; email: string; telefoon: string; bericht: string }
-interface FormErrors { naam?: string; email?: string; bericht?: string }
+interface FormErrors { naam?: string; email?: string; bericht?: string; consent?: string }
+
+/* ─── SEO per language ────────────────────────────────────────── */
+const seoMeta: Record<string, { title: string; desc: string }> = {
+  nl: { title: "Spessirits Pilates — Physio-led Pilates in Schilde", desc: "Verantwoord Pilates in Schilde, België. Individuele en duo sessies onder begeleiding van kinesitherapiste Cintia. Boek nu." },
+  en: { title: "Spessirits Pilates — Physio-led Pilates in Schilde", desc: "Responsible Pilates in Schilde, Belgium. Individual and duo sessions guided by physiotherapist Cintia. Book now." },
+  fr: { title: "Spessirits Pilates — Pilates guidé par une kiné à Schilde", desc: "Pilates responsable à Schilde, Belgique. Séances individuelles et duo avec la kinésithérapeute Cintia. Réservez maintenant." },
+  pt: { title: "Spessirits Pilates — Pilates com Fisioterapeuta em Schilde", desc: "Pilates responsável em Schilde, Bélgica. Sessões individuais e duo com a fisioterapeuta Cintia. Agende agora." },
+};
+
+const consentErrors: Record<string, string> = {
+  nl: "Je moet akkoord gaan met het privacybeleid.",
+  en: "You must agree to the privacy policy.",
+  fr: "Vous devez accepter la politique de confidentialité.",
+  pt: "Você deve concordar com a política de privacidade.",
+};
 
 /* ═══════════════════════════════════════════════════════════════ */
 export default function Index() {
   const { t, lang } = useLanguage();
-  const { toast }   = useToast();
   const location    = useLocation();
   const navigate    = useNavigate();
 
@@ -45,7 +57,6 @@ export default function Index() {
     const state = location.state as { scrollTo?: string } | null;
     if (!state?.scrollTo) return;
     const id = state.scrollTo;
-    // Clear state so this doesn't re-fire; use window.history directly to avoid re-render race
     window.history.replaceState(null, "", "/");
     let attempts = 0;
     const tryScroll = () => {
@@ -56,14 +67,13 @@ export default function Index() {
         setTimeout(tryScroll, 100);
       }
     };
-    // Wait for homepage to fully render before first attempt
     setTimeout(tryScroll, 300);
   }, [location.state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Contact form state */
   const [form, setForm]         = useState<FormData>({ naam: "", email: "", telefoon: "", bericht: "" });
   const [errors, setErrors]     = useState<FormErrors>({});
-  const [submitting, setSubmit] = useState(false);
+  const [consent, setConsent]   = useState(false);
 
   const validate = (): boolean => {
     const e: FormErrors = {};
@@ -71,19 +81,22 @@ export default function Index() {
     if (!form.email.trim()) e.email = t.contact.errEmail;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t.contact.errEmailInvalid;
     if (!form.bericht.trim()) e.bericht = t.contact.errBericht;
+    if (!consent) e.consent = consentErrors[lang] || consentErrors.nl;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmit(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setSubmit(false);
+    const subject = encodeURIComponent(`Contactformulier – ${form.naam}`);
+    const body = encodeURIComponent(
+      `Naam: ${form.naam}\nE-mail: ${form.email}${form.telefoon ? `\nTelefoon: ${form.telefoon}` : ""}\n\nBericht:\n${form.bericht}`
+    );
+    window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
     setForm({ naam: "", email: "", telefoon: "", bericht: "" });
+    setConsent(false);
     setErrors({});
-    toast({ title: t.contact.toastTitle, description: t.contact.toastDesc });
   };
 
   const handleChange = (field: keyof FormData, value: string) => {
@@ -96,6 +109,7 @@ export default function Index() {
       err ? "border-destructive focus:ring-destructive" : "border-border"
     }`;
 
+  const seo = seoMeta[lang] || seoMeta.nl;
   const h  = t.home;
   const o  = t.over;
   const l  = t.lessen;
@@ -105,15 +119,12 @@ export default function Index() {
 
   return (
     <main>
-      <SEO
-        title="Spessirits Pilates — Physio-led Pilates in Schilde"
-        description="Verantwoord Pilates in Schilde, België. Individuele en duo sessies onder begeleiding van kinesitherapiste Cintia. Boek nu."
-        path="/"
-      />
+      <SEO title={seo.title} description={seo.desc} path="/" lang={lang} />
+
       {/* ══════════ HERO ══════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={heroBg} alt="Pilates movement" className="w-full h-full object-cover object-center" loading="eager" />
+          <img src={heroBg} alt="Pilates movement" className="w-full h-full object-cover object-center" width={491} height={795} fetchPriority="high" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-foreground/10" />
         </div>
         <div className="relative z-10 container-wide section-padding py-40 flex flex-col justify-center max-w-3xl">
@@ -129,21 +140,21 @@ export default function Index() {
               {h.heroCta} <ArrowRight className="h-4 w-4" />
             </Link>
             <a href="#lessen" className="inline-flex items-center gap-2 px-7 py-4 rounded-lg border border-primary-foreground/30 text-primary-foreground font-sans text-sm hover:bg-primary-foreground/10 transition-colors min-h-[48px]">
-              {lang === "en" ? "Classes" : "Lessen"} <ArrowRight className="h-4 w-4" />
+              {lang === "en" ? "Classes" : lang === "fr" ? "Cours" : lang === "pt" ? "Aulas" : "Lessen"} <ArrowRight className="h-4 w-4" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* ══════════ ABOUT TEASER (not a full section — just the strip) ══════════ */}
+      {/* ══════════ ABOUT TEASER ══════════ */}
       <section className="bg-card">
         <div className="container-wide section-padding">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative">
-              <img src={heroImage} alt="Cintia, Pilatesdocent" className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl object-cover shadow-xl aspect-[3/4]" loading="lazy" />
+              <img src={heroImage} alt="Cintia, Pilatesdocent" className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl object-cover shadow-xl aspect-[3/4]" width={1013} height={1033} loading="lazy" />
               <div className="absolute -bottom-5 -right-5 bg-sage text-primary-foreground rounded-xl px-5 py-4 shadow-lg hidden md:block">
                 <p className="font-serif text-2xl font-semibold">20+</p>
-                <p className="font-sans text-xs text-primary-foreground/80">{lang === "en" ? "years experience" : "jaar ervaring"}</p>
+                <p className="font-sans text-xs text-primary-foreground/80">{lang === "en" ? "years experience" : lang === "fr" ? "ans d'expérience" : lang === "pt" ? "anos de experiência" : "jaar ervaring"}</p>
               </div>
             </div>
             <div>
@@ -170,7 +181,6 @@ export default function Index() {
             <p className="font-sans text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">{l.heroSub}</p>
           </div>
 
-          {/* Audience cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {l.audiences.map((a) => (
               <div key={a.title} className="bg-card rounded-xl p-7 hover-lift border border-border flex flex-col">
@@ -184,7 +194,6 @@ export default function Index() {
             ))}
           </div>
 
-          {/* Equipment */}
           <div className="text-center mb-10">
             <p className="font-sans text-xs uppercase tracking-widest text-primary mb-4">{l.equipmentTag}</p>
             <h3 className="font-serif text-3xl font-semibold text-foreground mb-3">{l.equipmentTitle}</h3>
@@ -206,9 +215,8 @@ export default function Index() {
 
       {/* ══════════ PRIVÉ SESSIES ══════════ */}
       <section id="prive" className="scroll-mt-20">
-        {/* Full-width cinematic banner */}
         <div className="relative h-72 md:h-96 overflow-hidden">
-          <img src={priveImg} alt="Pilates sessie" className="w-full h-full object-cover object-center" loading="lazy" />
+          <img src={priveImg} alt="Pilates sessie" className="w-full h-full object-cover object-center" width={501} height={640} loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 to-foreground/30 flex items-center">
             <div className="container-wide section-padding py-0">
               <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/70 mb-3">{p.tag}</p>
@@ -221,16 +229,13 @@ export default function Index() {
 
         <div className="bg-card">
           <div className="container-wide section-padding">
-            {/* Intro */}
             <div className="max-w-3xl mx-auto text-center mb-14">
               <p className="font-sans text-xs uppercase tracking-widest text-primary mb-4">{p.approachTag}</p>
               <p className="font-sans text-base text-muted-foreground leading-relaxed mb-4">{p.approachP1}</p>
               <p className="font-sans text-base text-muted-foreground leading-relaxed">{p.approachP2}</p>
             </div>
 
-            {/* Format cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {/* Individual */}
               <div className="bg-muted rounded-2xl p-8 border border-border hover-lift">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-sage-light flex items-center justify-center text-2xl">👤</div>
@@ -249,7 +254,6 @@ export default function Index() {
                 </ul>
               </div>
 
-              {/* Duo */}
               <div className="bg-sage rounded-2xl p-8 hover-lift">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-primary-foreground/20 flex items-center justify-center text-2xl">👥</div>
@@ -281,7 +285,6 @@ export default function Index() {
             <p className="font-sans text-lg text-muted-foreground max-w-md mx-auto">{tr.heroSub}</p>
           </div>
 
-          {/* Pricing cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-6">
             {pricingData.map((data, i) => (
               <div
@@ -335,7 +338,6 @@ export default function Index() {
           </div>
           <p className="text-center font-sans text-xs text-muted-foreground mb-14">{tr.pricingNote}</p>
 
-          {/* Policies */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {tr.policies.map((pol, i) => {
               const Icon = policyIcons[i];
@@ -351,7 +353,6 @@ export default function Index() {
             })}
           </div>
 
-          {/* Gift voucher */}
           <div className="bg-terracotta-light rounded-2xl p-8 max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
             <div className="w-14 h-14 rounded-2xl bg-terracotta/20 flex items-center justify-center shrink-0">
               <Gift className="h-7 w-7 text-terracotta" />
@@ -377,7 +378,6 @@ export default function Index() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20">
-            {/* Contact info */}
             <div>
               <h3 className="font-serif text-2xl font-semibold text-foreground mb-8">{c.infoTitle}</h3>
               <div className="flex flex-col gap-5 mb-10">
@@ -397,7 +397,6 @@ export default function Index() {
                 })}
               </div>
 
-              {/* Map card */}
               <div className="rounded-2xl border border-border bg-muted h-52 flex flex-col items-center justify-center gap-3">
                 <MapPin className="h-8 w-8 text-primary" />
                 <div className="text-center">
@@ -410,7 +409,6 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Contact form */}
             <div>
               <h3 className="font-serif text-2xl font-semibold text-foreground mb-8">{c.formTitle}</h3>
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
@@ -441,16 +439,12 @@ export default function Index() {
                   <textarea rows={5} value={form.bericht} onChange={e => handleChange("bericht", e.target.value)} placeholder={c.fieldBerichtPlaceholder} className={inputCls(errors.bericht)} />
                   {errors.bericht && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.bericht}</p>}
                 </div>
+                <ConsentCheckbox checked={consent} onCheckedChange={(v) => { setConsent(v); if (errors.consent) setErrors(p => ({ ...p, consent: undefined })); }} error={errors.consent} />
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-60 min-h-[52px] mt-2"
+                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-accent text-accent-foreground font-sans font-medium text-sm hover:opacity-90 transition-opacity min-h-[52px] mt-2"
                 >
-                  {submitting ? (
-                    <><span className="animate-spin inline-block w-4 h-4 border-2 border-accent-foreground border-t-transparent rounded-full" />{c.submitting}</>
-                  ) : (
-                    <><Send className="h-4 w-4" />{c.submit}</>
-                  )}
+                  <Send className="h-4 w-4" />{c.submit}
                 </button>
               </form>
             </div>

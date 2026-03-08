@@ -4,38 +4,34 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
 
 const pricingData = [
-  {
-    exclBTW: { individueel: "€77", duo: "€90" },
-    inclBTW: { individueel: "€93,17", duo: "€108,90" },
-    popular: false,
-  },
-  {
-    exclBTW: { individueel: "€370", duo: "€440" },
-    inclBTW: { individueel: "€447,70", duo: "€532,40" },
-    popular: true,
-  },
-  {
-    exclBTW: { individueel: "€670", duo: "€790" },
-    inclBTW: { individueel: "€810,70", duo: "€955,90" },
-    popular: false,
-  },
+  { exclBTW: { individueel: "€77", duo: "€90" }, inclBTW: { individueel: "€93,17", duo: "€108,90" }, popular: false },
+  { exclBTW: { individueel: "€370", duo: "€440" }, inclBTW: { individueel: "€447,70", duo: "€532,40" }, popular: true },
+  { exclBTW: { individueel: "€670", duo: "€790" }, inclBTW: { individueel: "€810,70", duo: "€955,90" }, popular: false },
 ];
-
 const policyIcons = [Clock, Ban, CreditCard, Calendar];
 
+const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
+  nl: { title: "Tarieven — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Tarieven" },
+  en: { title: "Pricing — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Pricing" },
+  fr: { title: "Tarifs — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Tarifs" },
+  pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
+};
+
 export default function Tarieven() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const tr = t.tarieven;
+  const seo = seoMeta[lang] || seoMeta.nl;
 
   return (
     <main className="pt-24">
       <SEO
-        title="Tarieven — Pilates Prijzen Schilde 2026"
-        description="Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies."
+        title={seo.title}
+        description={seo.desc}
         path="/tarieven"
+        lang={lang}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
-          { name: "Tarieven", url: `${SITE_URL}/tarieven` },
+          { name: seo.breadcrumb, url: `${SITE_URL}/tarieven` },
         ]}
       />
       {/* Header */}
@@ -54,65 +50,25 @@ export default function Tarieven() {
             {pricingData.map((data, i) => {
               const tier = tr.tiers[i];
               return (
-                <div
-                  key={i}
-                  className={`rounded-2xl border p-8 flex flex-col hover-lift relative ${
-                    data.popular
-                      ? "bg-sage border-transparent shadow-xl"
-                      : "bg-card border-border shadow-sm"
-                  }`}
-                >
+                <div key={i} className={`rounded-2xl border p-8 flex flex-col hover-lift relative ${data.popular ? "bg-sage border-transparent shadow-xl" : "bg-card border-border shadow-sm"}`}>
                   {data.popular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                      <span className="bg-terracotta text-accent-foreground font-sans text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-wide">
-                        {tr.popular}
-                      </span>
+                      <span className="bg-terracotta text-accent-foreground font-sans text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-wide">{tr.popular}</span>
                     </div>
                   )}
-
-                  <h2
-                    className={`font-serif text-2xl font-semibold mb-8 ${
-                      data.popular ? "text-primary-foreground" : "text-foreground"
-                    }`}
-                  >
-                    {tier.label}
-                  </h2>
-
-                  {/* Individueel */}
+                  <h2 className={`font-serif text-2xl font-semibold mb-8 ${data.popular ? "text-primary-foreground" : "text-foreground"}`}>{tier.label}</h2>
                   <div className={`mb-5 pb-5 border-b ${data.popular ? "border-primary-foreground/20" : "border-border"}`}>
-                    <p className={`font-sans text-xs uppercase tracking-wider mb-2 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
-                      👤 {tr.individueel}
-                    </p>
-                    <p className={`font-serif text-3xl font-semibold ${data.popular ? "text-primary-foreground" : "text-foreground"}`}>
-                      {data.exclBTW.individueel}
-                    </p>
-                    <p className={`font-sans text-sm mt-1 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
-                      {tr.exclLabel} · {data.inclBTW.individueel} incl.
-                    </p>
+                    <p className={`font-sans text-xs uppercase tracking-wider mb-2 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>👤 {tr.individueel}</p>
+                    <p className={`font-serif text-3xl font-semibold ${data.popular ? "text-primary-foreground" : "text-foreground"}`}>{data.exclBTW.individueel}</p>
+                    <p className={`font-sans text-sm mt-1 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{tr.exclLabel} · {data.inclBTW.individueel} incl.</p>
                   </div>
-
-                  {/* Duo */}
                   <div className="mb-8">
-                    <p className={`font-sans text-xs uppercase tracking-wider mb-2 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
-                      👥 {tr.duo}
-                    </p>
-                    <p className={`font-serif text-3xl font-semibold ${data.popular ? "text-primary-foreground" : "text-foreground"}`}>
-                      {data.exclBTW.duo}
-                    </p>
-                    <p className={`font-sans text-sm mt-1 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
-                      {tr.exclLabel} · {data.inclBTW.duo} incl.
-                    </p>
+                    <p className={`font-sans text-xs uppercase tracking-wider mb-2 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>👥 {tr.duo}</p>
+                    <p className={`font-serif text-3xl font-semibold ${data.popular ? "text-primary-foreground" : "text-foreground"}`}>{data.exclBTW.duo}</p>
+                    <p className={`font-sans text-sm mt-1 ${data.popular ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{tr.exclLabel} · {data.inclBTW.duo} incl.</p>
                   </div>
-
                   <div className="mt-auto">
-                    <Link
-                      to="/boeken#reservatie"
-                      className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-sans text-sm font-medium transition-all min-h-[48px] ${
-                        data.popular
-                          ? "bg-primary-foreground text-foreground hover:bg-primary-foreground/90"
-                          : "bg-muted text-foreground hover:bg-secondary border border-border"
-                      }`}
-                    >
+                    <Link to="/boeken#reservatie" className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-sans text-sm font-medium transition-all min-h-[48px] ${data.popular ? "bg-primary-foreground text-foreground hover:bg-primary-foreground/90" : "bg-muted text-foreground hover:bg-secondary border border-border"}`}>
                       {tr.bookNow} <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -120,7 +76,6 @@ export default function Tarieven() {
               );
             })}
           </div>
-
           <p className="text-center font-sans text-xs text-muted-foreground mt-8">{tr.pricingNote}</p>
         </div>
       </section>
@@ -159,10 +114,7 @@ export default function Tarieven() {
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-2">{tr.giftTitle}</h2>
               <p className="font-sans text-sm text-muted-foreground">{tr.giftDesc}</p>
             </div>
-            <Link
-              to="/boeken#reservatie"
-              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-terracotta text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
-            >
+            <Link to="/boeken#reservatie" className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-terracotta text-accent-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]">
               {tr.giftBtn} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
