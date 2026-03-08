@@ -17,7 +17,7 @@ interface SEOProps {
 
 const SITE_URL = "https://calm-balance-flow.lovable.app";
 const SITE_NAME = "Spessirits Pilates";
-const OG_IMAGE = "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6d052ecc-6468-4b06-9d13-2bf149eb36ab/id-preview-04cacdbe--a68cefc6-193f-4814-bee3-dc783f86856d.lovable.app-1771546669067.png";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const LOCALE_MAP: Record<string, string> = {
   nl: "nl_BE",
