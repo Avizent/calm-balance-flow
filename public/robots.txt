@@ -10,7 +10,26 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
 User-agent: *
 Allow: /
+Allow: /llms.txt
 
 Sitemap: https://calm-balance-flow.lovable.app/sitemap.xml

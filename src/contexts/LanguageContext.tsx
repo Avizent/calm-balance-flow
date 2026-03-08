@@ -1182,8 +1182,21 @@ const LanguageContext = createContext<LanguageContextValue>({
   t: nl,
 });
 
+function getInitialLanguage(): Language {
+  try {
+    const stored = localStorage.getItem("spessirits-lang") as Language | null;
+    if (stored && SUPPORTED_LANGUAGES.includes(stored)) return stored;
+  } catch {}
+  return "nl";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>("nl");
+  const [lang, setLangState] = useState<Language>(getInitialLanguage);
+
+  const setLang = (newLang: Language) => {
+    setLangState(newLang);
+    try { localStorage.setItem("spessirits-lang", newLang); } catch {}
+  };
   return (
     <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
       {children}
