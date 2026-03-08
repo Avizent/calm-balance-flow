@@ -135,6 +135,16 @@ export function SEO({
         <meta key={loc} property="og:locale:alternate" content={loc} />
       ))}
 
+      {/* Robots: allow generous snippets for AI/search */}
+      {!noindex && (
+        <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      )}
+
+      {/* OG Image dimensions */}
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="Spessirits Pilates studio in Schilde — Physio-led Pilates by Cintia" />
+
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
