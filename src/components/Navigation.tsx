@@ -184,25 +184,24 @@ export function Navigation() {
 
             {/* Right: lang toggle + CTA + hamburger */}
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={() => {
-                  const idx = SUPPORTED_LANGUAGES.indexOf(lang);
-                  setLang(SUPPORTED_LANGUAGES[(idx + 1) % SUPPORTED_LANGUAGES.length]);
-                }}
-                aria-label="Switch language"
-                className={`hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border transition-colors ${heroMode ? "border-white/40 bg-white/10 hover:bg-white/20" : "border-border bg-background/70 hover:bg-muted"}`}
+              <div
+                className={`hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border transition-colors ${heroMode ? "border-white/40 bg-white/10" : "border-border bg-background/70"}`}
               >
                 {SUPPORTED_LANGUAGES.map((l, i) => (
-                  <span key={l}>
+                  <span key={l} className="flex items-center">
                     {i > 0 && (
                       <span className={`font-sans text-xs transition-colors ${heroMode ? "text-white/30" : "text-muted-foreground/40"}`}>/</span>
                     )}
-                    <span className={`font-sans text-xs font-semibold transition-colors ${heroMode ? (lang === l ? "text-white" : "text-white/50") : (lang === l ? "text-primary" : "text-muted-foreground")}`}>
+                    <button
+                      onClick={() => setLang(l)}
+                      aria-label={`Switch to ${l.toUpperCase()}`}
+                      className={`font-sans text-xs font-semibold transition-colors cursor-pointer px-0.5 ${heroMode ? (lang === l ? "text-white" : "text-white/50 hover:text-white/80") : (lang === l ? "text-primary" : "text-muted-foreground hover:text-foreground")}`}
+                    >
                       {l.toUpperCase()}
-                    </span>
+                    </button>
                   </span>
                 ))}
-              </button>
+              </div>
 
               <Link
                 to="/boeken#reservatie"
@@ -262,22 +261,19 @@ export function Navigation() {
             ))}
 
             <div className="mt-4 px-4">
-              <button
-                onClick={() => {
-                  const idx = SUPPORTED_LANGUAGES.indexOf(lang);
-                  setLang(SUPPORTED_LANGUAGES[(idx + 1) % SUPPORTED_LANGUAGES.length]);
-                }}
-                className="flex items-center gap-2 w-full py-3"
-              >
+              <div className="flex items-center gap-2 w-full py-3">
                 {SUPPORTED_LANGUAGES.map((l, i) => (
                   <span key={l} className="flex items-center gap-2">
                     {i > 0 && <span className="text-muted-foreground/40 text-sm">/</span>}
-                    <span className={`font-sans text-sm font-semibold ${lang === l ? "text-primary" : "text-muted-foreground"}`}>
+                    <button
+                      onClick={() => setLang(l)}
+                      className={`font-sans text-sm font-semibold cursor-pointer ${lang === l ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                    >
                       {l.toUpperCase()}
-                    </span>
+                    </button>
                   </span>
                 ))}
-              </button>
+              </div>
             </div>
           </nav>
 
