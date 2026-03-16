@@ -42,12 +42,20 @@ export default function Admin() {
     })();
   }, [authenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setAuthenticated(true);
-    } else {
-      toast({ title: "Incorrect password", variant: "destructive" });
+    try {
+      const { data, error } = await supabase.functions.invoke("verify-admin", {
+        body: { password },
+      });
+      if (error) throw error;
+      if (data?.valid) {
+        setAuthenticated(true);
+      } else {
+        toast({ title: "Incorrect password", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error verifying password", variant: "destructive" });
     }
   };
 
