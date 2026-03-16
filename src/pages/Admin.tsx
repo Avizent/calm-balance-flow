@@ -14,8 +14,6 @@ import {
 import { SUPPORTED_LANGUAGES, type Language } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 
-const ADMIN_PASSWORD = "spessirits2026";
-
 const LANGUAGE_LABELS: Record<Language, string> = {
   nl: "Nederlands",
   en: "English",
