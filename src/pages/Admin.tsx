@@ -148,7 +148,7 @@ export default function Admin() {
     const { error } = await supabase
       .from("translations")
       .update({
-        content: allTranslations[activeLang] as unknown as Record<string, unknown>,
+        content: allTranslations[activeLang] as unknown as import("@/integrations/supabase/types").Json,
         updated_at: new Date().toISOString(),
       })
       .eq("language", activeLang);
