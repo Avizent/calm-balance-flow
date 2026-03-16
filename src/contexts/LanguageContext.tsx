@@ -155,6 +155,76 @@ export interface Translations {
     errBericht: string;
     contactItems: { label: string }[];
   };
+  medicalProfessionals: {
+    navLabel: string;
+    seoTitle: string;
+    seoDesc: string;
+    seoBreadcrumb: string;
+    heroTag: string;
+    heroTitle: string;
+    heroTitleEm: string;
+    heroP1: string;
+    heroP2: string;
+    ctaInfo: string;
+    ctaContact: string;
+    whoTag: string;
+    whoTitle: string;
+    whoTitleEm: string;
+    whoP1: string;
+    whoP2: string;
+    clinicalTag: string;
+    clinicalTitle: string;
+    clinicalTitleEm: string;
+    clinicalIntro: string;
+    leftTitle: string;
+    rightTitle: string;
+    leftChecks: string[];
+    rightChecks: string[];
+    conditionsTag: string;
+    conditionsTitle: string;
+    conditionsTitleEm: string;
+    conditionsIntro: string;
+    conditionsList: string[];
+    conditionsNote: string;
+    referralTag: string;
+    referralTitle: string;
+    referralTitleEm: string;
+    referralIntro: string;
+    steps: { heading: string; body: string }[];
+    quote: string;
+    quoteAttribution: string;
+    contactTag: string;
+    contactTitle: string;
+    contactTitleEm: string;
+    contactIntro: string;
+    contactDetailsTitle: string;
+    contactLabels: string[];
+    formName: string;
+    formNamePlaceholder: string;
+    formRole: string;
+    formRolePlaceholder: string;
+    roleOptions: string[];
+    formPractice: string;
+    formPracticePlaceholder: string;
+    formEmail: string;
+    formEmailPlaceholder: string;
+    formPhone: string;
+    formPhonePlaceholder: string;
+    formMessage: string;
+    formMessagePlaceholder: string;
+    formSubmit: string;
+    errName: string;
+    errRole: string;
+    errEmail: string;
+    errEmailInvalid: string;
+    errMessage: string;
+    errConsent: string;
+    successMedical: string;
+    successPatient: string;
+    footerNote1: string;
+    footerNote2: string;
+    footerCredits: string;
+  };
 }
 
 const nl: Translations = {
@@ -405,6 +475,113 @@ const nl: Translations = {
       { label: "Adres" },
     ],
   },
+  medicalProfessionals: {
+    navLabel: "Voor Professionals",
+    seoTitle: "Voor Medische Professionals — Spessirits Pilates",
+    seoDesc: "Verwijs uw patiënten naar Pilates onder begeleiding van een kinesitherapeute. Cintia heeft meer dan 20 jaar klinische ervaring en biedt individuele revalidatiegerichte bewegingstherapie.",
+    seoBreadcrumb: "Voor Medische Professionals",
+    heroTag: "Voor Medische Professionals",
+    heroTitle: "Beweging als therapie —",
+    heroTitleEm: "voorgeschreven met precisie.",
+    heroP1: "Cintia is een gediplomeerde kinesitherapeute met meer dan 20 jaar klinische ervaring.",
+    heroP2: "Zoekt u een betrouwbare partner om de preventieve en revalidatieve beweging van uw patiënten te ondersteunen — dan bent u hier aan het juiste adres.",
+    ctaInfo: "Informatiepakket aanvragen →",
+    ctaContact: "Contact opnemen →",
+    whoTag: "Voor wie",
+    whoTitle: "Patiënten doorverwijzen naar",
+    whoTitleEm: "kinesitherapeutisch geleide Pilates.",
+    whoP1: "Deze pagina is geschreven voor huisartsen, kinesitherapeuten, orthopedisch specialisten, reumatologen, sportartsen en revalidatieteams.",
+    whoP2: "Als u patiënten heeft die baat zouden hebben bij gestructureerde, individueel aangepaste bewegingstherapie — gefundeerd in kinesitherapie en gegeven in een privé, klinische setting — dan is de praktijk van Cintia precies wat ze nodig hebben.",
+    clinicalTag: "Geen les. Geen fitness.",
+    clinicalTitle: "Verantwoorde Pilates —",
+    clinicalTitleEm: "geleid door klinische expertise.",
+    clinicalIntro: "Spessirits is geen studio. Er zijn geen groepslessen van tien, geen gedeelde reformers, geen standaardprogramma's. Elke sessie is één-op-één, of af en toe één-op-twee op afspraak.",
+    leftTitle: "Wat uw patiënt ontvangt",
+    rightTitle: "Wat Cintia onderscheidt",
+    leftChecks: [
+      "Een volledige initiële beoordeling afgestemd op hun conditie en doelen",
+      "Een programma opgebouwd rond hun lichaam — geen standaard lesplan",
+      "Persoonlijke aandacht gedurende elke sessie",
+      "Geleidelijke, evidence-based progressie",
+      "Toegang tot een volledig uitgeruste privéstudio",
+      "Een samenvattend rapport beschikbaar voor u op aanvraag",
+    ],
+    rightChecks: [
+      "Gediplomeerde kinesitherapeute — geen fitnessinstructeur",
+      "20+ jaar klinische en bewegingservaring",
+      "Diepgaande kennis van anatomie, biomechanica en letselpatronen",
+      "Preventief en revaliderend — niet prestatiegericht",
+      "Maximaal twee cliënten tegelijk",
+      "Werkt mét de doorverwijzende arts, niet eromheen",
+    ],
+    conditionsTag: "Aandoeningen die goed reageren",
+    conditionsTitle: "Bewegingstherapie voor",
+    conditionsTitleEm: "de patiënten die het meest baat hebben.",
+    conditionsIntro: "Cintia werkt met patiënten wiens aandoeningen goed gediend worden door begeleide, low-impact, kinesitherapeutisch geïnformeerde beweging. Veelvoorkomende doorverwijzingsprofielen zijn:",
+    conditionsList: [
+      "Chronische lage rugpijn",
+      "Nek- en cervicale spanning",
+      "Postoperatieve revalidatie",
+      "Artrose (heup, knie, wervelkolom)",
+      "Scoliose en houdingsafwijkingen",
+      "Hypermobiliteit en gewrichtsinstabiliteit",
+      "Bekkenbodemproblematiek",
+      "Pre- & postnatale revalidatie",
+      "Balans en valpreventie",
+      "Sedentaire leefstijlaandoeningen",
+      "Stressgerelateerde musculoskeletale spanning",
+      "Neurologische revalidatie (licht)",
+    ],
+    conditionsNote: "Niet zeker of Pilates geschikt is voor uw patiënt? Neem contact op — Cintia bespreekt het graag.",
+    referralTag: "Eenvoudig doorverwijzen",
+    referralTitle: "Drie stappen.",
+    referralTitleEm: "Meer is er niet nodig.",
+    referralIntro: "Een patiënt doorverwijzen naar Spessirits is eenvoudig. Geen verwijsformulieren, geen wachtlijsten, geen complexiteit.",
+    steps: [
+      { heading: "Stel Spessirits voor aan uw patiënt.", body: "Laat hen weten dat Cintia een gediplomeerde kinesitherapeute is die individuele Pilates-sessies aanbiedt vanuit een privéstudio in Schilde. De website bevat alles wat ze nodig hebben om de aanpak te begrijpen en zich comfortabel te voelen om contact op te nemen." },
+      { heading: "Uw patiënt neemt rechtstreeks contact op.", body: "Ze kunnen Cintia bereiken via telefoon, WhatsApp of het contactformulier op deze pagina. Zij plant een eerste gesprek om hun geschiedenis, conditie en doelen te begrijpen — en te bevestigen dat kinesitherapeutisch geleide Pilates de juiste keuze is." },
+      { heading: "Blijf op de hoogte, als u dat wenst.", body: "Na een initiële beoordeling stuurt Cintia graag een korte samenvatting naar de doorverwijzende arts — met toestemming van de patiënt. Ze ziet zichzelf als onderdeel van een breder zorgteam, niet als alternatief." },
+    ],
+    quote: "Pilates, wanneer geleid door iemand die het lichaam klinisch begrijpt, is een van de krachtigste preventieve middelen die we hebben. Ik wil de persoon zijn die uw patiënten vertrouwen om het goed te doen.",
+    quoteAttribution: "Cintia Spessirits — Gediplomeerde Kinesitherapeute & Pilatesdocent",
+    contactTag: "Contact opnemen",
+    contactTitle: "Vraag het professionele",
+    contactTitleEm: "informatiepakket aan.",
+    contactIntro: "Of u nu een patiënt wilt doorverwijzen, ons klinisch informatiepakket wilt aanvragen of gewoon een vraag heeft — Cintia helpt u graag.",
+    contactDetailsTitle: "Contactgegevens",
+    contactLabels: ["TELEFOON", "WHATSAPP", "E-MAIL", "STUDIO"],
+    formName: "Uw naam",
+    formNamePlaceholder: "Dr. / Dhr. / Mevr. ...",
+    formRole: "Ik ben een...",
+    formRolePlaceholder: "Selecteer uw rol...",
+    roleOptions: [
+      "Huisarts",
+      "Kinesitherapeut",
+      "Orthopedisch of sportspecialist",
+      "Andere medische professional",
+      "Patiënt of potentiële cliënt",
+    ],
+    formPractice: "Praktijk- of kliniknaam",
+    formPracticePlaceholder: "Optioneel",
+    formEmail: "E-mail",
+    formEmailPlaceholder: "uw@email.com",
+    formPhone: "Telefoon",
+    formPhonePlaceholder: "+32 ...",
+    formMessage: "Bericht",
+    formMessagePlaceholder: "Vertel ons over uw patiënt, of stel een vraag...",
+    formSubmit: "Bericht versturen →",
+    errName: "Naam is verplicht.",
+    errRole: "Selecteer een rol.",
+    errEmail: "E-mailadres is verplicht.",
+    errEmailInvalid: "Voer een geldig e-mailadres in.",
+    errMessage: "Bericht is verplicht.",
+    errConsent: "U moet akkoord gaan met het privacybeleid.",
+    successMedical: "Bedankt. Ons professionele informatiepakket is onderweg naar uw inbox. Cintia neemt binnenkort contact met u op.",
+    successPatient: "Bedankt voor uw bericht. Cintia neemt zo snel mogelijk persoonlijk contact met u op.",
+    footerNote1: "Uw aanvraag wordt met volledige discretie behandeld.",
+    footerNote2: "Patiëntinformatie wordt nooit gedeeld zonder toestemming.",
+    footerCredits: "Cintia Spessirits · Gediplomeerde Kinesitherapeute · Cirkellaan 12, 2970 Schilde · info@spessirits.com",
+  },
 };
 
 const en: Translations = {
@@ -653,6 +830,113 @@ const en: Translations = {
       { label: "Email" },
       { label: "Address" },
     ],
+  },
+  medicalProfessionals: {
+    navLabel: "Medical Professionals",
+    seoTitle: "For Medical Professionals — Spessirits Pilates",
+    seoDesc: "Refer your patients to physio-led Pilates. Cintia is a licensed physiotherapist with 20+ years of clinical experience offering one-to-one rehabilitative movement therapy.",
+    seoBreadcrumb: "For Medical Professionals",
+    heroTag: "For Medical Professionals",
+    heroTitle: "Movement as medicine —",
+    heroTitleEm: "prescribed with precision.",
+    heroP1: "Cintia is a licensed physiotherapist with over 20 years of clinical experience.",
+    heroP2: "If you are looking for a trusted partner to support your patients' preventive and rehabilitative movement — you are in the right place.",
+    ctaInfo: "Request Information Pack →",
+    ctaContact: "Get in Touch →",
+    whoTag: "Who This Is For",
+    whoTitle: "Referring patients to",
+    whoTitleEm: "physio-led Pilates.",
+    whoP1: "This page is written for GPs, physiotherapists, orthopaedic specialists, rheumatologists, sports medicine practitioners, and rehabilitation teams.",
+    whoP2: "If you have patients who would benefit from structured, individually tailored movement therapy — grounded in physiotherapy and delivered in a private, clinical setting — Cintia's practice may be exactly what they need.",
+    clinicalTag: "Not a Class. Not a Gym.",
+    clinicalTitle: "Responsible Pilates —",
+    clinicalTitleEm: "guided by clinical expertise.",
+    clinicalIntro: "Spessirits is not a studio. There are no classes of ten, no shared reformers, no generic programmes. Every session is one-to-one, or occasionally one-to-two by arrangement.",
+    leftTitle: "What your patient receives",
+    rightTitle: "What sets Cintia apart",
+    leftChecks: [
+      "A full initial assessment tailored to their condition and goals",
+      "A programme built around their body — not a standard class plan",
+      "One-to-one attention throughout every session",
+      "Gradual, evidence-informed progression",
+      "Access to a fully equipped private studio",
+      "A summary report available to you on request",
+    ],
+    rightChecks: [
+      "Licensed physiotherapist — not a fitness instructor",
+      "20+ years of clinical and movement experience",
+      "Deep knowledge of anatomy, biomechanics, and injury patterns",
+      "Preventive and rehabilitative — not performance-led",
+      "Maximum two clients at any one time",
+      "Works with the referring practitioner, not around them",
+    ],
+    conditionsTag: "Conditions That Respond Well",
+    conditionsTitle: "Movement therapy for",
+    conditionsTitleEm: "the patients who need it most.",
+    conditionsIntro: "Cintia works with patients whose conditions are well served by guided, low-impact, physiotherapy-informed movement. Common referral profiles include:",
+    conditionsList: [
+      "Chronic lower back pain",
+      "Neck and cervical tension",
+      "Post-surgical rehabilitation",
+      "Osteoarthritis (hip, knee, spine)",
+      "Scoliosis and postural imbalance",
+      "Hypermobility and joint instability",
+      "Pelvic floor dysfunction",
+      "Pre- & post-natal recovery",
+      "Balance and fall prevention",
+      "Sedentary lifestyle conditions",
+      "Stress-related musculoskeletal tension",
+      "Neurological rehabilitation (mild)",
+    ],
+    conditionsNote: "Not sure if Pilates is right for your patient? Get in touch — Cintia is happy to discuss.",
+    referralTag: "Simple to Refer",
+    referralTitle: "Three steps.",
+    referralTitleEm: "That's all it takes.",
+    referralIntro: "Referring a patient to Spessirits is straightforward. No referral forms, no waiting lists, no complexity.",
+    steps: [
+      { heading: "Introduce Spessirits to your patient.", body: "Let them know that Cintia is a licensed physiotherapist offering individual Pilates sessions from a private studio in Schilde. The website has everything they need to understand the approach and feel comfortable making contact." },
+      { heading: "Your patient makes contact directly.", body: "They can reach Cintia by phone, WhatsApp, or the enquiry form on this page. She will arrange an initial conversation to understand their history, condition, and goals — and confirm that physio-led Pilates is the right fit for them." },
+      { heading: "Stay in the loop, if you'd like.", body: "After an initial assessment, Cintia is happy to provide a brief summary to the referring practitioner — with the patient's consent. She sees herself as part of a wider care team, not an alternative to it." },
+    ],
+    quote: "Pilates, when led by someone who understands the body clinically, is one of the most powerful preventive tools we have. I want to be the person your patients trust to do it properly.",
+    quoteAttribution: "Cintia Spessirits — Licensed Physiotherapist & Pilates Teacher",
+    contactTag: "Get in Touch",
+    contactTitle: "Request the professional",
+    contactTitleEm: "information pack.",
+    contactIntro: "Whether you'd like to refer a patient, request our clinical information pack, or simply ask a question — Cintia is happy to help.",
+    contactDetailsTitle: "Contact details",
+    contactLabels: ["PHONE", "WHATSAPP", "EMAIL", "STUDIO"],
+    formName: "Your name",
+    formNamePlaceholder: "Dr. / Mr. / Ms. ...",
+    formRole: "I am a...",
+    formRolePlaceholder: "Select your role...",
+    roleOptions: [
+      "GP / General practitioner",
+      "Physiotherapist",
+      "Orthopaedic or sports specialist",
+      "Other medical professional",
+      "Patient or prospective client",
+    ],
+    formPractice: "Practice or clinic name",
+    formPracticePlaceholder: "Optional",
+    formEmail: "Email",
+    formEmailPlaceholder: "your@email.com",
+    formPhone: "Phone",
+    formPhonePlaceholder: "+32 ...",
+    formMessage: "Message",
+    formMessagePlaceholder: "Tell us about your patient, or ask a question...",
+    formSubmit: "Send message →",
+    errName: "Name is required.",
+    errRole: "Please select a role.",
+    errEmail: "Email is required.",
+    errEmailInvalid: "Please enter a valid email.",
+    errMessage: "Message is required.",
+    errConsent: "You must agree to the privacy policy.",
+    successMedical: "Thank you. Our professional information pack is on its way to your inbox. Cintia will be in touch shortly.",
+    successPatient: "Thank you for getting in touch. Cintia will be in contact with you directly very soon.",
+    footerNote1: "Your enquiry is treated with complete discretion.",
+    footerNote2: "Patient information is never shared without consent.",
+    footerCredits: "Cintia Spessirits · Licensed Physiotherapist · Cirkellaan 12, 2970 Schilde · info@spessirits.com",
   },
 };
 
@@ -907,6 +1191,113 @@ const fr: Translations = {
       { label: "Adresse" },
     ],
   },
+  medicalProfessionals: {
+    navLabel: "Professionnels médicaux",
+    seoTitle: "Pour les Professionnels Médicaux — Spessirits Pilates",
+    seoDesc: "Orientez vos patients vers du Pilates encadré par une kinésithérapeute. Cintia possède plus de 20 ans d'expérience clinique et propose des séances individuelles de thérapie par le mouvement.",
+    seoBreadcrumb: "Pour les Professionnels Médicaux",
+    heroTag: "Pour les Professionnels Médicaux",
+    heroTitle: "Le mouvement comme médecine —",
+    heroTitleEm: "prescrit avec précision.",
+    heroP1: "Cintia est une kinésithérapeute diplômée avec plus de 20 ans d'expérience clinique.",
+    heroP2: "Si vous recherchez un partenaire de confiance pour accompagner le mouvement préventif et rééducatif de vos patients — vous êtes au bon endroit.",
+    ctaInfo: "Demander le dossier d'information →",
+    ctaContact: "Nous contacter →",
+    whoTag: "À qui s'adresse cette page",
+    whoTitle: "Orienter vos patients vers du",
+    whoTitleEm: "Pilates guidé par une kinésithérapeute.",
+    whoP1: "Cette page s'adresse aux médecins généralistes, kinésithérapeutes, spécialistes orthopédiques, rhumatologues, médecins du sport et équipes de rééducation.",
+    whoP2: "Si vous avez des patients qui bénéficieraient d'une thérapie par le mouvement structurée et individualisée — fondée sur la kinésithérapie et dispensée dans un cadre privé et clinique — la pratique de Cintia pourrait être exactement ce dont ils ont besoin.",
+    clinicalTag: "Pas un cours. Pas une salle de sport.",
+    clinicalTitle: "Pilates responsable —",
+    clinicalTitleEm: "guidé par l'expertise clinique.",
+    clinicalIntro: "Spessirits n'est pas un studio. Il n'y a pas de cours de dix personnes, pas de reformers partagés, pas de programmes génériques. Chaque séance est individuelle, ou occasionnellement en duo sur arrangement.",
+    leftTitle: "Ce que votre patient reçoit",
+    rightTitle: "Ce qui distingue Cintia",
+    leftChecks: [
+      "Une évaluation initiale complète adaptée à sa condition et ses objectifs",
+      "Un programme construit autour de son corps — pas un plan de cours standard",
+      "Une attention individuelle tout au long de chaque séance",
+      "Une progression graduelle et fondée sur les preuves",
+      "Accès à un studio privé entièrement équipé",
+      "Un rapport de synthèse disponible sur demande",
+    ],
+    rightChecks: [
+      "Kinésithérapeute diplômée — pas une instructrice de fitness",
+      "20+ ans d'expérience clinique et en mouvement",
+      "Connaissance approfondie de l'anatomie, la biomécanique et les schémas de blessures",
+      "Préventive et rééducative — pas axée sur la performance",
+      "Maximum deux clients à la fois",
+      "Travaille avec le praticien référent, pas en marge",
+    ],
+    conditionsTag: "Pathologies qui répondent bien",
+    conditionsTitle: "Thérapie par le mouvement pour",
+    conditionsTitleEm: "les patients qui en ont le plus besoin.",
+    conditionsIntro: "Cintia travaille avec des patients dont les pathologies répondent bien à un mouvement guidé, à faible impact, informé par la kinésithérapie. Les profils d'orientation courants incluent :",
+    conditionsList: [
+      "Lombalgie chronique",
+      "Tensions cervicales et du cou",
+      "Rééducation post-chirurgicale",
+      "Arthrose (hanche, genou, colonne)",
+      "Scoliose et déséquilibre postural",
+      "Hypermobilité et instabilité articulaire",
+      "Dysfonction du plancher pelvien",
+      "Récupération pré- & post-natale",
+      "Équilibre et prévention des chutes",
+      "Pathologies liées à la sédentarité",
+      "Tensions musculosquelettiques liées au stress",
+      "Rééducation neurologique (légère)",
+    ],
+    conditionsNote: "Vous n'êtes pas sûr que le Pilates convienne à votre patient ? Contactez-nous — Cintia se fera un plaisir d'en discuter.",
+    referralTag: "Simple à orienter",
+    referralTitle: "Trois étapes.",
+    referralTitleEm: "C'est tout ce qu'il faut.",
+    referralIntro: "Orienter un patient vers Spessirits est simple. Pas de formulaires de référence, pas de listes d'attente, pas de complexité.",
+    steps: [
+      { heading: "Présentez Spessirits à votre patient.", body: "Faites-lui savoir que Cintia est une kinésithérapeute diplômée qui propose des séances individuelles de Pilates dans un studio privé à Schilde. Le site contient tout ce dont il a besoin pour comprendre l'approche et se sentir à l'aise pour prendre contact." },
+      { heading: "Votre patient prend contact directement.", body: "Il peut joindre Cintia par téléphone, WhatsApp ou le formulaire de cette page. Elle organisera une conversation initiale pour comprendre son historique, sa condition et ses objectifs — et confirmer que le Pilates guidé par une kinésithérapeute est adapté." },
+      { heading: "Restez informé, si vous le souhaitez.", body: "Après une évaluation initiale, Cintia peut fournir un bref résumé au praticien référent — avec le consentement du patient. Elle se considère comme faisant partie d'une équipe de soins élargie, pas comme une alternative." },
+    ],
+    quote: "Le Pilates, lorsqu'il est dirigé par quelqu'un qui comprend le corps cliniquement, est l'un des outils préventifs les plus puissants dont nous disposons. Je veux être la personne en qui vos patients ont confiance pour le faire correctement.",
+    quoteAttribution: "Cintia Spessirits — Kinésithérapeute Diplômée & Enseignante Pilates",
+    contactTag: "Nous contacter",
+    contactTitle: "Demandez le dossier",
+    contactTitleEm: "d'information professionnelle.",
+    contactIntro: "Que vous souhaitiez orienter un patient, demander notre dossier d'information clinique ou simplement poser une question — Cintia se fera un plaisir de vous aider.",
+    contactDetailsTitle: "Coordonnées",
+    contactLabels: ["TÉLÉPHONE", "WHATSAPP", "E-MAIL", "STUDIO"],
+    formName: "Votre nom",
+    formNamePlaceholder: "Dr. / M. / Mme ...",
+    formRole: "Je suis...",
+    formRolePlaceholder: "Sélectionnez votre rôle...",
+    roleOptions: [
+      "Médecin généraliste",
+      "Kinésithérapeute",
+      "Spécialiste orthopédique ou sportif",
+      "Autre professionnel médical",
+      "Patient ou futur client",
+    ],
+    formPractice: "Nom du cabinet ou de la clinique",
+    formPracticePlaceholder: "Facultatif",
+    formEmail: "E-mail",
+    formEmailPlaceholder: "votre@email.com",
+    formPhone: "Téléphone",
+    formPhonePlaceholder: "+32 ...",
+    formMessage: "Message",
+    formMessagePlaceholder: "Parlez-nous de votre patient ou posez une question...",
+    formSubmit: "Envoyer le message →",
+    errName: "Le nom est obligatoire.",
+    errRole: "Veuillez sélectionner un rôle.",
+    errEmail: "L'adresse e-mail est obligatoire.",
+    errEmailInvalid: "Veuillez entrer une adresse e-mail valide.",
+    errMessage: "Le message est obligatoire.",
+    errConsent: "Vous devez accepter la politique de confidentialité.",
+    successMedical: "Merci. Notre dossier d'information professionnelle est en route vers votre boîte mail. Cintia vous contactera sous peu.",
+    successPatient: "Merci de nous avoir contactés. Cintia vous répondra très rapidement.",
+    footerNote1: "Votre demande est traitée avec la plus grande discrétion.",
+    footerNote2: "Les informations des patients ne sont jamais partagées sans consentement.",
+    footerCredits: "Cintia Spessirits · Kinésithérapeute Diplômée · Cirkellaan 12, 2970 Schilde · info@spessirits.com",
+  },
 };
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -1160,6 +1551,113 @@ const pt: Translations = {
       { label: "E-mail" },
       { label: "Endereço" },
     ],
+  },
+  medicalProfessionals: {
+    navLabel: "Profissionais Médicos",
+    seoTitle: "Para Profissionais Médicos — Spessirits Pilates",
+    seoDesc: "Encaminhe os seus pacientes para Pilates orientado por fisioterapeuta. Cintia tem mais de 20 anos de experiência clínica e oferece sessões individuais de terapia pelo movimento.",
+    seoBreadcrumb: "Para Profissionais Médicos",
+    heroTag: "Para Profissionais Médicos",
+    heroTitle: "Movimento como medicina —",
+    heroTitleEm: "prescrito com precisão.",
+    heroP1: "Cintia é uma fisioterapeuta diplomada com mais de 20 anos de experiência clínica.",
+    heroP2: "Se procura um parceiro de confiança para apoiar o movimento preventivo e reabilitativo dos seus pacientes — está no lugar certo.",
+    ctaInfo: "Solicitar pacote informativo →",
+    ctaContact: "Entrar em contato →",
+    whoTag: "Para quem",
+    whoTitle: "Encaminhar pacientes para",
+    whoTitleEm: "Pilates orientado por fisioterapeuta.",
+    whoP1: "Esta página destina-se a médicos de clínica geral, fisioterapeutas, especialistas ortopédicos, reumatologistas, médicos desportivos e equipas de reabilitação.",
+    whoP2: "Se tem pacientes que beneficiariam de uma terapia pelo movimento estruturada e individualizada — fundamentada na fisioterapia e realizada num ambiente privado e clínico — a prática da Cintia pode ser exatamente o que precisam.",
+    clinicalTag: "Não é uma aula. Não é um ginásio.",
+    clinicalTitle: "Pilates responsável —",
+    clinicalTitleEm: "guiado por expertise clínica.",
+    clinicalIntro: "O Spessirits não é um estúdio. Não há aulas de dez pessoas, nem reformers partilhados, nem programas genéricos. Cada sessão é individual, ou ocasionalmente a dois por acordo.",
+    leftTitle: "O que o seu paciente recebe",
+    rightTitle: "O que distingue a Cintia",
+    leftChecks: [
+      "Uma avaliação inicial completa adaptada à sua condição e objetivos",
+      "Um programa construído em torno do seu corpo — não um plano de aula padrão",
+      "Atenção individual durante toda a sessão",
+      "Progressão gradual e baseada em evidências",
+      "Acesso a um estúdio privado totalmente equipado",
+      "Relatório de síntese disponível mediante pedido",
+    ],
+    rightChecks: [
+      "Fisioterapeuta diplomada — não instrutora de fitness",
+      "20+ anos de experiência clínica e em movimento",
+      "Conhecimento profundo de anatomia, biomecânica e padrões de lesão",
+      "Preventivo e reabilitativo — não focado em performance",
+      "Máximo dois clientes de cada vez",
+      "Trabalha com o profissional que encaminha, não à margem",
+    ],
+    conditionsTag: "Condições que respondem bem",
+    conditionsTitle: "Terapia pelo movimento para",
+    conditionsTitleEm: "os pacientes que mais precisam.",
+    conditionsIntro: "Cintia trabalha com pacientes cujas condições respondem bem a um movimento guiado, de baixo impacto e informado pela fisioterapia. Perfis de encaminhamento comuns incluem:",
+    conditionsList: [
+      "Dor lombar crónica",
+      "Tensão cervical e do pescoço",
+      "Reabilitação pós-cirúrgica",
+      "Osteoartrose (anca, joelho, coluna)",
+      "Escoliose e desequilíbrio postural",
+      "Hipermobilidade e instabilidade articular",
+      "Disfunção do pavimento pélvico",
+      "Recuperação pré e pós-natal",
+      "Equilíbrio e prevenção de quedas",
+      "Condições relacionadas ao sedentarismo",
+      "Tensão musculoesquelética relacionada ao stress",
+      "Reabilitação neurológica (leve)",
+    ],
+    conditionsNote: "Não tem a certeza se Pilates é adequado para o seu paciente? Entre em contato — a Cintia terá todo o prazer em conversar.",
+    referralTag: "Simples de encaminhar",
+    referralTitle: "Três passos.",
+    referralTitleEm: "É tudo o que é preciso.",
+    referralIntro: "Encaminhar um paciente para o Spessirits é simples. Sem formulários de referência, sem listas de espera, sem complexidade.",
+    steps: [
+      { heading: "Apresente o Spessirits ao seu paciente.", body: "Informe-o de que a Cintia é uma fisioterapeuta diplomada que oferece sessões individuais de Pilates num estúdio privado em Schilde. O site tem tudo o que precisa para entender a abordagem e sentir-se à vontade para entrar em contato." },
+      { heading: "O seu paciente entra em contato diretamente.", body: "Pode contactar a Cintia por telefone, WhatsApp ou pelo formulário desta página. Ela agendará uma conversa inicial para entender o histórico, condição e objetivos — e confirmar que Pilates orientado por fisioterapeuta é a escolha certa." },
+      { heading: "Mantenha-se informado, se desejar.", body: "Após uma avaliação inicial, a Cintia terá todo o prazer em fornecer um breve resumo ao profissional que encaminhou — com o consentimento do paciente. Ela vê-se como parte de uma equipa de cuidados mais ampla, não como alternativa." },
+    ],
+    quote: "O Pilates, quando liderado por alguém que compreende o corpo clinicamente, é uma das ferramentas preventivas mais poderosas que temos. Quero ser a pessoa em quem os seus pacientes confiam para fazê-lo corretamente.",
+    quoteAttribution: "Cintia Spessirits — Fisioterapeuta Diplomada & Professora de Pilates",
+    contactTag: "Entre em contato",
+    contactTitle: "Solicite o pacote de",
+    contactTitleEm: "informação profissional.",
+    contactIntro: "Quer encaminhar um paciente, solicitar o nosso pacote de informação clínica ou simplesmente fazer uma pergunta — a Cintia terá todo o prazer em ajudar.",
+    contactDetailsTitle: "Dados de contato",
+    contactLabels: ["TELEFONE", "WHATSAPP", "E-MAIL", "ESTÚDIO"],
+    formName: "O seu nome",
+    formNamePlaceholder: "Dr. / Sr. / Sra. ...",
+    formRole: "Eu sou...",
+    formRolePlaceholder: "Selecione o seu papel...",
+    roleOptions: [
+      "Médico de clínica geral",
+      "Fisioterapeuta",
+      "Especialista ortopédico ou desportivo",
+      "Outro profissional médico",
+      "Paciente ou futuro cliente",
+    ],
+    formPractice: "Nome da clínica ou consultório",
+    formPracticePlaceholder: "Opcional",
+    formEmail: "E-mail",
+    formEmailPlaceholder: "seu@email.com",
+    formPhone: "Telefone",
+    formPhonePlaceholder: "+32 ...",
+    formMessage: "Mensagem",
+    formMessagePlaceholder: "Conte-nos sobre o seu paciente ou faça uma pergunta...",
+    formSubmit: "Enviar mensagem →",
+    errName: "O nome é obrigatório.",
+    errRole: "Por favor selecione um papel.",
+    errEmail: "O e-mail é obrigatório.",
+    errEmailInvalid: "Por favor insira um endereço de e-mail válido.",
+    errMessage: "A mensagem é obrigatória.",
+    errConsent: "Deve concordar com a política de privacidade.",
+    successMedical: "Obrigado. O nosso pacote de informação profissional está a caminho da sua caixa de entrada. A Cintia entrará em contato em breve.",
+    successPatient: "Obrigado por entrar em contato. A Cintia responderá pessoalmente muito em breve.",
+    footerNote1: "A sua consulta é tratada com total discrição.",
+    footerNote2: "A informação do paciente nunca é partilhada sem consentimento.",
+    footerCredits: "Cintia Spessirits · Fisioterapeuta Diplomada · Cirkellaan 12, 2970 Schilde · info@spessirits.com",
   },
 };
 // ───────────────────────────────────────────────────────────────────────────
