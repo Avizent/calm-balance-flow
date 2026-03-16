@@ -1184,21 +1184,56 @@ const LanguageContext = createContext<LanguageContextValue>({
   t: nl,
 });
 
-function getInitialLanguage(): Language {
+function getStoredLanguage(): Language | null {
   try {
     const stored = localStorage.getItem("spessirits-lang") as Language | null;
     if (stored && SUPPORTED_LANGUAGES.includes(stored)) return stored;
   } catch {}
-  return "nl";
+  return null;
+}
+
+async function fetchDefaultLanguage(): Promise<Language> {
+  try {
+    const { data } = await supabase
+      .from("site_settings")
+      .select("default_language")
+      .eq("id", "default")
+      .single();
+    const lang = data?.default_language as Language | undefined;
+    if (lang && SUPPORTED_LANGUAGES.includes(lang)) return lang;
+  } catch {}
+  return "en";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>(getInitialLanguage);
+  const stored = getStoredLanguage();
+  const [lang, setLangState] = useState<Language>(stored ?? "en");
+  const [ready, setReady] = useState(!!stored);
+
+  useEffect(() => {
+    if (stored) return; // already have a preference
+    (async () => {
+      // Try geo first
+      const geoLang = getLanguageFromTimezone(SUPPORTED_LANGUAGES);
+      if (geoLang) {
+        setLangState(geoLang);
+        setReady(true);
+        return;
+      }
+      // Fall back to admin default from DB
+      const dbDefault = await fetchDefaultLanguage();
+      setLangState(dbDefault);
+      setReady(true);
+    })();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
     try { localStorage.setItem("spessirits-lang", newLang); } catch {}
   };
+
+  if (!ready) return null; // avoid flash of wrong language
+
   return (
     <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
       {children}
