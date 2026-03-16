@@ -49,10 +49,10 @@ export function Footer() {
   };
 
   const navItems = [
-    { label: t.nav.home,    type: "home"    as const },
     { label: t.nav.over,    type: "route"   as const, href: "/over" },
     { label: t.nav.lessen,  type: "section" as const, id: "lessen" },
     { label: lang === "nl" ? "Sessies" : "Sessions", type: "section" as const, id: "prive" },
+    { label: "Medical Professionals", type: "route" as const, href: "/medical-professionals" },
     { label: t.nav.contact, type: "section" as const, id: "contact" },
   ];
 

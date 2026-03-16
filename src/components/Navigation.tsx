@@ -69,7 +69,7 @@ export function Navigation() {
 
   const isActive = (item: typeof navItems[number]) => {
     if (item.type === "route") {
-      return item.href === "/" ? (isHome && activeSection === "") : location.pathname.startsWith(item.href);
+      return location.pathname.startsWith(item.href);
     }
     return isHome && activeSection === item.id;
   };
