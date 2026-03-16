@@ -60,10 +60,10 @@ export function Navigation() {
 
   /* Nav items — 5 items as requested */
   const navItems = [
-    { label: t.nav.home,    type: "route",   href: "/" },
     { label: t.nav.over,    type: "route",   href: "/over" },
     { label: t.nav.lessen,  type: "section", id: "lessen" },
     { label: lang === "nl" ? "Sessies" : "Sessions", type: "section", id: "prive" },
+    { label: "Medical Professionals", type: "route", href: "/medical-professionals" },
     { label: t.nav.contact, type: "section", id: "contact" },
   ] as const;
 
