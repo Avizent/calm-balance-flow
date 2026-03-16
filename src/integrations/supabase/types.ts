@@ -14,7 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      site_settings: {
+        Row: {
+          default_language: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          default_language?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          default_language?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
