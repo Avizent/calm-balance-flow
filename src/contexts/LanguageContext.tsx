@@ -428,10 +428,10 @@ const en: Translations = {
   },
   home: {
     heroTag: "Physio-led Pilates · Schilde, Belgium",
-    heroTitle: "Pilates as a",
-    heroTitleEm: "lifestyle",
+    heroTitle: "Pilates guided by a",
+    heroTitleEm: "physiotherapist.",
     heroSub:
-      "Don't expect a standard class — expect mindful attention and respect for your body, movement that serves rather than demands.",
+      "Preventive, personal, and grounded in clinical expertise.",
     heroCta: "Book a Session",
     heroSecondary: "About Cintia",
     aboutTag: "About Cintia",
