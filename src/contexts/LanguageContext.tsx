@@ -178,10 +178,10 @@ const nl: Translations = {
   },
   home: {
     heroTag: "Physio-led Pilates · Schilde, België",
-    heroTitle: "Pilates als",
-    heroTitleEm: "levensstijl",
+    heroTitle: "Pilates begeleid door een",
+    heroTitleEm: "kinesitherapeute.",
     heroSub:
-      "Verwacht geen standaardles, wel aandacht en respect voor het lichaam en beweging die dient — niet eist.",
+      "Preventief, persoonlijk en gefundeerd in klinische expertise.",
     heroCta: "Boek een Sessie",
     heroSecondary: "Over Cintia",
     aboutTag: "Over Cintia",
