@@ -680,10 +680,10 @@ const fr: Translations = {
   },
   home: {
     heroTag: "Pilates guidé par une kiné · Schilde, Belgique",
-    heroTitle: "Le Pilates comme",
-    heroTitleEm: "art de vivre",
+    heroTitle: "Pilates guidé par une",
+    heroTitleEm: "kinésithérapeute.",
     heroSub:
-      "N'attendez pas un cours ordinaire — attendez-vous à une attention sincère, un respect du corps et un mouvement qui sert, sans jamais contraindre.",
+      "Préventif, personnel et ancré dans l'expertise clinique.",
     heroCta: "Réserver une séance",
     heroSecondary: "À propos de Cintia",
     aboutTag: "À propos de Cintia",
