@@ -146,7 +146,7 @@ export function Navigation() {
             </Link>
 
             {/* Desktop nav with sliding underline */}
-            <nav ref={navRef} className="hidden md:flex items-center gap-4 relative">
+            <nav ref={navRef} className="hidden md:flex items-center gap-6 relative">
             {navItems.map((item, i) => (
                 <span key={item.type === "route" ? item.href : item.id} ref={el => { itemRefs.current[i] = el; }}>
                   {item.type === "route" ? (
