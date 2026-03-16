@@ -935,10 +935,10 @@ const pt: Translations = {
   },
   home: {
     heroTag: "Pilates com orientação fisioterapêutica · Schilde, Bélgica",
-    heroTitle: "Pilates como",
-    heroTitleEm: "estilo de vida",
+    heroTitle: "Pilates orientado por uma",
+    heroTitleEm: "fisioterapeuta.",
     heroSub:
-      "Não espere uma aula comum — espere atenção genuína, respeito pelo seu corpo e um movimento que serve, sem nunca exigir.",
+      "Preventivo, pessoal e baseado em expertise clínica.",
     heroCta: "Agendar uma Sessão",
     heroSecondary: "Sobre a Cintia",
     aboutTag: "Sobre a Cintia",
