@@ -1664,22 +1664,47 @@ const pt: Translations = {
 
 const baseTranslations: Record<"nl" | "en", Translations> = { nl, en };
 
-export const translations: Record<Language, Translations> = {
+export const hardcodedTranslations: Record<Language, Translations> = {
   ...baseTranslations,
   ...(ENABLE_FRENCH ? { fr } : {}),
   ...(ENABLE_PORTUGUESE ? { pt } : {}),
 } as Record<Language, Translations>;
 
+// Deep merge: source values override target, recursing into objects
+function deepMerge<T>(target: T, source: Partial<T>): T {
+  if (!source) return target;
+  const result = { ...target } as Record<string, unknown>;
+  for (const key of Object.keys(source)) {
+    const srcVal = (source as Record<string, unknown>)[key];
+    const tgtVal = result[key];
+    if (
+      srcVal &&
+      typeof srcVal === "object" &&
+      !Array.isArray(srcVal) &&
+      tgtVal &&
+      typeof tgtVal === "object" &&
+      !Array.isArray(tgtVal)
+    ) {
+      result[key] = deepMerge(tgtVal, srcVal as Partial<typeof tgtVal>);
+    } else if (srcVal !== undefined) {
+      result[key] = srcVal;
+    }
+  }
+  return result as T;
+}
+
 interface LanguageContextValue {
   lang: Language;
   setLang: (l: Language) => void;
   t: Translations;
+  dbTranslations: Record<Language, Translations> | null;
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
   lang: "nl",
   setLang: () => {},
   t: nl,
+  dbTranslations: null,
 });
 
 function getStoredLanguage(): Language | null {
@@ -1703,24 +1728,54 @@ async function fetchDefaultLanguage(): Promise<Language> {
   return "en";
 }
 
+async function fetchTranslations(): Promise<Record<Language, Partial<Translations>> | null> {
+  try {
+    const { data, error } = await supabase
+      .from("translations")
+      .select("language, content");
+    if (error || !data) return null;
+    const result: Record<string, Partial<Translations>> = {};
+    for (const row of data) {
+      result[row.language] = row.content as unknown as Partial<Translations>;
+    }
+    return result as Record<Language, Partial<Translations>>;
+  } catch {
+    return null;
+  }
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const stored = getStoredLanguage();
   const [lang, setLangState] = useState<Language>(stored ?? "en");
   const [ready, setReady] = useState(!!stored);
+  const [mergedTranslations, setMergedTranslations] = useState<Record<Language, Translations>>(hardcodedTranslations);
+  const [dbTranslations, setDbTranslations] = useState<Record<Language, Translations> | null>(null);
 
   useEffect(() => {
-    if (stored) return; // already have a preference
     (async () => {
-      // Try geo first
-      const geoLang = getLanguageFromTimezone(SUPPORTED_LANGUAGES);
-      if (geoLang) {
-        setLangState(geoLang);
-        setReady(true);
-        return;
+      // Fetch DB translations and merge over hardcoded defaults
+      const dbData = await fetchTranslations();
+      if (dbData) {
+        const merged = { ...hardcodedTranslations };
+        for (const l of SUPPORTED_LANGUAGES) {
+          if (dbData[l]) {
+            merged[l] = deepMerge(hardcodedTranslations[l], dbData[l]);
+          }
+        }
+        setMergedTranslations(merged);
+        setDbTranslations(merged);
       }
-      // Fall back to admin default from DB
-      const dbDefault = await fetchDefaultLanguage();
-      setLangState(dbDefault);
+
+      // Determine initial language if not stored
+      if (!stored) {
+        const geoLang = getLanguageFromTimezone(SUPPORTED_LANGUAGES);
+        if (geoLang) {
+          setLangState(geoLang);
+        } else {
+          const dbDefault = await fetchDefaultLanguage();
+          setLangState(dbDefault);
+        }
+      }
       setReady(true);
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -1733,7 +1788,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   if (!ready) return null; // avoid flash of wrong language
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
+    <LanguageContext.Provider value={{ lang, setLang, t: mergedTranslations[lang], dbTranslations }}>
       {children}
     </LanguageContext.Provider>
   );
