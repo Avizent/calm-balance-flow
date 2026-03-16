@@ -152,7 +152,7 @@ export function Navigation() {
                   {item.type === "route" ? (
                     <Link
                       to={item.href}
-                      onClick={item.href === "/" ? handleHomeClick : () => setMenuOpen(false)}
+                      onClick={() => setMenuOpen(false)}
                       className={linkCls(isActive(item))}
                     >
                       {item.label}
