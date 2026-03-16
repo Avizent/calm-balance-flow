@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { getLanguageFromTimezone } from "@/lib/geo-language";
 
 // ─── Single points of control ──────────────────────────────────────────────
 // Set either to false to completely remove that language (type, toggle, strings).
