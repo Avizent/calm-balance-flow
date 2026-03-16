@@ -60,16 +60,16 @@ export function Navigation() {
 
   /* Nav items — 5 items as requested */
   const navItems = [
-    { label: t.nav.home,    type: "route",   href: "/" },
     { label: t.nav.over,    type: "route",   href: "/over" },
     { label: t.nav.lessen,  type: "section", id: "lessen" },
     { label: lang === "nl" ? "Sessies" : "Sessions", type: "section", id: "prive" },
+    { label: "Medical Professionals", type: "route", href: "/medical-professionals" },
     { label: t.nav.contact, type: "section", id: "contact" },
   ] as const;
 
   const isActive = (item: typeof navItems[number]) => {
     if (item.type === "route") {
-      return item.href === "/" ? (isHome && activeSection === "") : location.pathname.startsWith(item.href);
+      return location.pathname.startsWith(item.href);
     }
     return isHome && activeSection === item.id;
   };
@@ -152,7 +152,7 @@ export function Navigation() {
                   {item.type === "route" ? (
                     <Link
                       to={item.href}
-                      onClick={item.href === "/" ? handleHomeClick : () => setMenuOpen(false)}
+                      onClick={() => setMenuOpen(false)}
                       className={linkCls(isActive(item))}
                     >
                       {item.label}
@@ -244,7 +244,7 @@ export function Navigation() {
                 <Link
                   key={item.href}
                   to={item.href}
-                  onClick={item.href === "/" ? handleHomeClick : () => setMenuOpen(false)}
+                  onClick={() => setMenuOpen(false)}
                   className={mobileLinkCls(isActive(item))}
                 >
                   {item.label}

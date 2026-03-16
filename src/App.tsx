@@ -18,6 +18,7 @@ import Contact from "./pages/Contact";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
+import MedicalProfessionals from "./pages/MedicalProfessionals";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/tarieven" element={<Tarieven />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/legal" element={<Legal />} />
+              <Route path="/medical-professionals" element={<MedicalProfessionals />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
