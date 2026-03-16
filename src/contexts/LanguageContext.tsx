@@ -178,10 +178,10 @@ const nl: Translations = {
   },
   home: {
     heroTag: "Physio-led Pilates · Schilde, België",
-    heroTitle: "Pilates als",
-    heroTitleEm: "levensstijl",
+    heroTitle: "Pilates begeleid door een",
+    heroTitleEm: "kinesitherapeute.",
     heroSub:
-      "Verwacht geen standaardles, wel aandacht en respect voor het lichaam en beweging die dient — niet eist.",
+      "Preventief, persoonlijk en gefundeerd in klinische expertise.",
     heroCta: "Boek een Sessie",
     heroSecondary: "Over Cintia",
     aboutTag: "Over Cintia",
@@ -428,10 +428,10 @@ const en: Translations = {
   },
   home: {
     heroTag: "Physio-led Pilates · Schilde, Belgium",
-    heroTitle: "Pilates as a",
-    heroTitleEm: "lifestyle",
+    heroTitle: "Pilates guided by a",
+    heroTitleEm: "physiotherapist.",
     heroSub:
-      "Don't expect a standard class — expect mindful attention and respect for your body, movement that serves rather than demands.",
+      "Preventive, personal, and grounded in clinical expertise.",
     heroCta: "Book a Session",
     heroSecondary: "About Cintia",
     aboutTag: "About Cintia",
@@ -680,10 +680,10 @@ const fr: Translations = {
   },
   home: {
     heroTag: "Pilates guidé par une kiné · Schilde, Belgique",
-    heroTitle: "Le Pilates comme",
-    heroTitleEm: "art de vivre",
+    heroTitle: "Pilates guidé par une",
+    heroTitleEm: "kinésithérapeute.",
     heroSub:
-      "N'attendez pas un cours ordinaire — attendez-vous à une attention sincère, un respect du corps et un mouvement qui sert, sans jamais contraindre.",
+      "Préventif, personnel et ancré dans l'expertise clinique.",
     heroCta: "Réserver une séance",
     heroSecondary: "À propos de Cintia",
     aboutTag: "À propos de Cintia",
@@ -935,10 +935,10 @@ const pt: Translations = {
   },
   home: {
     heroTag: "Pilates com orientação fisioterapêutica · Schilde, Bélgica",
-    heroTitle: "Pilates como",
-    heroTitleEm: "estilo de vida",
+    heroTitle: "Pilates orientado por uma",
+    heroTitleEm: "fisioterapeuta.",
     heroSub:
-      "Não espere uma aula comum — espere atenção genuína, respeito pelo seu corpo e um movimento que serve, sem nunca exigir.",
+      "Preventivo, pessoal e baseado em expertise clínica.",
     heroCta: "Agendar uma Sessão",
     heroSecondary: "Sobre a Cintia",
     aboutTag: "Sobre a Cintia",
