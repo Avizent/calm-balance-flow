@@ -244,7 +244,7 @@ export function Navigation() {
                 <Link
                   key={item.href}
                   to={item.href}
-                  onClick={item.href === "/" ? handleHomeClick : () => setMenuOpen(false)}
+                  onClick={() => setMenuOpen(false)}
                   className={mobileLinkCls(isActive(item))}
                 >
                   {item.label}

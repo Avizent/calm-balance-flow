@@ -80,13 +80,6 @@ export function Footer() {
               {navItems.map((item) => {
                 const cls = "font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors cursor-pointer";
 
-                if (item.type === "home") {
-                  return (
-                    <a key="home" href="/" onClick={handleHomeClick} className={cls}>
-                      {item.label}
-                    </a>
-                  );
-                }
                 if (item.type === "route") {
                   return (
                     <Link
