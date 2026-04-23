@@ -19,6 +19,12 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <meta name="theme-color" content="#f5f0e8" />
 
+    <!-- Resource hints: warm up the connection to the Supabase backend
+         (used for translations, admin auth, edge functions) so the first
+         API request after hydration skips DNS + TLS handshake latency. -->
+    <link rel="preconnect" href="https://kopzmljrvfyfqfjcumgr.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://kopzmljrvfyfqfjcumgr.supabase.co" />
+
     <!-- Static geo meta (location-based; same for every route) -->
     <meta name="geo.region" content="BE-VAN" />
     <meta name="geo.placename" content="Schilde" />
