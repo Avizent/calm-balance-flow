@@ -28,7 +28,7 @@ const ROUTES = [
   "/legal",
 ];
 
-const CONCURRENCY = 1;
+const CONCURRENCY = 3;
 const NAV_TIMEOUT_MS = 45_000;
 const HELMET_TIMEOUT_MS = 20_000;
 
