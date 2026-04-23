@@ -147,6 +147,61 @@ async function runWithConcurrency(items, limit, worker) {
   return results;
 }
 
+// ── sitemap.xml ─────────────────────────────────────────────────────
+async function writeSitemap() {
+  const lastmod = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const urls = ROUTES.map(
+    ({ path: p, priority, changefreq }) => `  <url>
+    <loc>${SITE_URL}${p === "/" ? "/" : p}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`
+  ).join("\n");
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`;
+  await fs.writeFile(path.join(DIST, "sitemap.xml"), xml, "utf8");
+  console.log(`[prerender] ✓ sitemap.xml  (${ROUTES.length} urls, lastmod=${lastmod})`);
+}
+
+// ── robots.txt ──────────────────────────────────────────────────────
+async function writeRobots() {
+  const aiAndSocialBots = [
+    "Googlebot",
+    "Bingbot",
+    "Twitterbot",
+    "facebookexternalhit",
+    "Applebot",
+    "GPTBot",
+    "Google-Extended",
+    "PerplexityBot",
+    "ClaudeBot",
+    "ChatGPT-User",
+    "OAI-SearchBot",
+    "anthropic-ai",
+    "CCBot",
+  ];
+
+  const blocks = aiAndSocialBots
+    .map((ua) => `User-agent: ${ua}\nAllow: /\nDisallow: /admin\n`)
+    .join("\n");
+
+  const txt = `${blocks}
+User-agent: *
+Allow: /
+Allow: /llms.txt
+Disallow: /admin
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+  await fs.writeFile(path.join(DIST, "robots.txt"), txt, "utf8");
+  console.log(`[prerender] ✓ robots.txt  (${aiAndSocialBots.length + 1} agents)`);
+}
+
 async function main() {
   // Verify build output exists
   try {
