@@ -28,9 +28,9 @@ const ROUTES = [
   "/legal",
 ];
 
-const CONCURRENCY = 3;
-const NAV_TIMEOUT_MS = 30_000;
-const HELMET_TIMEOUT_MS = 10_000;
+const CONCURRENCY = 2;
+const NAV_TIMEOUT_MS = 45_000;
+const HELMET_TIMEOUT_MS = 30_000;
 
 function startStaticServer() {
   return new Promise((resolve, reject) => {
