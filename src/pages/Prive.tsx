@@ -4,11 +4,20 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
 import sessionImage from "@/assets/prive-session.jpg";
 
+// Descriptions lead with the page CTA ("Boek/Réservez/Agende") to align
+// social previews with user intent.
 const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
-  nl: { title: "Privé Sessies — Individueel en Duo Pilates", desc: "Boek een privé Pilates sessie bij Spessirits: individueel of als duo. Op maat gemaakt door kinesitherapiste Cintia in Schilde.", breadcrumb: "Privé Sessies" },
-  en: { title: "Private Sessions — Individual and Duo Pilates", desc: "Book a private Pilates session at Spessirits: individual or duo. Tailored by physiotherapist Cintia in Schilde.", breadcrumb: "Private Sessions" },
-  fr: { title: "Séances Privées — Pilates Individuel et Duo", desc: "Réservez une séance privée de Pilates chez Spessirits : individuelle ou en duo. Sur mesure par la kinésithérapeute Cintia.", breadcrumb: "Séances Privées" },
-  pt: { title: "Sessões Privadas — Pilates Individual e Duo", desc: "Agende uma sessão privada de Pilates na Spessirits: individual ou duo. Personalizada pela fisioterapeuta Cintia.", breadcrumb: "Sessões Privadas" },
+  nl: { title: "Privé Sessies — Individueel en Duo Pilates", desc: "Boek een privé Pilates sessie bij Spessirits: individueel of als duo. Op maat door kinesitherapiste Cintia in Schilde. Reserveer vandaag.", breadcrumb: "Privé Sessies" },
+  en: { title: "Private Sessions — Individual and Duo Pilates", desc: "Book a private Pilates session at Spessirits: individual or duo. Tailored by physiotherapist Cintia in Schilde. Reserve your spot today.", breadcrumb: "Private Sessions" },
+  fr: { title: "Séances Privées — Pilates Individuel et Duo", desc: "Réservez une séance privée de Pilates chez Spessirits : individuelle ou en duo. Sur mesure par la kinésithérapeute Cintia. Réservez aujourd'hui.", breadcrumb: "Séances Privées" },
+  pt: { title: "Sessões Privadas — Pilates Individual e Duo", desc: "Agende uma sessão privada de Pilates na Spessirits: individual ou duo. Personalizada pela fisioterapeuta Cintia. Reserve hoje.", breadcrumb: "Sessões Privadas" },
+};
+
+const OG_IMAGE_ALT: Record<string, string> = {
+  nl: "Privé Pilates sessie op de reformer bij Spessirits in Schilde",
+  en: "Private Pilates reformer session at Spessirits studio in Schilde",
+  fr: "Séance privée de Pilates sur reformer chez Spessirits à Schilde",
+  pt: "Sessão privada de Pilates no reformer na Spessirits em Schilde",
 };
 
 export default function Prive() {

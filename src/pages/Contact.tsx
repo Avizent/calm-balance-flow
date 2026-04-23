@@ -16,11 +16,20 @@ const contactHrefs = [
 const contactValues = ["+32 472 240 581", "+32 472 913 917", "spessiritskine@icloud.com", "Cirkellaan 12, 2970 Schilde"];
 const contactIcons = [Phone, MessageCircle, Mail, MapPin];
 
+// Descriptions emphasise the contact CTA so social-shared previews mirror
+// what the user is being asked to do on the page.
 const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
-  nl: { title: "Contact — Spessirits Pilates Schilde", desc: "Neem contact op met Spessirits Pilates in Schilde. Bel, WhatsApp of stuur een bericht voor vragen of reservaties.", breadcrumb: "Contact" },
-  en: { title: "Contact — Spessirits Pilates Schilde", desc: "Get in touch with Spessirits Pilates in Schilde. Call, WhatsApp or send a message for questions or bookings.", breadcrumb: "Contact" },
-  fr: { title: "Contact — Spessirits Pilates Schilde", desc: "Contactez Spessirits Pilates à Schilde. Appelez, envoyez un WhatsApp ou un message pour vos questions ou réservations.", breadcrumb: "Contact" },
-  pt: { title: "Contato — Spessirits Pilates Schilde", desc: "Entre em contato com a Spessirits Pilates em Schilde. Ligue, envie um WhatsApp ou mensagem para dúvidas ou agendamentos.", breadcrumb: "Contato" },
+  nl: { title: "Contact — Spessirits Pilates Schilde", desc: "Neem contact op met Spessirits Pilates in Schilde. Bel, WhatsApp of stuur een bericht — wij plannen graag jouw sessie of beantwoorden je vragen.", breadcrumb: "Contact" },
+  en: { title: "Contact — Spessirits Pilates Schilde", desc: "Get in touch with Spessirits Pilates in Schilde. Call, WhatsApp or send a message — we'll happily book your session or answer your questions.", breadcrumb: "Contact" },
+  fr: { title: "Contact — Spessirits Pilates Schilde", desc: "Contactez Spessirits Pilates à Schilde. Appelez, écrivez sur WhatsApp ou envoyez un message — nous réservons votre séance avec plaisir.", breadcrumb: "Contact" },
+  pt: { title: "Contato — Spessirits Pilates Schilde", desc: "Entre em contato com a Spessirits Pilates em Schilde. Ligue, envie WhatsApp ou mensagem — agendamos sua sessão com prazer.", breadcrumb: "Contato" },
+};
+
+const OG_IMAGE_ALT: Record<string, string> = {
+  nl: "Welkom bij Spessirits Pilates in Schilde — neem contact op",
+  en: "Welcome to Spessirits Pilates in Schilde — get in touch",
+  fr: "Bienvenue chez Spessirits Pilates à Schilde — contactez-nous",
+  pt: "Bem-vindo à Spessirits Pilates em Schilde — entre em contato",
 };
 
 const consentErrors: Record<string, string> = {

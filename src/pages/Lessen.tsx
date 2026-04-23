@@ -31,6 +31,8 @@ export default function Lessen() {
         description={seo.desc}
         path="/lessen"
         lang={lang}
+        image="/og-lessen.jpg"
+        imageAlt={OG_IMAGE_ALT[lang] || OG_IMAGE_ALT.nl}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
           { name: seo.breadcrumb, url: `${SITE_URL}/lessen` },
