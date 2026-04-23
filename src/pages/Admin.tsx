@@ -105,12 +105,30 @@ export default function Admin() {
       const { data, error } = await supabase.functions.invoke("verify-admin", {
         body: { password, action: "verify" },
       });
-      if (error) throw error;
+      // supabase-js returns a FunctionsHttpError for non-2xx; surface 429 nicely.
+      if (error) {
+        const retry = (data as { retry_after?: number } | null)?.retry_after;
+        const msg =
+          (data as { error?: string } | null)?.error ??
+          "Error verifying password";
+        toast({
+          title: msg,
+          description: retry ? `Try again in ${retry}s.` : undefined,
+          variant: "destructive",
+        });
+        return;
+      }
       if (data?.valid) {
         setAdminToken(password);
         setAuthenticated(true);
       } else {
-        toast({ title: "Incorrect password", variant: "destructive" });
+        toast({
+          title: data?.error ?? "Incorrect password",
+          description: data?.retry_after
+            ? `Try again in ${data.retry_after}s.`
+            : undefined,
+          variant: "destructive",
+        });
       }
     } catch {
       toast({ title: "Error verifying password", variant: "destructive" });
