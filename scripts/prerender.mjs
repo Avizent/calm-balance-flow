@@ -143,9 +143,18 @@ async function main() {
     throw new Error(`dist/index.html not found. Run \`vite build\` first.`);
   }
 
-  const { server, port } = await startStaticServer();
+  // Snapshot the original Vite-built shell so SPA fallback always serves the
+  // clean (non-prerendered) HTML to Puppeteer. Otherwise, after we overwrite
+  // dist/index.html with the prerendered "/" output, subsequent route requests
+  // (which fall back to /index.html) would receive prerendered HTML for the
+  // wrong route, causing React hydration error #299.
+  const STAGING = path.join(DIST, "..", ".prerender-staging");
+  await fs.rm(STAGING, { recursive: true, force: true });
+  await fs.cp(DIST, STAGING, { recursive: true });
+
+  const { server, port } = await startStaticServer(STAGING);
   const baseUrl = `http://127.0.0.1:${port}`;
-  console.log(`[prerender] static server on ${baseUrl}`);
+  console.log(`[prerender] static server on ${baseUrl} (staging)`);
 
   const browser = await puppeteer.launch({
     headless: "new",
