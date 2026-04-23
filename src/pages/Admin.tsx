@@ -159,19 +159,29 @@ export default function Admin() {
   const handleSaveTranslations = async () => {
     if (!allTranslations) return;
     setSavingTranslations(true);
-    const { error } = await supabase
-      .from("translations")
-      .update({
-        content: allTranslations[activeLang] as unknown as import("@/integrations/supabase/types").Json,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("language", activeLang);
+    const { data, error } = await supabase.functions.invoke("verify-admin", {
+      body: {
+        password: adminToken,
+        action: "update_translations",
+        payload: {
+          language: activeLang,
+          content: allTranslations[activeLang],
+        },
+      },
+    });
     setSavingTranslations(false);
-    if (error) {
-      toast({ title: "Error saving translations", description: error.message, variant: "destructive" });
+    if (error || data?.error) {
+      toast({
+        title: "Error saving translations",
+        description: data?.error ?? error?.message ?? "Unknown error",
+        variant: "destructive",
+      });
     } else {
       setDirty(false);
-      toast({ title: "Translations saved ✓", description: `${LANGUAGE_LABELS[activeLang]} updated.` });
+      toast({
+        title: "Translations saved ✓",
+        description: `${LANGUAGE_LABELS[activeLang]} updated.`,
+      });
     }
   };
 
