@@ -71,14 +71,36 @@ const organizationSchema = {
   "@type": "Organization",
   "@id": `${SITE_URL}/#org`,
   name: SITE_NAME,
+  alternateName: "Spessirits",
   url: SITE_URL,
-  logo: OG_IMAGE,
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+32472240581",
-    contactType: "customer service",
-    availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+  logo: {
+    "@type": "ImageObject",
+    url: OG_IMAGE,
+    width: 1200,
+    height: 630,
   },
+  image: OG_IMAGE,
+  email: "spessiritskine@icloud.com",
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+32472240581",
+      contactType: "customer service",
+      areaServed: "BE",
+      availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+    },
+    {
+      "@type": "ContactPoint",
+      telephone: "+32472913917",
+      contactType: "reservations",
+      areaServed: "BE",
+      availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+    },
+  ],
+  sameAs: [
+    "https://wa.me/32472913917",
+    "https://www.google.com/maps/search/?api=1&query=Spessirits+Pilates+Schilde",
+  ],
 };
 
 const websiteSchema = {
