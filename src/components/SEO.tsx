@@ -114,10 +114,16 @@ export function SEO({
   image,
   imageAlt,
 }: SEOProps) {
-  const canonicalUrl = `${SITE_URL}${path}`;
-  const fullTitle = path === "/" ? title : `${title} — ${SITE_NAME}`;
-  const isHomepage = path === "/";
-  const isContact = path === "/contact";
+  // Canonical URL normalization:
+  // - Root stays as "/"
+  // - All other routes use NO trailing slash (e.g. /contact, not /contact/)
+  // This prevents duplicate indexing of /foo and /foo/ as two different URLs.
+  const normalizedPath =
+    path === "/" ? "/" : `/${path.replace(/^\/+|\/+$/g, "")}`;
+  const canonicalUrl = `${SITE_URL}${normalizedPath}`;
+  const fullTitle = normalizedPath === "/" ? title : `${title} — ${SITE_NAME}`;
+  const isHomepage = normalizedPath === "/";
+  const isContact = normalizedPath === "/contact";
   const ogLocale = LOCALE_MAP[lang] || "nl_BE";
   const alternateLocales = Object.values(LOCALE_MAP).filter((l) => l !== ogLocale);
 
