@@ -49,8 +49,18 @@ function startStaticServer() {
 }
 
 async function prerenderRoute(browser, baseUrl, route) {
-  const page = await browser.newPage();
+  const context = await browser.createBrowserContext(); // isolated storage per route
+  const page = await context.newPage();
   page.setDefaultNavigationTimeout(NAV_TIMEOUT_MS);
+
+  page.on("pageerror", (err) =>
+    console.error(`[prerender][${route}] pageerror:`, err.message)
+  );
+  page.on("console", (msg) => {
+    if (msg.type() === "error") {
+      console.error(`[prerender][${route}] console.error:`, msg.text());
+    }
+  });
 
   // Block analytics / 3rd-party that could hold networkidle open
   await page.setRequestInterception(true);
@@ -87,6 +97,7 @@ async function prerenderRoute(browser, baseUrl, route) {
 
   let html = await page.content();
   await page.close();
+  await context.close();
 
   // Sanity check
   if (!/<title>[^<]+<\/title>/.test(html)) {
