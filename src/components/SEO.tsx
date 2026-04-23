@@ -13,6 +13,11 @@ interface SEOProps {
   type?: "website" | "article";
   noindex?: boolean;
   lang?: string;
+  /** Optional path (relative or absolute) to a route-specific OG image.
+   *  Falls back to the global OG_IMAGE when omitted. Should be 1200×630. */
+  image?: string;
+  /** Optional alt text for the OG image. */
+  imageAlt?: string;
 }
 
 const SITE_URL = "https://calm-balance-flow.lovable.app";
