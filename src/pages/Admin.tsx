@@ -60,6 +60,9 @@ function shouldUseTextarea(value: string): boolean {
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  // Cached admin password used for subsequent privileged write calls to the
+  // verify-admin edge function. Kept only in component state — never persisted.
+  const [adminToken, setAdminToken] = useState<string>("");
   const [defaultLang, setDefaultLang] = useState<Language>("en");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -100,10 +103,11 @@ export default function Admin() {
     e.preventDefault();
     try {
       const { data, error } = await supabase.functions.invoke("verify-admin", {
-        body: { password },
+        body: { password, action: "verify" },
       });
       if (error) throw error;
       if (data?.valid) {
+        setAdminToken(password);
         setAuthenticated(true);
       } else {
         toast({ title: "Incorrect password", variant: "destructive" });
@@ -115,15 +119,25 @@ export default function Admin() {
 
   const handleSaveSettings = async () => {
     setSaving(true);
-    const { error } = await supabase
-      .from("site_settings")
-      .update({ default_language: defaultLang, updated_at: new Date().toISOString() })
-      .eq("id", "default");
+    const { data, error } = await supabase.functions.invoke("verify-admin", {
+      body: {
+        password: adminToken,
+        action: "update_settings",
+        payload: { default_language: defaultLang },
+      },
+    });
     setSaving(false);
-    if (error) {
-      toast({ title: "Error saving", description: error.message, variant: "destructive" });
+    if (error || data?.error) {
+      toast({
+        title: "Error saving",
+        description: data?.error ?? error?.message ?? "Unknown error",
+        variant: "destructive",
+      });
     } else {
-      toast({ title: "Saved ✓", description: `Default language set to ${LANGUAGE_LABELS[defaultLang]}` });
+      toast({
+        title: "Saved ✓",
+        description: `Default language set to ${LANGUAGE_LABELS[defaultLang]}`,
+      });
     }
   };
 
@@ -145,19 +159,29 @@ export default function Admin() {
   const handleSaveTranslations = async () => {
     if (!allTranslations) return;
     setSavingTranslations(true);
-    const { error } = await supabase
-      .from("translations")
-      .update({
-        content: allTranslations[activeLang] as unknown as import("@/integrations/supabase/types").Json,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("language", activeLang);
+    const { data, error } = await supabase.functions.invoke("verify-admin", {
+      body: {
+        password: adminToken,
+        action: "update_translations",
+        payload: {
+          language: activeLang,
+          content: allTranslations[activeLang],
+        },
+      },
+    });
     setSavingTranslations(false);
-    if (error) {
-      toast({ title: "Error saving translations", description: error.message, variant: "destructive" });
+    if (error || data?.error) {
+      toast({
+        title: "Error saving translations",
+        description: data?.error ?? error?.message ?? "Unknown error",
+        variant: "destructive",
+      });
     } else {
       setDirty(false);
-      toast({ title: "Translations saved ✓", description: `${LANGUAGE_LABELS[activeLang]} updated.` });
+      toast({
+        title: "Translations saved ✓",
+        description: `${LANGUAGE_LABELS[activeLang]} updated.`,
+      });
     }
   };
 
