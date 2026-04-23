@@ -32,6 +32,8 @@ export default function Prive() {
         description={seo.desc}
         path="/prive"
         lang={lang}
+        image="/og-prive.jpg"
+        imageAlt={OG_IMAGE_ALT[lang] || OG_IMAGE_ALT.nl}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
           { name: seo.breadcrumb, url: `${SITE_URL}/prive` },

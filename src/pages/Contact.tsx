@@ -94,6 +94,8 @@ export default function Contact() {
         description={seo.desc}
         path="/contact"
         lang={lang}
+        image="/og-contact.jpg"
+        imageAlt={OG_IMAGE_ALT[lang] || OG_IMAGE_ALT.nl}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
           { name: seo.breadcrumb, url: `${SITE_URL}/contact` },
