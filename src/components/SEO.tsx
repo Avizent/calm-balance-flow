@@ -182,8 +182,8 @@ export function SEO({
         </script>
       )}
 
-      {/* JSON-LD: Organization (homepage only) */}
-      {isHomepage && (
+      {/* JSON-LD: Organization (homepage + contact for richer Knowledge Panel signals) */}
+      {(isHomepage || isContact) && (
         <script type="application/ld+json">
           {JSON.stringify(organizationSchema)}
         </script>
