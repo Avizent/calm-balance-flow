@@ -71,14 +71,36 @@ const organizationSchema = {
   "@type": "Organization",
   "@id": `${SITE_URL}/#org`,
   name: SITE_NAME,
+  alternateName: "Spessirits",
   url: SITE_URL,
-  logo: OG_IMAGE,
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+32472240581",
-    contactType: "customer service",
-    availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+  logo: {
+    "@type": "ImageObject",
+    url: OG_IMAGE,
+    width: 1200,
+    height: 630,
   },
+  image: OG_IMAGE,
+  email: "spessiritskine@icloud.com",
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+32472240581",
+      contactType: "customer service",
+      areaServed: "BE",
+      availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+    },
+    {
+      "@type": "ContactPoint",
+      telephone: "+32472913917",
+      contactType: "reservations",
+      areaServed: "BE",
+      availableLanguage: ["Dutch", "English", "French", "Portuguese"],
+    },
+  ],
+  sameAs: [
+    "https://wa.me/32472913917",
+    "https://www.google.com/maps/search/?api=1&query=Spessirits+Pilates+Schilde",
+  ],
 };
 
 const websiteSchema = {
@@ -114,10 +136,16 @@ export function SEO({
   image,
   imageAlt,
 }: SEOProps) {
-  const canonicalUrl = `${SITE_URL}${path}`;
-  const fullTitle = path === "/" ? title : `${title} — ${SITE_NAME}`;
-  const isHomepage = path === "/";
-  const isContact = path === "/contact";
+  // Canonical URL normalization:
+  // - Root stays as "/"
+  // - All other routes use NO trailing slash (e.g. /contact, not /contact/)
+  // This prevents duplicate indexing of /foo and /foo/ as two different URLs.
+  const normalizedPath =
+    path === "/" ? "/" : `/${path.replace(/^\/+|\/+$/g, "")}`;
+  const canonicalUrl = `${SITE_URL}${normalizedPath}`;
+  const fullTitle = normalizedPath === "/" ? title : `${title} — ${SITE_NAME}`;
+  const isHomepage = normalizedPath === "/";
+  const isContact = normalizedPath === "/contact";
   const ogLocale = LOCALE_MAP[lang] || "nl_BE";
   const alternateLocales = Object.values(LOCALE_MAP).filter((l) => l !== ogLocale);
 
@@ -176,8 +204,8 @@ export function SEO({
         </script>
       )}
 
-      {/* JSON-LD: Organization (homepage only) */}
-      {isHomepage && (
+      {/* JSON-LD: Organization (homepage + contact for richer Knowledge Panel signals) */}
+      {(isHomepage || isContact) && (
         <script type="application/ld+json">
           {JSON.stringify(organizationSchema)}
         </script>
