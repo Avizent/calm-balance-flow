@@ -16,17 +16,21 @@ import puppeteer from "puppeteer";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, "..", "dist");
 
+// Single source of truth for sitemap + prerender. `priority` and `changefreq`
+// are SEO hints for crawlers.
 const ROUTES = [
-  "/",
-  "/over",
-  "/lessen",
-  "/prive",
-  "/tarieven",
-  "/boeken",
-  "/contact",
-  "/medical-professionals",
-  "/legal",
+  { path: "/",                       priority: "1.0", changefreq: "weekly"  },
+  { path: "/over",                   priority: "0.8", changefreq: "monthly" },
+  { path: "/lessen",                 priority: "0.8", changefreq: "monthly" },
+  { path: "/prive",                  priority: "0.8", changefreq: "monthly" },
+  { path: "/tarieven",               priority: "0.9", changefreq: "monthly" },
+  { path: "/boeken",                 priority: "0.9", changefreq: "monthly" },
+  { path: "/contact",                priority: "0.7", changefreq: "monthly" },
+  { path: "/medical-professionals",  priority: "0.7", changefreq: "monthly" },
+  { path: "/legal",                  priority: "0.3", changefreq: "yearly"  },
 ];
+
+const SITE_URL = "https://calm-balance-flow.lovable.app";
 
 const CONCURRENCY = 3;
 const NAV_TIMEOUT_MS = 45_000;
