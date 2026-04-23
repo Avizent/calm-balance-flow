@@ -13,6 +13,11 @@ interface SEOProps {
   type?: "website" | "article";
   noindex?: boolean;
   lang?: string;
+  /** Optional path (relative or absolute) to a route-specific OG image.
+   *  Falls back to the global OG_IMAGE when omitted. Should be 1200×630. */
+  image?: string;
+  /** Optional alt text for the OG image. */
+  imageAlt?: string;
 }
 
 const SITE_URL = "https://calm-balance-flow.lovable.app";
@@ -106,6 +111,8 @@ export function SEO({
   type = "website",
   noindex = false,
   lang = "nl",
+  image,
+  imageAlt,
 }: SEOProps) {
   const canonicalUrl = `${SITE_URL}${path}`;
   const fullTitle = path === "/" ? title : `${title} — ${SITE_NAME}`;
@@ -113,6 +120,16 @@ export function SEO({
   const isContact = path === "/contact";
   const ogLocale = LOCALE_MAP[lang] || "nl_BE";
   const alternateLocales = Object.values(LOCALE_MAP).filter((l) => l !== ogLocale);
+
+  // Resolve OG image: support absolute URLs or root-relative paths.
+  const resolvedImage = image
+    ? image.startsWith("http")
+      ? image
+      : `${SITE_URL}${image.startsWith("/") ? "" : "/"}${image}`
+    : OG_IMAGE;
+  const resolvedImageAlt =
+    imageAlt ||
+    "Spessirits Pilates studio in Schilde — Physio-led Pilates by Cintia";
 
   return (
     <Helmet>
@@ -128,7 +145,7 @@ export function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:type" content={type} />
-      <meta property="og:image" content={OG_IMAGE} />
+      <meta property="og:image" content={resolvedImage} />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content={ogLocale} />
       {alternateLocales.map((loc) => (
@@ -143,13 +160,14 @@ export function SEO({
       {/* OG Image dimensions */}
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content="Spessirits Pilates studio in Schilde — Physio-led Pilates by Cintia" />
+      <meta property="og:image:alt" content={resolvedImageAlt} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={OG_IMAGE} />
+      <meta name="twitter:image" content={resolvedImage} />
+      <meta name="twitter:image:alt" content={resolvedImageAlt} />
 
       {/* JSON-LD: WebSite (homepage only) */}
       {isHomepage && (

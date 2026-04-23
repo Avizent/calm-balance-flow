@@ -3,11 +3,20 @@ import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
 
+// Descriptions end with the page CTA ("Boek nu" / "Book a session") so the
+// snippet shown by Google, Facebook, WhatsApp etc. matches user intent.
 const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
-  nl: { title: "Pilates Lessen — Individueel Afgestemd", desc: "Ontdek het aanbod van Spessirits: Pilates voor beginners, sporters, ouderen en pre/postnataal. Onder begeleiding van kinesitherapiste Cintia.", breadcrumb: "Lessen" },
-  en: { title: "Pilates Classes — Individually Tailored", desc: "Discover Spessirits' range: Pilates for beginners, athletes, seniors and pre/postnatal. Guided by physiotherapist Cintia.", breadcrumb: "Classes" },
-  fr: { title: "Cours de Pilates — Personnalisés", desc: "Découvrez l'offre de Spessirits : Pilates pour débutants, sportifs, seniors et pré/postnatal. Avec la kinésithérapeute Cintia.", breadcrumb: "Cours" },
-  pt: { title: "Aulas de Pilates — Personalizadas", desc: "Descubra a oferta da Spessirits: Pilates para iniciantes, atletas, idosos e pré/pós-natal. Com a fisioterapeuta Cintia.", breadcrumb: "Aulas" },
+  nl: { title: "Pilates Lessen — Individueel Afgestemd", desc: "Ontdek het aanbod van Spessirits: Pilates voor beginners, sporters, ouderen en pre/postnataal. Onder begeleiding van kinesitherapiste Cintia. Boek nu jouw sessie.", breadcrumb: "Lessen" },
+  en: { title: "Pilates Classes — Individually Tailored", desc: "Discover Spessirits' range: Pilates for beginners, athletes, seniors and pre/postnatal. Guided by physiotherapist Cintia. Book your session today.", breadcrumb: "Classes" },
+  fr: { title: "Cours de Pilates — Personnalisés", desc: "Découvrez l'offre de Spessirits : Pilates pour débutants, sportifs, seniors et pré/postnatal. Avec la kinésithérapeute Cintia. Réservez votre séance.", breadcrumb: "Cours" },
+  pt: { title: "Aulas de Pilates — Personalizadas", desc: "Descubra a oferta da Spessirits: Pilates para iniciantes, atletas, idosos e pré/pós-natal. Com a fisioterapeuta Cintia. Agende sua sessão.", breadcrumb: "Aulas" },
+};
+
+const OG_IMAGE_ALT: Record<string, string> = {
+  nl: "Pilates studio Spessirits in Schilde — reformer en mat, klaar voor jouw sessie",
+  en: "Spessirits Pilates studio in Schilde — reformer and mats ready for your session",
+  fr: "Studio Pilates Spessirits à Schilde — reformer et tapis prêts pour votre séance",
+  pt: "Estúdio de Pilates Spessirits em Schilde — reformer e tapetes prontos para sua sessão",
 };
 
 export default function Lessen() {
@@ -22,6 +31,8 @@ export default function Lessen() {
         description={seo.desc}
         path="/lessen"
         lang={lang}
+        image="/og-lessen.jpg"
+        imageAlt={OG_IMAGE_ALT[lang] || OG_IMAGE_ALT.nl}
         breadcrumbs={[
           { name: "Home", url: SITE_URL },
           { name: seo.breadcrumb, url: `${SITE_URL}/lessen` },
