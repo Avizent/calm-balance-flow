@@ -1,98 +1,81 @@
 
-## Adding Brazilian Portuguese (PT-BR) as a Toggleable Language
 
-### Current Architecture Summary
+## Plan: Prerendering (SSG) + GEO Schema — Optimised for Lovable Hosting
 
-The language system is elegantly structured around a single file — `src/contexts/LanguageContext.tsx` — with three key building blocks:
+This combines my original prerender plan with your additions, but corrects two important things based on how this project actually deploys:
 
-1. **A feature flag** at line 5: `export const ENABLE_FRENCH = true`
-2. **A `SUPPORTED_LANGUAGES` array** derived from that flag (line 10–12), consumed by `Navigation.tsx` for the toggle cycle
-3. **A `translations` record** that conditionally includes the `fr` object (line 909–911)
+### Important correction first: Netlify is not used
 
-The Navigation toggle (desktop and mobile) already reads `SUPPORTED_LANGUAGES` dynamically — so adding PT-BR requires zero changes to `Navigation.tsx`. The toggle will automatically cycle NL → EN → FR → PT → NL once `pt` is in the array.
+Your project is hosted on **Lovable hosting**, not Netlify. The `public/netlify.toml` file in the repo has no effect — Lovable handles SPA fallback, headers, and caching at the infrastructure level. So:
 
-The `Boeken.tsx` page has its own inline `copy` object using `isNl` / `isFr` guards. It needs a `isPt` branch added.
+- No `netlify.toml` changes needed
+- No Netlify Build Plugin needed
+- The build runs in Lovable's build environment, where Puppeteer + Chromium work fine as long as we install them correctly
+- We will, however, set `PUPPETEER_SKIP_DOWNLOAD=false` explicitly and pass the right `--no-sandbox` args so Chromium launches in the build container
 
----
+### What gets built
 
-### Step 1–3: [Full translation plan preserved — see git history]
+**Phase 1 — Prerendering infrastructure**
 
----
+1. **Add dev dependencies**
+   - `puppeteer` (bundles its own Chromium)
+   - `sirv` (tiny static file server for serving `dist/` to Puppeteer during prerender)
 
-## SEO Implementation (Completed 2026-02-22)
+2. **Create `scripts/prerender.mjs`**
+   - Routes prerendered: `/`, `/over`, `/lessen`, `/prive`, `/tarieven`, `/boeken`, `/contact`, `/medical-professionals`, `/legal`
+   - Excluded: `/admin` (auth-gated), `*` (404)
+   - Flow per route:
+     1. Boot `sirv` against `dist/` on a random port
+     2. Launch Puppeteer headless with `--no-sandbox --disable-setuid-sandbox` (required in container builds)
+     3. Navigate to the route, wait for `networkidle0`
+     4. Wait for a Helmet-ready signal: poll until `document.title` is non-empty AND a known route-specific element has rendered
+     5. Capture `document.documentElement.outerHTML`
+     6. Inject `<script>window.__PRERENDERED__=true</script>` before `</head>`
+     7. Write to `dist/<route>/index.html` (or `dist/index.html` for `/`)
+   - Runs all routes in parallel (with a concurrency cap of 3) to keep build time low
+   - Fails the build loudly if any route returns empty `<title>` or contains a React error boundary
 
-### Architecture
+3. **Update `package.json`**
+   - `"build": "vite build && node scripts/prerender.mjs"`
+   - `"build:spa": "vite build"` as escape hatch if prerender ever breaks the build
 
-All SEO is handled client-side via `react-helmet-async` (SPA limitation — no SSR). This provides the best possible SEO for a Vite + React SPA deployed on Netlify/Lovable.
+4. **Tiny client-side guard in `src/main.tsx`**
+   - If `window.__PRERENDERED__` is true, use `ReactDOM.hydrateRoot` instead of `createRoot` so React reuses the prerendered DOM instead of throwing it away. Without this, hydration mismatch warnings flood the console and you lose the SEO benefit on first paint.
 
-### What was implemented
+**Phase 2 — GEO (Local SEO) schema upgrade**
 
-#### 1. `src/components/SEO.tsx` — Reusable SEO component
-- **Per-page metadata**: Unique `<title>` (50–60 chars, keyword-first), `<meta description>` (140–155 chars)
-- **Open Graph tags**: `og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `og:site_name`, `og:locale` (+ alternates for all 4 languages)
-- **Twitter Card tags**: `summary_large_image` with full metadata
-- **Canonical URLs**: Self-referencing canonical on every page
-- **JSON-LD structured data**:
-  - `WebSite` schema (homepage)
-  - `Organization` schema (homepage)
-  - `LocalBusiness` + `HealthAndBeautyBusiness` (homepage + contact) — includes address, phone, geo, hours, price range
-  - `BreadcrumbList` (all interior pages)
-- **noindex support**: 404 page excluded from indexing
+Currently the site uses generic `Organization` / `WebSite` JSON-LD. For local discoverability (Google Maps, "physiotherapist near me", AI assistant local recommendations), upgrade to richer schema:
 
-#### 2. `index.html` — Foundation
-- `lang="nl"` on `<html>` element
-- Proper default title, description, OG and Twitter tags (fallback for crawlers that don't execute JS)
-- Removed all Lovable/placeholder branding
+5. **Add `LocalBusiness` / `MedicalBusiness` schema on `/` and `/contact`**
+   - Type: `MedicalBusiness` (more specific than `LocalBusiness`, better for a physio-led pilates studio)
+   - Fields: `name`, `image`, `address` (full PostalAddress), `geo` (latitude/longitude), `telephone`, `email`, `url`, `openingHoursSpecification`, `areaServed`, `priceRange`, `medicalSpecialty: "Physiotherapy"`, `sameAs` (social links)
+   - Embedded via `react-helmet-async` so it ends up in the prerendered HTML
 
-#### 3. `src/index.css` — Performance
-- Added `font-display=swap` to Google Fonts import for faster text rendering
+6. **Add `Service` schema to `/lessen` and `/prive`**
+   - Each session type (group class, private session, medical professional consult) as a `Service` with `provider`, `areaServed`, `offers` (price from Tarieven page)
 
-#### 4. `public/sitemap.xml` — Static sitemap
-- All 7 public pages with `lastmod`, `changefreq`, `priority`
-- Must be manually updated when pages are added/removed
+7. **Need from you (one-time)**
+   - Confirm: full street address, postal code, city
+   - Confirm: lat/lng (or I derive from the address)
+   - Confirm: opening hours
+   - Confirm: service area (e.g. "Brussels region" / specific municipalities)
 
-#### 5. `public/robots.txt` — Crawler config
-- All crawlers allowed, `Sitemap:` directive pointing to published URL
+### What this delivers
 
-#### 6. `public/netlify.toml` — Hosting config
-- SPA catch-all redirect (`/* → /index.html` with 200 status)
-- Security headers: X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
-- Cache headers for static assets (1 year immutable)
+| | Before | After |
+|---|---|---|
+| Crawler sees real HTML on every route | No (empty shell) | Yes |
+| Per-route `<title>` / meta / OG without JS | No | Yes |
+| JSON-LD visible to Google/AI bots | Partial | Full, including local business signals |
+| Google Maps / local pack eligibility | Weak | Strong |
+| User experience | Same | Same (slightly faster first paint due to no render-wait) |
+| Build time | ~15s | ~45s |
+| Framework migration required | — | None |
 
-#### 7. `src/App.tsx` — HelmetProvider wrapper
-- `<HelmetProvider>` wraps entire app for `react-helmet-async` to function
+### Technical notes (for the record)
 
-### Page-by-page SEO metadata
+- React 18 `hydrateRoot` is used post-prerender; component tree must match exactly between prerender and client run, which it will because we use the same bundle
+- `LanguageContext` defaults to Dutch on first render, so prerendered HTML will be Dutch. Client-side language switch still works for users. This is fine for SEO because there are no per-language URLs (changing that is a separate, larger project)
+- `BrowserRouter` works correctly with prerendering when each route has its own `index.html` at the matching path — Lovable's SPA fallback won't be triggered because the file exists
+- The `<script>window.__PRERENDERED__=true</script>` flag lets us add per-page logic later (e.g. skip a Supabase fetch if data was baked in)
 
-| Page | Title (≤60 chars) | Description |
-|------|-------------------|-------------|
-| `/` | Spessirits Pilates — Physio-led Pilates in Schilde | Verantwoord Pilates in Schilde, België... |
-| `/over` | Over Cintia — Kinesitherapiste & Pilatesdocent | Leer Cintia kennen: kinesitherapiste... |
-| `/lessen` | Pilates Lessen — Individueel Afgestemd | Ontdek het aanbod van Spessirits... |
-| `/prive` | Privé Sessies — Individueel en Duo Pilates | Boek een privé Pilates sessie... |
-| `/tarieven` | Tarieven — Pilates Prijzen Schilde 2026 | Transparante prijzen voor individuele... |
-| `/boeken` | Boek een Sessie — Spessirits Pilates | Plan je Pilates sessie bij Spessirits... |
-| `/contact` | Contact — Spessirits Pilates Schilde | Neem contact op met Spessirits... |
-| `404` | Pagina niet gevonden (noindex) | Deze pagina bestaat niet... |
-
-### Semantic HTML status
-- ✅ Single `<h1>` per page
-- ✅ Proper heading hierarchy (H1 → H2 → H3, no skipped levels)
-- ✅ Semantic elements (`<main>`, `<section>`, `<nav>`, `<footer>`, `<header>`)
-- ✅ `rel="noopener noreferrer"` on all external links
-- ✅ Descriptive `alt` attributes on images
-- ✅ Proper `<label>` elements on all form inputs
-- ✅ Keyboard-navigable interactive elements
-
-### Limitations (SPA constraints)
-- No SSR/SSG — Googlebot must render JS (modern Googlebot does, but with delays)
-- Sitemap is static — must be updated manually
-- PageSpeed mobile score will be lower than SSR equivalent (expected 70–85 vs 90+)
-- Canonical tags are client-rendered (less reliable than server-set)
-
-### Future improvements (if needed)
-- Add `hreflang` tags when custom domain is set up (one per language variant)
-- Add `FAQPage` schema if FAQ content is added
-- Add Google Search Console verification meta tag
-- Add GA4/GTM when analytics are needed
-- Consider Astro migration if SEO ranking becomes business-critical
