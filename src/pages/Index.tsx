@@ -124,7 +124,7 @@ export default function Index() {
       {/* ══════════ HERO ══════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={heroBg} alt="Pilates movement" className="w-full h-full object-cover object-center" width={491} height={795} fetchPriority="high" />
+          <img src={heroBg} alt="Pilates movement" className="w-full h-full object-cover object-center" width={491} height={795} loading="eager" decoding="async" fetchPriority="high" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-foreground/10" />
         </div>
         <div className="relative z-10 container-wide section-padding py-40 flex flex-col justify-center max-w-3xl">
@@ -151,7 +151,7 @@ export default function Index() {
         <div className="container-wide section-padding">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative">
-              <img src={heroImage} alt="Cintia, Pilatesdocent" className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl object-cover shadow-xl aspect-[3/4]" width={1013} height={1033} loading="lazy" />
+              <img src={heroImage} alt="Cintia, Pilatesdocent" className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl object-cover shadow-xl aspect-[3/4]" width={1013} height={1033} loading="lazy" decoding="async" />
               <div className="absolute -bottom-5 -right-5 bg-sage text-primary-foreground rounded-xl px-5 py-4 shadow-lg hidden md:block">
                 <p className="font-serif text-2xl font-semibold">20+</p>
                 <p className="font-sans text-xs text-primary-foreground/80">{lang === "en" ? "years experience" : lang === "fr" ? "ans d'expérience" : lang === "pt" ? "anos de experiência" : "jaar ervaring"}</p>
@@ -216,7 +216,7 @@ export default function Index() {
       {/* ══════════ PRIVÉ SESSIES ══════════ */}
       <section id="prive" className="scroll-mt-20">
         <div className="relative h-72 md:h-96 overflow-hidden">
-          <img src={priveImg} alt="Pilates sessie" className="w-full h-full object-cover object-center" width={501} height={640} loading="lazy" />
+          <img src={priveImg} alt="Pilates sessie" className="w-full h-full object-cover object-center" width={501} height={640} loading="lazy" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 to-foreground/30 flex items-center">
             <div className="container-wide section-padding py-0">
               <p className="font-sans text-xs uppercase tracking-widest text-primary-foreground/70 mb-3">{p.tag}</p>
