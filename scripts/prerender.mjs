@@ -184,6 +184,7 @@ async function main() {
   } finally {
     await browser.close();
     server.close();
+    await fs.rm(STAGING, { recursive: true, force: true });
   }
 }
 
