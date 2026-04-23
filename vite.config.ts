@@ -27,27 +27,14 @@ export default defineConfig(({ mode }) => ({
     // requires the matched route's code to be present synchronously.
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          if (!id.includes("node_modules")) return;
-          if (id.includes("react-router")) return "router";
-          if (
-            id.includes("/react/") ||
-            id.includes("/react-dom/") ||
-            id.includes("scheduler") ||
-            id.includes("react-helmet-async")
-          ) {
-            return "react-vendor";
-          }
-          if (id.includes("@radix-ui")) return "radix";
-          if (id.includes("recharts") || id.includes("d3-")) return "charts";
-          if (id.includes("@supabase")) return "supabase";
-          if (id.includes("@tanstack")) return "query";
-          if (id.includes("lucide-react")) return "icons";
-          if (id.includes("embla-carousel")) return "carousel";
-          if (id.includes("date-fns") || id.includes("react-day-picker")) {
-            return "date";
-          }
-          return "vendor";
+        // Keep ONLY the React core runtime isolated. Anything that *consumes*
+        // React (router, helmet, radix, tanstack, etc.) stays in the default
+        // vendor chunk — splitting them out previously caused circular
+        // dependencies between react-vendor and vendor, which made React's
+        // exports `undefined` when consumer modules ran during prerender
+        // ("Cannot read properties of undefined (reading 'createContext')").
+        manualChunks: {
+          "react-vendor": ["react", "react-dom", "react-dom/client", "scheduler"],
         },
       },
     },
