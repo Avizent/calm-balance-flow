@@ -29,15 +29,20 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: (id) => {
           if (!id.includes("node_modules")) return;
-          if (id.includes("react-router")) return "router";
+
+          // CRITICAL: React + everything that imports React at module top-level
+          // must live in ONE chunk so React is initialized before any consumer
+          // runs. Splitting these caused "Cannot read properties of undefined
+          // (reading 'createContext')" during prerender because consumer
+          // chunks executed before react-vendor.
           if (
-            id.includes("/react/") ||
-            id.includes("/react-dom/") ||
-            id.includes("scheduler") ||
-            id.includes("react-helmet-async")
+            /[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom|react-helmet-async|@remix-run[\\/]router|history)[\\/]/.test(
+              id,
+            )
           ) {
             return "react-vendor";
           }
+
           if (id.includes("@radix-ui")) return "radix";
           if (id.includes("recharts") || id.includes("d3-")) return "charts";
           if (id.includes("@supabase")) return "supabase";
