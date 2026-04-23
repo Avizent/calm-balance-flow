@@ -32,9 +32,9 @@ const CONCURRENCY = 1;
 const NAV_TIMEOUT_MS = 45_000;
 const HELMET_TIMEOUT_MS = 20_000;
 
-function startStaticServer() {
+function startStaticServer(rootDir) {
   return new Promise((resolve, reject) => {
-    const handler = sirv(DIST, {
+    const handler = sirv(rootDir, {
       single: true, // SPA fallback so /lessen serves index.html
       dev: false,
       etag: false,
