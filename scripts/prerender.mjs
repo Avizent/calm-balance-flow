@@ -16,17 +16,21 @@ import puppeteer from "puppeteer";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, "..", "dist");
 
+// Single source of truth for sitemap + prerender. `priority` and `changefreq`
+// are SEO hints for crawlers.
 const ROUTES = [
-  "/",
-  "/over",
-  "/lessen",
-  "/prive",
-  "/tarieven",
-  "/boeken",
-  "/contact",
-  "/medical-professionals",
-  "/legal",
+  { path: "/",                       priority: "1.0", changefreq: "weekly"  },
+  { path: "/over",                   priority: "0.8", changefreq: "monthly" },
+  { path: "/lessen",                 priority: "0.8", changefreq: "monthly" },
+  { path: "/prive",                  priority: "0.8", changefreq: "monthly" },
+  { path: "/tarieven",               priority: "0.9", changefreq: "monthly" },
+  { path: "/boeken",                 priority: "0.9", changefreq: "monthly" },
+  { path: "/contact",                priority: "0.7", changefreq: "monthly" },
+  { path: "/medical-professionals",  priority: "0.7", changefreq: "monthly" },
+  { path: "/legal",                  priority: "0.3", changefreq: "yearly"  },
 ];
+
+const SITE_URL = "https://calm-balance-flow.lovable.app";
 
 const CONCURRENCY = 3;
 const NAV_TIMEOUT_MS = 45_000;
@@ -143,6 +147,61 @@ async function runWithConcurrency(items, limit, worker) {
   return results;
 }
 
+// ── sitemap.xml ─────────────────────────────────────────────────────
+async function writeSitemap() {
+  const lastmod = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const urls = ROUTES.map(
+    ({ path: p, priority, changefreq }) => `  <url>
+    <loc>${SITE_URL}${p === "/" ? "/" : p}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`
+  ).join("\n");
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`;
+  await fs.writeFile(path.join(DIST, "sitemap.xml"), xml, "utf8");
+  console.log(`[prerender] ✓ sitemap.xml  (${ROUTES.length} urls, lastmod=${lastmod})`);
+}
+
+// ── robots.txt ──────────────────────────────────────────────────────
+async function writeRobots() {
+  const aiAndSocialBots = [
+    "Googlebot",
+    "Bingbot",
+    "Twitterbot",
+    "facebookexternalhit",
+    "Applebot",
+    "GPTBot",
+    "Google-Extended",
+    "PerplexityBot",
+    "ClaudeBot",
+    "ChatGPT-User",
+    "OAI-SearchBot",
+    "anthropic-ai",
+    "CCBot",
+  ];
+
+  const blocks = aiAndSocialBots
+    .map((ua) => `User-agent: ${ua}\nAllow: /\nDisallow: /admin\n`)
+    .join("\n");
+
+  const txt = `${blocks}
+User-agent: *
+Allow: /
+Allow: /llms.txt
+Disallow: /admin
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+  await fs.writeFile(path.join(DIST, "robots.txt"), txt, "utf8");
+  console.log(`[prerender] ✓ robots.txt  (${aiAndSocialBots.length + 1} agents)`);
+}
+
 async function main() {
   // Verify build output exists
   try {
@@ -176,7 +235,7 @@ async function main() {
 
   const t0 = Date.now();
   try {
-    await runWithConcurrency(ROUTES, CONCURRENCY, async (route) => {
+    await runWithConcurrency(ROUTES, CONCURRENCY, async ({ path: route }) => {
       const start = Date.now();
       try {
         await prerenderRoute(browser, baseUrl, route);
@@ -189,6 +248,9 @@ async function main() {
     console.log(
       `[prerender] done — ${ROUTES.length} routes in ${Date.now() - t0}ms`
     );
+
+    await writeSitemap();
+    await writeRobots();
   } finally {
     await browser.close();
     server.close();
