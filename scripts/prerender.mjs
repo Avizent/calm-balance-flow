@@ -79,6 +79,14 @@ async function prerenderRoute(browser, baseUrl, route) {
   });
 
   const url = `${baseUrl}${route}`;
+  // Prime Dutch as the default language so prerendered HTML matches the
+  // site's primary market (Belgium) and the <html lang="nl"> declaration.
+  // Users can still switch language client-side after hydration.
+  await page.evaluateOnNewDocument(() => {
+    try {
+      localStorage.setItem("spessirits-lang", "nl");
+    } catch {}
+  });
   await page.goto(url, { waitUntil: "networkidle0", timeout: NAV_TIMEOUT_MS });
 
   // Wait for React + react-helmet-async to populate the <title> and root content
