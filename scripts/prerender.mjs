@@ -180,7 +180,7 @@ async function main() {
 
   const t0 = Date.now();
   try {
-    await runWithConcurrency(ROUTES, CONCURRENCY, async (route) => {
+    await runWithConcurrency(ROUTES, CONCURRENCY, async ({ path: route }) => {
       const start = Date.now();
       try {
         await prerenderRoute(browser, baseUrl, route);
@@ -193,6 +193,9 @@ async function main() {
     console.log(
       `[prerender] done — ${ROUTES.length} routes in ${Date.now() - t0}ms`
     );
+
+    await writeSitemap();
+    await writeRobots();
   } finally {
     await browser.close();
     server.close();
