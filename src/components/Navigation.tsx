@@ -267,13 +267,17 @@ export function Navigation() {
             ))}
 
             <div className="mt-4 px-4">
-              <div className="flex items-center gap-2 w-full py-3">
+              <div className="flex items-center w-full py-3 select-none">
                 {SUPPORTED_LANGUAGES.map((l, i) => (
-                  <span key={l} className="flex items-center gap-2">
-                    {i > 0 && <span className="text-muted-foreground/40 text-sm">/</span>}
+                  <span key={l} className="flex items-center">
+                    {i > 0 && (
+                      <span aria-hidden="true" className="text-muted-foreground/50 text-sm px-2">/</span>
+                    )}
                     <button
                       onClick={() => setLang(l)}
-                      className={`font-sans text-sm font-semibold cursor-pointer ${lang === l ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                      aria-label={`Switch to ${l.toUpperCase()}`}
+                      lang={l}
+                      className={`font-sans text-sm font-semibold tracking-wide cursor-pointer ${lang === l ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
                     >
                       {l.toUpperCase()}
                     </button>
