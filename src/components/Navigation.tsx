@@ -183,19 +183,25 @@ export function Navigation() {
             </nav>
 
             {/* Right: lang toggle + CTA + hamburger */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-3 shrink-0 md:ml-4">
               <div
-                className={`hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border transition-colors ${heroMode ? "border-white/40 bg-white/10" : "border-border bg-background/70"}`}
+                className={`hidden md:flex items-center px-3 py-1.5 rounded-full border transition-colors select-none whitespace-nowrap ${heroMode ? "border-white/40 bg-white/10" : "border-border bg-background/70"}`}
               >
                 {SUPPORTED_LANGUAGES.map((l, i) => (
                   <span key={l} className="flex items-center">
                     {i > 0 && (
-                      <span className={`font-sans text-xs transition-colors ${heroMode ? "text-white/30" : "text-muted-foreground/40"}`}>/</span>
+                      <span
+                        aria-hidden="true"
+                        className={`font-sans text-xs px-1.5 transition-colors ${heroMode ? "text-white/40" : "text-muted-foreground/50"}`}
+                      >
+                        /
+                      </span>
                     )}
                     <button
                       onClick={() => setLang(l)}
                       aria-label={`Switch to ${l.toUpperCase()}`}
-                      className={`font-sans text-xs font-semibold transition-colors cursor-pointer px-0.5 ${heroMode ? (lang === l ? "text-white" : "text-white/50 hover:text-white/80") : (lang === l ? "text-primary" : "text-muted-foreground hover:text-foreground")}`}
+                      lang={l}
+                      className={`font-sans text-xs font-semibold tracking-wide transition-colors cursor-pointer ${heroMode ? (lang === l ? "text-white" : "text-white/70 hover:text-white") : (lang === l ? "text-primary" : "text-muted-foreground hover:text-foreground")}`}
                     >
                       {l.toUpperCase()}
                     </button>
