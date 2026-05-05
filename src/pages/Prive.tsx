@@ -42,7 +42,7 @@ export default function Prive() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={sessionImage} alt="Pilates sessie" className="w-full h-full object-cover object-center" width={501} height={640} loading="eager" decoding="async" fetchPriority="high" />
+          <img src={sessionImage} alt="Pilates sessie" className="w-full h-full object-cover object-center" width={501} height={640} loading="eager" decoding="async" fetchpriority="high" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 to-foreground/30" />
         </div>
         <div className="relative z-10 container-wide section-padding py-36">
