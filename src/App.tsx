@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ScrollToTop } from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Over from "./pages/Over";
@@ -30,22 +31,24 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <LanguageProvider>
-            <ScrollToTop />
-            <Navigation />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/over" element={<Over />} />
-              <Route path="/boeken" element={<Boeken />} />
-              <Route path="/lessen" element={<Lessen />} />
-              <Route path="/prive" element={<Prive />} />
-              <Route path="/tarieven" element={<Tarieven />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/legal" element={<Legal />} />
-              <Route path="/medical-professionals" element={<MedicalProfessionals />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
+            <ErrorBoundary>
+              <ScrollToTop />
+              <Navigation />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/over" element={<Over />} />
+                <Route path="/boeken" element={<Boeken />} />
+                <Route path="/lessen" element={<Lessen />} />
+                <Route path="/prive" element={<Prive />} />
+                <Route path="/tarieven" element={<Tarieven />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/legal" element={<Legal />} />
+                <Route path="/medical-professionals" element={<MedicalProfessionals />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <Footer />
+            </ErrorBoundary>
           </LanguageProvider>
         </BrowserRouter>
       </TooltipProvider>
