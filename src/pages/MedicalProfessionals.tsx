@@ -76,9 +76,14 @@ export default function MedicalProfessionals() {
   const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Medical Professional Enquiry — ${form.name}`);
+    const name = form.name.trim();
+    const email = form.email.trim();
+    const phone = form.phone.trim();
+    const practice = form.practice.trim();
+    const message = form.message.trim();
+    const subject = encodeURIComponent(`Medical Professional Enquiry — ${name}`);
     const body = encodeURIComponent(
-      `Name: ${form.name}\nRole: ${form.role}${form.practice ? `\nPractice: ${form.practice}` : ""}\nEmail: ${form.email}${form.phone ? `\nPhone: ${form.phone}` : ""}\n\nMessage:\n${form.message}`
+      `Name: ${name}\nRole: ${form.role}${practice ? `\nPractice: ${practice}` : ""}\nEmail: ${email}${phone ? `\nPhone: ${phone}` : ""}\n\nMessage:\n${message}`
     );
     window.location.href = `mailto:info@spessirits.com?subject=${subject}&body=${body}`;
     const roleIdx = mp.roleOptions.indexOf(form.role);
