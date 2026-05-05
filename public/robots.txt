@@ -55,4 +55,4 @@ Allow: /
 Allow: /llms.txt
 Disallow: /admin
 
-Sitemap: https://calm-balance-flow.lovable.app/sitemap.xml
+Sitemap: https://spessirits-pilates.lovable.app/sitemap.xml
