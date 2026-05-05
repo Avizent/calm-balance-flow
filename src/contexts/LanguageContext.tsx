@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getLanguageFromTimezone } from "@/lib/geo-language";
 
@@ -1764,18 +1764,35 @@ async function fetchTranslations(): Promise<Record<Language, Partial<Translation
   }
 }
 
+function getQueryLanguage(): Language | null {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("lang") as Language | null;
+    if (q && SUPPORTED_LANGUAGES.includes(q)) return q;
+  } catch {}
+  return null;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
+  // ?lang=xx wins over localStorage so hreflang URLs deep-link reliably.
+  const queryLang = typeof window !== "undefined" ? getQueryLanguage() : null;
   const stored = getStoredLanguage();
-  const [lang, setLangState] = useState<Language>(stored ?? "en");
-  const [ready, setReady] = useState(!!stored);
+  const initial = queryLang ?? stored ?? "en";
+  const [lang, setLangState] = useState<Language>(initial);
+  const [ready, setReady] = useState(!!queryLang || !!stored);
   const [mergedTranslations, setMergedTranslations] = useState<Record<Language, Translations>>(hardcodedTranslations);
   const [dbTranslations, setDbTranslations] = useState<Record<Language, Translations> | null>(null);
 
+  // Track whether the user has manually toggled. Once true, we never let a
+  // late-resolving Supabase site_settings query overwrite their choice.
+  const userToggledRef = useRef<boolean>(!!queryLang || !!stored);
+
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       // Fetch DB translations and merge over hardcoded defaults
       const dbData = await fetchTranslations();
-      if (dbData) {
+      if (!cancelled && dbData) {
         const merged = { ...hardcodedTranslations };
         for (const l of SUPPORTED_LANGUAGES) {
           if (dbData[l]) {
@@ -1786,21 +1803,25 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         setDbTranslations(merged);
       }
 
-      // Determine initial language if not stored
-      if (!stored) {
+      // Determine initial language only if user hasn't toggled, no query, no stored.
+      if (!cancelled && !userToggledRef.current) {
         const geoLang = getLanguageFromTimezone(SUPPORTED_LANGUAGES);
         if (geoLang) {
-          setLangState(geoLang);
+          if (!userToggledRef.current) setLangState(geoLang);
         } else {
           const dbDefault = await fetchDefaultLanguage();
-          setLangState(dbDefault);
+          // Re-check the guard *after* the await to avoid clobbering a
+          // toggle that happened while we were waiting for the network.
+          if (!cancelled && !userToggledRef.current) setLangState(dbDefault);
         }
       }
-      setReady(true);
+      if (!cancelled) setReady(true);
     })();
+    return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setLang = (newLang: Language) => {
+    userToggledRef.current = true;
     setLangState(newLang);
     try { localStorage.setItem("spessirits-lang", newLang); } catch {}
   };

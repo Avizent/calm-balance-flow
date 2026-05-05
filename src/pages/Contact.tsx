@@ -3,9 +3,11 @@ import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
+import { FIELD_LIMITS, validateField, type Lang } from "@/lib/form-validation";
 
 interface FormData { naam: string; email: string; telefoon: string; bericht: string }
-interface FormErrors { naam?: string; email?: string; bericht?: string; consent?: string }
+interface FormErrors { naam?: string; email?: string; telefoon?: string; bericht?: string; consent?: string }
+
 
 const contactHrefs = [
   "tel:+32472240581",
@@ -50,14 +52,18 @@ export default function Contact() {
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.naam.trim()) newErrors.naam = c.errNaam;
-    if (!form.email.trim()) {
-      newErrors.email = c.errEmail;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    const L = lang as Lang;
+    newErrors.naam = validateField({ value: form.naam, max: FIELD_LIMITS.name, lang: L, fieldLabel: c.fieldNaam, emptyError: c.errNaam });
+    const emailEmpty = !form.email.trim();
+    newErrors.email = validateField({ value: form.email, max: FIELD_LIMITS.email, lang: L, fieldLabel: c.fieldEmail, emptyError: c.errEmail });
+    if (!emailEmpty && !newErrors.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
       newErrors.email = c.errEmailInvalid;
     }
-    if (!form.bericht.trim()) newErrors.bericht = c.errBericht;
+    newErrors.telefoon = validateField({ value: form.telefoon, max: FIELD_LIMITS.phone, lang: L, fieldLabel: c.fieldTelefoon, required: false });
+    newErrors.bericht = validateField({ value: form.bericht, max: FIELD_LIMITS.message, lang: L, fieldLabel: c.fieldBericht, emptyError: c.errBericht });
     if (!consent) newErrors.consent = consentErrors[lang] || consentErrors.nl;
+    // Strip undefined keys so Object.keys reflects only real errors
+    (Object.keys(newErrors) as (keyof FormErrors)[]).forEach((k) => newErrors[k] === undefined && delete newErrors[k]);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -65,11 +71,16 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Contactformulier – ${form.naam}`);
+    const naam = form.naam.trim();
+    const email = form.email.trim();
+    const telefoon = form.telefoon.trim();
+    const bericht = form.bericht.trim();
+    const subject = encodeURIComponent(`Contactformulier – ${naam}`);
     const body = encodeURIComponent(
-      `Naam: ${form.naam}\nE-mail: ${form.email}${form.telefoon ? `\nTelefoon: ${form.telefoon}` : ""}\n\nBericht:\n${form.bericht}`
+      `Naam: ${naam}\nE-mail: ${email}${telefoon ? `\nTelefoon: ${telefoon}` : ""}\n\nBericht:\n${bericht}`
     );
     window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
+
     setForm({ naam: "", email: "", telefoon: "", bericht: "" });
     setConsent(false);
     setErrors({});

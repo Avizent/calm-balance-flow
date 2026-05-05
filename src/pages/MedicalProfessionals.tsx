@@ -3,6 +3,7 @@ import { CheckCircle, Phone, MessageCircle, Mail, MapPin, Send } from "lucide-re
 import { SEO, SITE_URL } from "@/components/SEO";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { FIELD_LIMITS, validateField, type Lang } from "@/lib/form-validation";
 
 function scrollToContact(e: React.MouseEvent) {
   e.preventDefault();
@@ -57,12 +58,17 @@ export default function MedicalProfessionals() {
 
   const validate = (): boolean => {
     const e: FormErrors = {};
-    if (!form.name.trim()) e.name = mp.errName;
+    const L = lang as Lang;
+    e.name = validateField({ value: form.name, max: FIELD_LIMITS.name, lang: L, fieldLabel: mp.formName, emptyError: mp.errName });
     if (!form.role) e.role = mp.errRole;
-    if (!form.email.trim()) e.email = mp.errEmail;
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = mp.errEmailInvalid;
-    if (!form.message.trim()) e.message = mp.errMessage;
+    const emailEmpty = !form.email.trim();
+    e.email = validateField({ value: form.email, max: FIELD_LIMITS.email, lang: L, fieldLabel: mp.formEmail, emptyError: mp.errEmail });
+    if (!emailEmpty && !e.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      e.email = mp.errEmailInvalid;
+    }
+    e.message = validateField({ value: form.message, max: FIELD_LIMITS.message, lang: L, fieldLabel: mp.formMessage, emptyError: mp.errMessage });
     if (!consent) e.consent = mp.errConsent;
+    (Object.keys(e) as (keyof FormErrors)[]).forEach((k) => e[k] === undefined && delete e[k]);
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -70,9 +76,14 @@ export default function MedicalProfessionals() {
   const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Medical Professional Enquiry — ${form.name}`);
+    const name = form.name.trim();
+    const email = form.email.trim();
+    const phone = form.phone.trim();
+    const practice = form.practice.trim();
+    const message = form.message.trim();
+    const subject = encodeURIComponent(`Medical Professional Enquiry — ${name}`);
     const body = encodeURIComponent(
-      `Name: ${form.name}\nRole: ${form.role}${form.practice ? `\nPractice: ${form.practice}` : ""}\nEmail: ${form.email}${form.phone ? `\nPhone: ${form.phone}` : ""}\n\nMessage:\n${form.message}`
+      `Name: ${name}\nRole: ${form.role}${practice ? `\nPractice: ${practice}` : ""}\nEmail: ${email}${phone ? `\nPhone: ${phone}` : ""}\n\nMessage:\n${message}`
     );
     window.location.href = `mailto:info@spessirits.com?subject=${subject}&body=${body}`;
     const roleIdx = mp.roleOptions.indexOf(form.role);
@@ -283,7 +294,7 @@ export default function MedicalProfessionals() {
                   {/* Name */}
                   <div>
                     <label className="block font-sans text-sm font-medium text-foreground mb-1.5">{mp.formName} <span className="text-destructive">*</span></label>
-                    <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder={mp.formNamePlaceholder} className={inputClass(errors.name)} />
+                    <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder={mp.formNamePlaceholder} maxLength={FIELD_LIMITS.name} autoComplete="name" className={inputClass(errors.name)} />
                     {errors.name && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.name}</p>}
                   </div>
                   {/* Role */}
@@ -298,23 +309,23 @@ export default function MedicalProfessionals() {
                   {/* Practice */}
                   <div>
                     <label className="block font-sans text-sm font-medium text-foreground mb-1.5">{mp.formPractice}</label>
-                    <input type="text" value={form.practice} onChange={(e) => handleChange("practice", e.target.value)} placeholder={mp.formPracticePlaceholder} className={inputClass()} />
+                    <input type="text" value={form.practice} onChange={(e) => handleChange("practice", e.target.value)} placeholder={mp.formPracticePlaceholder} maxLength={FIELD_LIMITS.practice} className={inputClass()} />
                   </div>
                   {/* Email */}
                   <div>
                     <label className="block font-sans text-sm font-medium text-foreground mb-1.5">{mp.formEmail} <span className="text-destructive">*</span></label>
-                    <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)} placeholder={mp.formEmailPlaceholder} className={inputClass(errors.email)} />
+                    <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)} placeholder={mp.formEmailPlaceholder} maxLength={FIELD_LIMITS.email} autoComplete="email" className={inputClass(errors.email)} />
                     {errors.email && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>}
                   </div>
                   {/* Phone */}
                   <div>
                     <label className="block font-sans text-sm font-medium text-foreground mb-1.5">{mp.formPhone}</label>
-                    <input type="tel" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} placeholder={mp.formPhonePlaceholder} className={inputClass()} />
+                    <input type="tel" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} placeholder={mp.formPhonePlaceholder} maxLength={FIELD_LIMITS.phone} autoComplete="tel" className={inputClass()} />
                   </div>
                   {/* Message */}
                   <div>
                     <label className="block font-sans text-sm font-medium text-foreground mb-1.5">{mp.formMessage} <span className="text-destructive">*</span></label>
-                    <textarea rows={5} value={form.message} onChange={(e) => handleChange("message", e.target.value)} placeholder={mp.formMessagePlaceholder} className={inputClass(errors.message)} />
+                    <textarea rows={5} value={form.message} onChange={(e) => handleChange("message", e.target.value)} placeholder={mp.formMessagePlaceholder} maxLength={FIELD_LIMITS.message} className={inputClass(errors.message)} />
                     {errors.message && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.message}</p>}
                   </div>
                   {/* Consent */}

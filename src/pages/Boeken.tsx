@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { SEO, SITE_URL } from "@/components/SEO";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
+import { FIELD_LIMITS, validateField, type Lang } from "@/lib/form-validation";
 
 interface BookingForm {
   naam: string;
@@ -42,19 +43,25 @@ export default function Boeken() {
   const location = useLocation();
   const seo = seoMeta[lang] || seoMeta.nl;
 
+  // Smooth-scroll to #reservatie whenever the hash changes (or on initial
+  // mount with that hash). Polls briefly because the section may not be in
+  // the DOM yet on first render after route change.
   useEffect(() => {
     if (location.hash !== "#reservatie") return;
     let attempts = 0;
+    let timer: number | undefined;
     const tryScroll = () => {
       const el = document.getElementById("reservatie");
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (attempts++ < 15) {
-        setTimeout(tryScroll, 100);
+        timer = window.setTimeout(tryScroll, 100);
       }
     };
-    setTimeout(tryScroll, 250);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    timer = window.setTimeout(tryScroll, 250);
+    return () => { if (timer !== undefined) window.clearTimeout(timer); };
+  }, [location.hash]);
+
 
   const isNl = lang === "nl";
   const isFr = lang === "fr";
@@ -114,13 +121,18 @@ export default function Boeken() {
 
   const validate = (): boolean => {
     const e: BookingErrors = {};
-    if (!form.naam.trim()) e.naam = copy.errNaam;
-    if (!form.email.trim()) { e.email = copy.errEmail; }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { e.email = copy.errEmailInvalid; }
-    if (!form.telefoon.trim()) e.telefoon = copy.errTelefoon;
+    const L = lang as Lang;
+    e.naam = validateField({ value: form.naam, max: FIELD_LIMITS.name, lang: L, fieldLabel: copy.fieldNaam, emptyError: copy.errNaam });
+    const emailEmpty = !form.email.trim();
+    e.email = validateField({ value: form.email, max: FIELD_LIMITS.email, lang: L, fieldLabel: copy.fieldEmail, emptyError: copy.errEmail });
+    if (!emailEmpty && !e.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      e.email = copy.errEmailInvalid;
+    }
+    e.telefoon = validateField({ value: form.telefoon, max: FIELD_LIMITS.phone, lang: L, fieldLabel: copy.fieldTelefoon, emptyError: copy.errTelefoon });
     if (!form.sessieType) e.sessieType = copy.errSessie;
     if (!form.format) e.format = copy.errFormat;
     if (!consent) e.consent = consentErrors[lang] || consentErrors.nl;
+    (Object.keys(e) as (keyof BookingErrors)[]).forEach((k) => e[k] === undefined && delete e[k]);
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -128,11 +140,16 @@ export default function Boeken() {
   const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Reservatieaanvraag – ${form.naam}`);
+    const naam = form.naam.trim();
+    const email = form.email.trim();
+    const telefoon = form.telefoon.trim();
+    const opmerking = form.opmerking.trim();
+    const subject = encodeURIComponent(`Reservatieaanvraag – ${naam}`);
     const body = encodeURIComponent(
-      `Naam: ${form.naam}\nE-mail: ${form.email}\nTelefoon: ${form.telefoon}\nSessie: ${form.sessieType}\nFormaat: ${form.format}${form.opmerking ? `\n\nOpmerkingen:\n${form.opmerking}` : ""}`
+      `Naam: ${naam}\nE-mail: ${email}\nTelefoon: ${telefoon}\nSessie: ${form.sessieType}\nFormaat: ${form.format}${opmerking ? `\n\nOpmerkingen:\n${opmerking}` : ""}`
     );
     window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
+
     setForm({ naam: "", email: "", telefoon: "", sessieType: "", format: "", opmerking: "" });
     setConsent(false);
     setErrors({});
@@ -190,7 +207,7 @@ export default function Boeken() {
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldNaam} <span className="text-destructive">*</span>
                 </label>
-                <input type="text" value={form.naam} onChange={(e) => set("naam", e.target.value)} placeholder={copy.fieldNaamPlaceholder} className={inputCls(errors.naam)} />
+                <input type="text" value={form.naam} onChange={(e) => set("naam", e.target.value)} placeholder={copy.fieldNaamPlaceholder} maxLength={FIELD_LIMITS.name} autoComplete="name" className={inputCls(errors.naam)} />
                 {errors.naam && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.naam}</p>}
               </div>
 
@@ -199,14 +216,14 @@ export default function Boeken() {
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {copy.fieldEmail} <span className="text-destructive">*</span>
                   </label>
-                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={copy.fieldEmailPlaceholder} className={inputCls(errors.email)} />
+                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={copy.fieldEmailPlaceholder} maxLength={FIELD_LIMITS.email} autoComplete="email" className={inputCls(errors.email)} />
                   {errors.email && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>}
                 </div>
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {copy.fieldTelefoon} <span className="text-destructive">*</span>
                   </label>
-                  <input type="tel" value={form.telefoon} onChange={(e) => set("telefoon", e.target.value)} placeholder={copy.fieldTelefoonPlaceholder} className={inputCls(errors.telefoon)} />
+                  <input type="tel" value={form.telefoon} onChange={(e) => set("telefoon", e.target.value)} placeholder={copy.fieldTelefoonPlaceholder} maxLength={FIELD_LIMITS.phone} autoComplete="tel" className={inputCls(errors.telefoon)} />
                   {errors.telefoon && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.telefoon}</p>}
                 </div>
               </div>
@@ -248,7 +265,7 @@ export default function Boeken() {
                   {copy.fieldOpmerking}{" "}
                   <span className="font-normal text-muted-foreground">({isPt ? "opcional" : isFr ? "optionnel" : isNl ? "optioneel" : "optional"})</span>
                 </label>
-                <textarea rows={4} value={form.opmerking} onChange={(e) => set("opmerking", e.target.value)} placeholder={copy.fieldOpmerkingPlaceholder} className={inputCls()} />
+                <textarea rows={4} value={form.opmerking} onChange={(e) => set("opmerking", e.target.value)} placeholder={copy.fieldOpmerkingPlaceholder} maxLength={FIELD_LIMITS.notes} className={inputCls()} />
               </div>
 
               <ConsentCheckbox checked={consent} onCheckedChange={(v) => { setConsent(v); if (errors.consent) setErrors(p => ({ ...p, consent: undefined })); }} error={errors.consent} />

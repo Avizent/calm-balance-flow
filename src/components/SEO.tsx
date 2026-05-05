@@ -31,6 +31,17 @@ const LOCALE_MAP: Record<string, string> = {
   pt: "pt_BR",
 };
 
+// hreflang attribute values per supported UI language. NL is the default
+// (x-default) since the studio is in Belgium.
+const HREFLANG_MAP: Record<string, string> = {
+  nl: "nl-BE",
+  en: "en-GB",
+  fr: "fr-BE",
+  pt: "pt-BR",
+};
+const HREFLANG_DEFAULT_LANG = "nl";
+
+
 /* ── LocalBusiness + Organization (homepage & contact only) ──────── */
 const localBusinessSchema = {
   "@context": "https://schema.org",
@@ -179,6 +190,23 @@ export function SEO({
       {alternateLocales.map((loc) => (
         <meta key={loc} property="og:locale:alternate" content={loc} />
       ))}
+
+      {/* hreflang alternates — same SPA URL with ?lang=xx so each locale has a
+          distinct addressable variant for Google's hreflang clustering. */}
+      {Object.entries(HREFLANG_MAP).map(([code, hreflang]) => (
+        <link
+          key={hreflang}
+          rel="alternate"
+          hrefLang={hreflang}
+          href={`${canonicalUrl}${normalizedPath === "/" ? "" : ""}?lang=${code}`}
+        />
+      ))}
+      <link
+        rel="alternate"
+        hrefLang="x-default"
+        href={`${canonicalUrl}?lang=${HREFLANG_DEFAULT_LANG}`}
+      />
+
 
       {/* Robots: allow generous snippets for AI/search */}
       {!noindex && (
