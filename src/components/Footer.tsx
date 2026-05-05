@@ -49,7 +49,7 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
   ];
 
   return (
-    <footer className="bg-foreground text-primary-foreground">
+    <footer ref={ref} className="bg-foreground text-primary-foreground">
       <div className="container-wide section-padding py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
@@ -148,4 +148,6 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
       </div>
     </footer>
   );
-}
+});
+
+Footer.displayName = "Footer";
