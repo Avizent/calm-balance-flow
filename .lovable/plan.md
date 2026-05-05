@@ -1,34 +1,66 @@
+## Goal
 
+Replace all visible pricing (€ amounts, "1/5/10 session" packages, VAT notes) with a "Pricing on Application" (POA) message — but keep every line of pricing code intact behind a single boolean flag so it can be turned back on in one edit.
 
-## Fix: Language toggle pill rendering issue in Edge
+## Approach: one feature flag
 
-### What's happening
-In your Edge screenshot the language pill reads `Contact /AND /FR /PT`. Two things are going wrong at once:
+Create `src/config/features.ts`:
 
-1. **"NL" looks like "AND"** — At hero mode the inactive language buttons use `text-white/50` and the active one uses `text-white`. Against the light/blurred hero background in Edge, the bold "NL" with the adjacent `/` separator visually reads as "AND". This is a contrast + letter-spacing problem, made worse because Edge renders the `/` separators tighter than Chrome/Safari.
-2. **"Contact" appears glued to the pill** — The desktop nav uses `gap-4` (16px) between items, and the language pill sits in a sibling flex container with only `gap-2`. At ~750–900px viewports the last nav link ("Contact") ends up directly touching the pill's left border, so it looks like it's *inside* the pill.
+```ts
+// Flip to true to restore the public pricing tables.
+export const SHOW_PRICING = false;
+```
 
-### Changes
+All existing pricing arrays, translation keys (`tr.tiers`, `tr.pricingNote`, etc.), and JSX stay in the codebase untouched. We only wrap the rendered blocks in `{SHOW_PRICING ? <ExistingTable/> : <POABlock/>}`.
 
-**`src/components/Navigation.tsx`**
+## Files to change
 
-1. **Increase separation between nav and the right-side cluster.** Add left margin / larger gap so "Contact" can never visually merge into the language pill at any viewport between `md` and `lg`.
+### 1. `src/config/features.ts` (new)
+Single export, documented as the on/off switch.
 
-2. **Rebuild the language pill markup for cleaner rendering:**
-   - Replace the `<span>{i > 0 && '/'}<button>NL</button></span>` pattern with a flat list using a real `<span aria-hidden>` divider that has explicit horizontal padding (`px-1.5`) so letters can't kiss the slash.
-   - Bump the inactive-language contrast in hero mode from `text-white/50` to `text-white/70` so "NL" reads clearly as N-L, not as "AND".
-   - Add `tracking-wide` to the language buttons to prevent the N+L glyph fusion that Edge's text rasterizer produces at small sizes.
-   - Add `select-none` and `whitespace-nowrap` on the pill container so the row never wraps inside the rounded border.
+### 2. `src/pages/Tarieven.tsx`
+- Import `SHOW_PRICING`.
+- Keep `pricingData`, SEO meta, policies, gift voucher section as-is.
+- Wrap the entire **Pricing Table `<section className="bg-card">`** (lines ~47–81) in `SHOW_PRICING ? (...existing...) : <POASection />`.
+- POA section reuses studio styling: same `bg-card section-padding` container, single centered card with:
+  - Heading from `tr.heroTitle` reused or new key `tr.poaTitle`
+  - Body copy explaining sessions are quoted on request
+  - Two CTAs: "Contact" → `/contact`, "WhatsApp" → existing wa.me link from Footer/Contact
+- Policies + Gift voucher sections remain visible (they don't show prices).
 
-3. **Add `aria-label` already present — keep it, plus add `lang={l}` attribute** on each button for correct screen-reader pronunciation.
+### 3. `src/pages/Index.tsx`
+- Import `SHOW_PRICING`.
+- Wrap the homepage `<section id="tarieven">` block (lines ~280–340) the same way. When off, render a compact POA card in the same section so the anchor `#tarieven` still works and the nav link still scrolls somewhere meaningful.
 
-4. **Mobile drawer language row** gets the same divider/padding cleanup for consistency.
+### 4. `src/contexts/LanguageContext.tsx`
+Add four new translation keys per language (nl/en/fr/pt) inside the existing `tarieven` object — additive, no removals:
+- `poaTitle` — e.g. NL "Tarieven op aanvraag", EN "Pricing on application", FR "Tarifs sur demande", PT "Preços sob consulta"
+- `poaBody` — short paragraph: sessions are personalised; contact for a quote
+- `poaContactBtn` — "Contact" / "Contact" / "Contact" / "Contato"
+- `poaWhatsappBtn` — "WhatsApp" (all langs)
 
-### Why this fixes Edge specifically
-Edge's Chromium build uses slightly different sub-pixel text rendering than Chrome on macOS. Tight letter pairs ("NL") plus a low-opacity `/` separator with no padding collapse into ligature-like glyphs. Explicit padding around the divider + higher contrast + `tracking-wide` removes the ambiguity in every browser.
+Type definition in the `tarieven` interface gets the four optional keys (or required — both work since we add to all four locales).
 
-### Files touched
-- `src/components/Navigation.tsx` (only)
+### 5. `public/llms.txt`
+Change the Pricing line from "Visit …/tarieven for current pricing." to "Pricing on application — contact studio for a personalised quote." Keep the URL reference removed or rephrased so AI crawlers don't promise prices.
 
-No backend, routing, or styling-token changes. No risk to prerender/hydration.
+### 6. SEO copy (`src/pages/Tarieven.tsx` `seoMeta`)
+Update titles/descriptions to neutral "Pricing on application" wording so search snippets don't claim transparent prices that aren't shown. Old strings kept as comments above for easy revert.
 
+## What stays untouched
+
+- `pricingData` arrays in both Index.tsx and Tarieven.tsx
+- `tr.tiers`, `tr.exclLabel`, `tr.pricingNote`, `tr.popular`, `tr.bookNow` translation keys
+- Routing, navigation labels ("Tarieven"/"Pricing"/"Tarifs"/"Preços"), nav anchors
+- Policies and Gift voucher sections on `/tarieven`
+- All "Bekijk tarieven / View pricing" CTAs across the site — they still link to `/tarieven`, which now shows the POA card
+
+## Reinstating later
+
+One edit: set `SHOW_PRICING = true` in `src/config/features.ts`. Optionally revert the `seoMeta` and `llms.txt` strings (comments will mark the old values).
+
+## Notes / risk
+
+- Zero backend changes, zero routing changes — prerender stays stable.
+- No translation key is removed, so the Admin CMS translation editor keeps working.
+- Nav link "Tarieven" still leads to a useful page (POA + policies + gift voucher).

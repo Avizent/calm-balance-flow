@@ -128,6 +128,10 @@ export interface Translations {
     giftBtn: string;
     tiers: { label: string }[];
     policies: { title: string; desc: string }[];
+    poaTitle?: string;
+    poaBody?: string;
+    poaContactBtn?: string;
+    poaWhatsappBtn?: string;
   };
   contact: {
     tag: string;
@@ -442,6 +446,10 @@ const nl: Translations = {
       { title: "Vooraf Betalen", desc: "Sessies en pakketten dienen vooraf betaald te worden." },
       { title: "3 Maanden Geldig", desc: "Sessies zijn persoonlijk en drie maanden geldig vanaf de factuurdatum." },
     ],
+    poaTitle: "Tarieven op aanvraag",
+    poaBody: "Elke traject is persoonlijk en wordt afgestemd op jouw lichaam, doelen en frequentie. Neem contact op voor een offerte op maat.",
+    poaContactBtn: "Contact",
+    poaWhatsappBtn: "WhatsApp",
   },
   contact: {
     tag: "Contact",
@@ -798,6 +806,10 @@ const en: Translations = {
       { title: "Pay in Advance", desc: "Sessions and packages must be paid in advance." },
       { title: "Valid 3 Months", desc: "Sessions are personal and valid for three months from the invoice date." },
     ],
+    poaTitle: "Pricing on application",
+    poaBody: "Every programme is personal and tailored to your body, goals and frequency. Contact us for a custom quote.",
+    poaContactBtn: "Contact",
+    poaWhatsappBtn: "WhatsApp",
   },
   contact: {
     tag: "Contact",
@@ -1158,6 +1170,10 @@ const fr: Translations = {
       { title: "Paiement à l'avance", desc: "Les séances et forfaits doivent être réglés à l'avance." },
       { title: "Valable 3 mois", desc: "Les séances sont personnelles et valables trois mois à compter de la date de facturation." },
     ],
+    poaTitle: "Tarifs sur demande",
+    poaBody: "Chaque parcours est personnel et adapté à votre corps, vos objectifs et votre fréquence. Contactez-nous pour un devis sur mesure.",
+    poaContactBtn: "Contact",
+    poaWhatsappBtn: "WhatsApp",
   },
   contact: {
     tag: "Contact",
@@ -1519,6 +1535,10 @@ const pt: Translations = {
       { title: "Pagamento antecipado", desc: "As sessões e pacotes devem ser pagos antecipadamente." },
       { title: "Válido por 3 meses", desc: "As sessões são pessoais e válidas por três meses a partir da data da fatura." },
     ],
+    poaTitle: "Preços sob consulta",
+    poaBody: "Cada percurso é pessoal e adaptado ao seu corpo, objetivos e frequência. Entre em contato para um orçamento personalizado.",
+    poaContactBtn: "Contato",
+    poaWhatsappBtn: "WhatsApp",
   },
   contact: {
     tag: "Contato",

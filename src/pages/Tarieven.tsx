@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, Ban, CreditCard, Calendar, Gift } from "lucide-react";
+import { ArrowRight, Clock, Ban, CreditCard, Calendar, Gift, MessageCircle, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
+import { SHOW_PRICING } from "@/config/features";
 
 const pricingData = [
   { exclBTW: { individueel: "€77", duo: "€90" }, inclBTW: { individueel: "€93,17", duo: "€108,90" }, popular: false },
@@ -10,12 +11,21 @@ const pricingData = [
 ];
 const policyIcons = [Clock, Ban, CreditCard, Calendar];
 
-const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
-  nl: { title: "Tarieven — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Tarieven" },
-  en: { title: "Pricing — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Pricing" },
-  fr: { title: "Tarifs — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Tarifs" },
-  pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
-};
+// SEO copy for POA mode. To revert when SHOW_PRICING is re-enabled, restore
+// the previous "Transparent pricing… packages of 1, 5 or 10 sessions" wording.
+const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = SHOW_PRICING
+  ? {
+      nl: { title: "Tarieven — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Tarieven" },
+      en: { title: "Pricing — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Pricing" },
+      fr: { title: "Tarifs — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Tarifs" },
+      pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
+    }
+  : {
+      nl: { title: "Tarieven op aanvraag — Spessirits Pilates Schilde", desc: "Persoonlijke Pilates begeleiding door een kinesitherapeut in Schilde. Tarieven op aanvraag — neem contact op voor een offerte op maat.", breadcrumb: "Tarieven" },
+      en: { title: "Pricing on application — Spessirits Pilates Schilde", desc: "Personal Pilates coaching by a physiotherapist in Schilde. Pricing on application — get in touch for a tailored quote.", breadcrumb: "Pricing" },
+      fr: { title: "Tarifs sur demande — Spessirits Pilates Schilde", desc: "Coaching Pilates personnel par une kinésithérapeute à Schilde. Tarifs sur demande — contactez-nous pour un devis sur mesure.", breadcrumb: "Tarifs" },
+      pt: { title: "Preços sob consulta — Spessirits Pilates Schilde", desc: "Coaching Pilates pessoal por uma fisioterapeuta em Schilde. Preços sob consulta — entre em contato para um orçamento personalizado.", breadcrumb: "Preços" },
+    };
 
 export default function Tarieven() {
   const { t, lang } = useLanguage();
@@ -43,7 +53,8 @@ export default function Tarieven() {
         </div>
       </section>
 
-      {/* Pricing Table */}
+      {/* Pricing Table — gated by SHOW_PRICING (see src/config/features.ts) */}
+      {SHOW_PRICING ? (
       <section className="bg-card">
         <div className="container-wide section-padding">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -79,6 +90,36 @@ export default function Tarieven() {
           <p className="text-center font-sans text-xs text-muted-foreground mt-8">{tr.pricingNote}</p>
         </div>
       </section>
+      ) : (
+      <section className="bg-card">
+        <div className="container-wide section-padding">
+          <div className="max-w-2xl mx-auto rounded-2xl border border-border bg-card shadow-sm p-10 md:p-14 text-center">
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
+              {tr.poaTitle}
+            </h2>
+            <p className="font-sans text-base text-muted-foreground leading-relaxed mb-8 max-w-md mx-auto">
+              {tr.poaBody}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
+              >
+                <Mail className="h-4 w-4" /> {tr.poaContactBtn}
+              </Link>
+              <a
+                href="https://wa.me/32472913917"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border border-border bg-muted text-foreground font-sans text-sm font-medium hover:bg-secondary transition-colors min-h-[48px]"
+              >
+                <MessageCircle className="h-4 w-4" /> {tr.poaWhatsappBtn}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
 
       {/* Policies */}
       <section className="bg-muted">
