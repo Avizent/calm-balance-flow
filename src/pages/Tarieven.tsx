@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, Ban, CreditCard, Calendar, Gift } from "lucide-react";
+import { ArrowRight, Clock, Ban, CreditCard, Calendar, Gift, MessageCircle, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
+import { SHOW_PRICING } from "@/config/features";
 
 const pricingData = [
   { exclBTW: { individueel: "€77", duo: "€90" }, inclBTW: { individueel: "€93,17", duo: "€108,90" }, popular: false },
