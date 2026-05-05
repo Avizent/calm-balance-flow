@@ -1,0 +1,1 @@
+UPDATE public.translations SET content = jsonb_set(content, '{tarieven,tag}', '"Fees 2026"'::jsonb), updated_at = now();
