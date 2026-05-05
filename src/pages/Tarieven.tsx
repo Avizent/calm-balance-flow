@@ -53,7 +53,8 @@ export default function Tarieven() {
         </div>
       </section>
 
-      {/* Pricing Table */}
+      {/* Pricing Table — gated by SHOW_PRICING (see src/config/features.ts) */}
+      {SHOW_PRICING ? (
       <section className="bg-card">
         <div className="container-wide section-padding">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -89,6 +90,36 @@ export default function Tarieven() {
           <p className="text-center font-sans text-xs text-muted-foreground mt-8">{tr.pricingNote}</p>
         </div>
       </section>
+      ) : (
+      <section className="bg-card">
+        <div className="container-wide section-padding">
+          <div className="max-w-2xl mx-auto rounded-2xl border border-border bg-card shadow-sm p-10 md:p-14 text-center">
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
+              {tr.poaTitle}
+            </h2>
+            <p className="font-sans text-base text-muted-foreground leading-relaxed mb-8 max-w-md mx-auto">
+              {tr.poaBody}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity min-h-[48px]"
+              >
+                <Mail className="h-4 w-4" /> {tr.poaContactBtn}
+              </Link>
+              <a
+                href="https://wa.me/32472913917"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border border-border bg-muted text-foreground font-sans text-sm font-medium hover:bg-secondary transition-colors min-h-[48px]"
+              >
+                <MessageCircle className="h-4 w-4" /> {tr.poaWhatsappBtn}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
 
       {/* Policies */}
       <section className="bg-muted">
