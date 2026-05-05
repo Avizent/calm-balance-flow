@@ -21,16 +21,6 @@ export function Footer() {
   const isHome = location.pathname === "/";
   const ll = legalLabels[lang] || legalLabels.nl;
 
-  const handleHomeClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isHome) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      navigate("/");
-      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-    }
-  };
-
   const handleRouteClick = (e: React.MouseEvent, href: string) => {
     const onSamePage = location.pathname === href;
     if (onSamePage) {

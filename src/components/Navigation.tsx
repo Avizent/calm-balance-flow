@@ -35,10 +35,16 @@ export function Navigation() {
   /* Close drawer on route change */
   useEffect(() => { setMenuOpen(false); }, [location]);
 
-  /* Lock body scroll when drawer is open */
+  /* Lock body scroll + Escape-to-close while drawer is open */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (!menuOpen) return () => { document.body.style.overflow = ""; };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   /* Track which section is in view */
