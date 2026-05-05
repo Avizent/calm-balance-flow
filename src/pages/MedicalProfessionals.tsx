@@ -3,6 +3,7 @@ import { CheckCircle, Phone, MessageCircle, Mail, MapPin, Send } from "lucide-re
 import { SEO, SITE_URL } from "@/components/SEO";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { FIELD_LIMITS, validateField, type Lang } from "@/lib/form-validation";
 
 function scrollToContact(e: React.MouseEvent) {
   e.preventDefault();
@@ -57,12 +58,17 @@ export default function MedicalProfessionals() {
 
   const validate = (): boolean => {
     const e: FormErrors = {};
-    if (!form.name.trim()) e.name = mp.errName;
+    const L = lang as Lang;
+    e.name = validateField({ value: form.name, max: FIELD_LIMITS.name, lang: L, fieldLabel: mp.formName, emptyError: mp.errName });
     if (!form.role) e.role = mp.errRole;
-    if (!form.email.trim()) e.email = mp.errEmail;
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = mp.errEmailInvalid;
-    if (!form.message.trim()) e.message = mp.errMessage;
+    const emailEmpty = !form.email.trim();
+    e.email = validateField({ value: form.email, max: FIELD_LIMITS.email, lang: L, fieldLabel: mp.formEmail, emptyError: mp.errEmail });
+    if (!emailEmpty && !e.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      e.email = mp.errEmailInvalid;
+    }
+    e.message = validateField({ value: form.message, max: FIELD_LIMITS.message, lang: L, fieldLabel: mp.formMessage, emptyError: mp.errMessage });
     if (!consent) e.consent = mp.errConsent;
+    (Object.keys(e) as (keyof FormErrors)[]).forEach((k) => e[k] === undefined && delete e[k]);
     setErrors(e);
     return Object.keys(e).length === 0;
   };
