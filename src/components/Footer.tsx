@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -14,7 +15,7 @@ function scrollToSection(id: string) {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function Footer() {
+export const Footer = forwardRef<HTMLElement>((_props, ref) => {
   const { t, lang } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-foreground text-primary-foreground">
+    <footer ref={ref} className="bg-foreground text-primary-foreground">
       <div className="container-wide section-padding py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
@@ -147,4 +148,6 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});
+
+Footer.displayName = "Footer";
