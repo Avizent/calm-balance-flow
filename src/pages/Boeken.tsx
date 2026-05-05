@@ -140,11 +140,16 @@ export default function Boeken() {
   const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Reservatieaanvraag – ${form.naam}`);
+    const naam = form.naam.trim();
+    const email = form.email.trim();
+    const telefoon = form.telefoon.trim();
+    const opmerking = form.opmerking.trim();
+    const subject = encodeURIComponent(`Reservatieaanvraag – ${naam}`);
     const body = encodeURIComponent(
-      `Naam: ${form.naam}\nE-mail: ${form.email}\nTelefoon: ${form.telefoon}\nSessie: ${form.sessieType}\nFormaat: ${form.format}${form.opmerking ? `\n\nOpmerkingen:\n${form.opmerking}` : ""}`
+      `Naam: ${naam}\nE-mail: ${email}\nTelefoon: ${telefoon}\nSessie: ${form.sessieType}\nFormaat: ${form.format}${opmerking ? `\n\nOpmerkingen:\n${opmerking}` : ""}`
     );
     window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
+
     setForm({ naam: "", email: "", telefoon: "", sessieType: "", format: "", opmerking: "" });
     setConsent(false);
     setErrors({});
