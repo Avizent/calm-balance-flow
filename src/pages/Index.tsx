@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO } from "@/components/SEO";
+import { SHOW_PRICING } from "@/config/features";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import heroImage from "@/assets/cintia-portrait.jpg";
 import heroBg from "@/assets/hero-bg.jpg";
