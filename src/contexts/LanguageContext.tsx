@@ -451,6 +451,7 @@ const nl: Translations = {
     poaContactBtn: "Contact",
     poaWhatsappBtn: "WhatsApp",
   },
+  contact: {
     tag: "Contact",
     heroTitle: "Neem contact op",
     heroSub:
