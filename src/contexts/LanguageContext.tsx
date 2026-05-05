@@ -237,7 +237,7 @@ const nl: Translations = {
     over: "Over Cintia",
     lessen: "Lessen",
     prive: "Privé Sessies",
-    tarieven: "Tarieven",
+    tarieven: "Fees",
     contact: "Contact",
     bookNow: "Boek Nu",
     menu: "Menu openen",
@@ -315,7 +315,7 @@ const nl: Translations = {
     ctaTitle: "Klaar voor jouw eerste sessie?",
     ctaSub: "Neem contact op met Cintia en ontdek hoe Pilates jou kan helpen.",
     ctaBtn: "Contacteer Cintia",
-    ctaSecondary: "Bekijk tarieven",
+    ctaSecondary: "View fees",
     credentials: [
       {
         icon: "🌍",
@@ -403,7 +403,7 @@ const nl: Translations = {
     individualSub: "Eén op één met Cintia",
     duoTitle: "Duo",
     duoSub: "Samen trainen met een partner",
-    viewPricing: "Bekijk tarieven",
+    viewPricing: "View fees",
     ctaTitle: "Plan jouw privé sessie",
     ctaSub: "Contacteer Cintia en start jouw persoonlijk Pilatestraject.",
     ctaBtn: "Neem contact op",
@@ -428,7 +428,7 @@ const nl: Translations = {
     heroSub:
       "Kies het pakket dat bij jou past. Alle sessies zijn individueel afgestemd op jouw lichaam en doelen.",
     pricingNote:
-      "(*) Prijzen exclusief BTW, niet geldig voor particuliere verkoop.",
+      "(*) Fees excluding VAT, not valid for private sales.",
     popular: "Meest Gekozen",
     individueel: "Individueel",
     duo: "Duo",
@@ -598,7 +598,7 @@ const en: Translations = {
     over: "About Cintia",
     lessen: "Classes",
     prive: "Private Sessions",
-    tarieven: "Pricing",
+    tarieven: "Fees",
     contact: "Contact",
     bookNow: "Book Now",
     menu: "Open menu",
@@ -676,7 +676,7 @@ const en: Translations = {
     ctaTitle: "Ready for your first session?",
     ctaSub: "Get in touch with Cintia and discover how Pilates can help you.",
     ctaBtn: "Contact Cintia",
-    ctaSecondary: "View pricing",
+    ctaSecondary: "View fees",
     credentials: [
       {
         icon: "🌍",
@@ -764,7 +764,7 @@ const en: Translations = {
     individualSub: "One-on-one with Cintia",
     duoTitle: "Duo",
     duoSub: "Train together with a partner",
-    viewPricing: "View pricing",
+    viewPricing: "View fees",
     ctaTitle: "Plan your private session",
     ctaSub: "Contact Cintia and start your personal Pilates journey.",
     ctaBtn: "Get in touch",
@@ -788,7 +788,7 @@ const en: Translations = {
     heroTitle: "Sessions and Fees",
     heroSub:
       "Choose the package that suits you. All sessions are individually tailored to your body and goals.",
-    pricingNote: "(*) Prices excluding VAT, not valid for private sales.",
+    pricingNote: "(*) Fees excluding VAT, not valid for private sales.",
     popular: "Most Popular",
     individueel: "Individual",
     duo: "Duo",
@@ -961,7 +961,7 @@ const fr: Translations = {
     over: "À propos de Cintia",
     lessen: "Cours",
     prive: "Séances Privées",
-    tarieven: "Tarifs",
+    tarieven: "Fees",
     contact: "Contact",
     bookNow: "Réserver",
     menu: "Ouvrir le menu",
@@ -1039,7 +1039,7 @@ const fr: Translations = {
     ctaTitle: "Prêt(e) pour votre première séance ?",
     ctaSub: "Contactez Cintia et découvrez comment le Pilates peut vous aider.",
     ctaBtn: "Contacter Cintia",
-    ctaSecondary: "Voir les tarifs",
+    ctaSecondary: "View fees",
     credentials: [
       {
         icon: "🌍",
@@ -1127,7 +1127,7 @@ const fr: Translations = {
     individualSub: "En tête-à-tête avec Cintia",
     duoTitle: "Duo",
     duoSub: "Entraînez-vous avec un(e) partenaire",
-    viewPricing: "Voir les tarifs",
+    viewPricing: "View fees",
     ctaTitle: "Planifiez votre séance privée",
     ctaSub: "Contactez Cintia et commencez votre parcours Pilates personnalisé.",
     ctaBtn: "Prendre contact",
@@ -1152,7 +1152,7 @@ const fr: Translations = {
     heroSub:
       "Choisissez la formule qui vous convient. Toutes les séances sont individuellement adaptées à votre corps et à vos objectifs.",
     pricingNote:
-      "(*) Prix hors TVA, non valables pour la vente aux particuliers.",
+      "(*) Fees excluding VAT, not valid for private sales.",
     popular: "Le plus choisi",
     individueel: "Individuel",
     duo: "Duo",
@@ -1327,7 +1327,7 @@ const pt: Translations = {
     over: "Sobre a Cintia",
     lessen: "Aulas",
     prive: "Sessões Privadas",
-    tarieven: "Preços",
+    tarieven: "Fees",
     contact: "Contato",
     bookNow: "Agendar",
     menu: "Abrir menu",
@@ -1405,7 +1405,7 @@ const pt: Translations = {
     ctaTitle: "Pronto(a) para a sua primeira sessão?",
     ctaSub: "Entre em contato com a Cintia e descubra como o Pilates pode ajudá-lo(a).",
     ctaBtn: "Falar com a Cintia",
-    ctaSecondary: "Ver os preços",
+    ctaSecondary: "View fees",
     credentials: [
       {
         icon: "🌍",
@@ -1493,7 +1493,7 @@ const pt: Translations = {
     individualSub: "Um a um com a Cintia",
     duoTitle: "Duo",
     duoSub: "Treine com um(a) parceiro(a)",
-    viewPricing: "Ver os preços",
+    viewPricing: "View fees",
     ctaTitle: "Agende a sua sessão privada",
     ctaSub: "Entre em contato com a Cintia e inicie a sua jornada pessoal de Pilates.",
     ctaBtn: "Entrar em contato",
@@ -1517,7 +1517,7 @@ const pt: Translations = {
     heroTitle: "Sessions and Fees",
     heroSub:
       "Escolha o pacote que melhor se adapta a você. Todas as sessões são individualmente personalizadas para o seu corpo e objetivos.",
-    pricingNote: "(*) Preços sem IVA, não válidos para venda a particulares.",
+    pricingNote: "(*) Fees excluding VAT, not valid for private sales.",
     popular: "Mais Escolhido",
     individueel: "Individual",
     duo: "Duo",
