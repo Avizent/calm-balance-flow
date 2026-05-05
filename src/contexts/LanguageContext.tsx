@@ -811,6 +811,7 @@ const en: Translations = {
     poaContactBtn: "Contact",
     poaWhatsappBtn: "WhatsApp",
   },
+  contact: {
     tag: "Contact",
     heroTitle: "Get in touch",
     heroSub:
@@ -1174,6 +1175,7 @@ const fr: Translations = {
     poaContactBtn: "Contact",
     poaWhatsappBtn: "WhatsApp",
   },
+  contact: {
     tag: "Contact",
     heroTitle: "Contactez-nous",
     heroSub:
