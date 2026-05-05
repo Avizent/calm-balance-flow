@@ -71,11 +71,16 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Contactformulier – ${form.naam}`);
+    const naam = form.naam.trim();
+    const email = form.email.trim();
+    const telefoon = form.telefoon.trim();
+    const bericht = form.bericht.trim();
+    const subject = encodeURIComponent(`Contactformulier – ${naam}`);
     const body = encodeURIComponent(
-      `Naam: ${form.naam}\nE-mail: ${form.email}${form.telefoon ? `\nTelefoon: ${form.telefoon}` : ""}\n\nBericht:\n${form.bericht}`
+      `Naam: ${naam}\nE-mail: ${email}${telefoon ? `\nTelefoon: ${telefoon}` : ""}\n\nBericht:\n${bericht}`
     );
     window.location.href = `mailto:spessiritskine@icloud.com?subject=${subject}&body=${body}`;
+
     setForm({ naam: "", email: "", telefoon: "", bericht: "" });
     setConsent(false);
     setErrors({});
