@@ -3,9 +3,11 @@ import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SEO, SITE_URL } from "@/components/SEO";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
+import { FIELD_LIMITS, validateField, type Lang } from "@/lib/form-validation";
 
 interface FormData { naam: string; email: string; telefoon: string; bericht: string }
-interface FormErrors { naam?: string; email?: string; bericht?: string; consent?: string }
+interface FormErrors { naam?: string; email?: string; telefoon?: string; bericht?: string; consent?: string }
+
 
 const contactHrefs = [
   "tel:+32472240581",
