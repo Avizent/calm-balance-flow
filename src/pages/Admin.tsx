@@ -47,7 +47,7 @@ const SECTION_LABELS: Record<keyof Translations, string> = {
   over: "About (Over)",
   lessen: "Classes (Lessen)",
   prive: "Private Sessions (Privé)",
-  tarieven: "Pricing (Tarieven)",
+  tarieven: "Fees (Tarieven)",
   contact: "Contact",
   medicalProfessionals: "Medical Professionals",
 };

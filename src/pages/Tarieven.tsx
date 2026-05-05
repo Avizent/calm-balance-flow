@@ -15,10 +15,10 @@ const policyIcons = [Clock, Ban, CreditCard, Calendar];
 // the previous "Transparent pricing… packages of 1, 5 or 10 sessions" wording.
 const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = SHOW_PRICING
   ? {
-      nl: { title: "Tarieven — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Tarieven" },
-      en: { title: "Pricing — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Pricing" },
-      fr: { title: "Tarifs — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Tarifs" },
-      pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
+      nl: { title: "Fees — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Fees" },
+      en: { title: "Fees — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Fees" },
+      fr: { title: "Fees — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Fees" },
+      pt: { title: "Fees — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Fees" },
     }
   : {
       nl: { title: "Session Fees — Spessirits Pilates Schilde", desc: "Persoonlijke Pilates begeleiding door een kinesitherapeut in Schilde. Session fees available upon request — neem contact op voor een offerte op maat.", breadcrumb: "Session Fees" },
