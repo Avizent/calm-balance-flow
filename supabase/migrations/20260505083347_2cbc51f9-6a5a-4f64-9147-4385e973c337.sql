@@ -1,0 +1,1 @@
+UPDATE public.translations SET content = jsonb_set(content, '{contact,heroSub}', '"For bookings, questions about classes or fees — Cintia is happy to help."'::jsonb), updated_at = now();
