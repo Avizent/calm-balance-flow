@@ -423,7 +423,7 @@ const nl: Translations = {
     ],
   },
   tarieven: {
-    tag: "SESSION FEES 2026",
+    tag: "Fees 2026",
     heroTitle: "Session Fees",
     heroSub:
       "Kies het pakket dat bij jou past. Alle sessies zijn individueel afgestemd op jouw lichaam en doelen.",
@@ -784,7 +784,7 @@ const en: Translations = {
     ],
   },
   tarieven: {
-    tag: "SESSION FEES 2026",
+    tag: "Fees 2026",
     heroTitle: "Session Fees",
     heroSub:
       "Choose the package that suits you. All sessions are individually tailored to your body and goals.",
@@ -1147,7 +1147,7 @@ const fr: Translations = {
     ],
   },
   tarieven: {
-    tag: "SESSION FEES 2026",
+    tag: "Fees 2026",
     heroTitle: "Session Fees",
     heroSub:
       "Choisissez la formule qui vous convient. Toutes les séances sont individuellement adaptées à votre corps et à vos objectifs.",
@@ -1513,7 +1513,7 @@ const pt: Translations = {
     ],
   },
   tarieven: {
-    tag: "SESSION FEES 2026",
+    tag: "Fees 2026",
     heroTitle: "Session Fees",
     heroSub:
       "Escolha o pacote que melhor se adapta a você. Todas as sessões são individualmente personalizadas para o seu corpo e objetivos.",
