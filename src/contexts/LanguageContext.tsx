@@ -424,7 +424,7 @@ const nl: Translations = {
   },
   tarieven: {
     tag: "Fees 2026",
-    heroTitle: "Session Fees",
+    heroTitle: "Sessions and Fees",
     heroSub:
       "Kies het pakket dat bij jou past. Alle sessies zijn individueel afgestemd op jouw lichaam en doelen.",
     pricingNote:
@@ -785,7 +785,7 @@ const en: Translations = {
   },
   tarieven: {
     tag: "Fees 2026",
-    heroTitle: "Session Fees",
+    heroTitle: "Sessions and Fees",
     heroSub:
       "Choose the package that suits you. All sessions are individually tailored to your body and goals.",
     pricingNote: "(*) Prices excluding VAT, not valid for private sales.",
@@ -1148,7 +1148,7 @@ const fr: Translations = {
   },
   tarieven: {
     tag: "Fees 2026",
-    heroTitle: "Session Fees",
+    heroTitle: "Sessions and Fees",
     heroSub:
       "Choisissez la formule qui vous convient. Toutes les séances sont individuellement adaptées à votre corps et à vos objectifs.",
     pricingNote:
@@ -1514,7 +1514,7 @@ const pt: Translations = {
   },
   tarieven: {
     tag: "Fees 2026",
-    heroTitle: "Session Fees",
+    heroTitle: "Sessions and Fees",
     heroSub:
       "Escolha o pacote que melhor se adapta a você. Todas as sessões são individualmente personalizadas para o seu corpo e objetivos.",
     pricingNote: "(*) Preços sem IVA, não válidos para venda a particulares.",
