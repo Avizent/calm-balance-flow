@@ -52,14 +52,18 @@ export default function Contact() {
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.naam.trim()) newErrors.naam = c.errNaam;
-    if (!form.email.trim()) {
-      newErrors.email = c.errEmail;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    const L = lang as Lang;
+    newErrors.naam = validateField({ value: form.naam, max: FIELD_LIMITS.name, lang: L, fieldLabel: c.fieldNaam, emptyError: c.errNaam });
+    const emailEmpty = !form.email.trim();
+    newErrors.email = validateField({ value: form.email, max: FIELD_LIMITS.email, lang: L, fieldLabel: c.fieldEmail, emptyError: c.errEmail });
+    if (!emailEmpty && !newErrors.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
       newErrors.email = c.errEmailInvalid;
     }
-    if (!form.bericht.trim()) newErrors.bericht = c.errBericht;
+    newErrors.telefoon = validateField({ value: form.telefoon, max: FIELD_LIMITS.phone, lang: L, fieldLabel: c.fieldTelefoon, required: false });
+    newErrors.bericht = validateField({ value: form.bericht, max: FIELD_LIMITS.message, lang: L, fieldLabel: c.fieldBericht, emptyError: c.errBericht });
     if (!consent) newErrors.consent = consentErrors[lang] || consentErrors.nl;
+    // Strip undefined keys so Object.keys reflects only real errors
+    (Object.keys(newErrors) as (keyof FormErrors)[]).forEach((k) => newErrors[k] === undefined && delete newErrors[k]);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
