@@ -125,7 +125,7 @@ export default function Index() {
       {/* ══════════ HERO ══════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={heroBg} alt="Pilates movement" className="w-full h-full object-cover object-center" width={491} height={795} loading="eager" decoding="async" fetchpriority="high" />
+          <img src={heroBg} alt="Pilates movement" className="w-full h-full object-cover object-center" width={491} height={795} loading="eager" decoding="async" {...({ fetchpriority: "high" } as any)} />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-foreground/10" />
         </div>
         <div className="relative z-10 container-wide section-padding py-40 flex flex-col justify-center max-w-3xl">

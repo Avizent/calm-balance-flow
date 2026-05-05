@@ -49,7 +49,7 @@ export default function Over() {
               </div>
             </div>
             <div className="relative animate-fade-in">
-              <img src={cintiaImage} alt="Cintia, Licentiate Kinesitherapie en Pilatesdocent" className="w-full max-w-md mx-auto lg:mr-0 rounded-2xl object-cover shadow-xl aspect-[3/4]" width={1013} height={1033} loading="eager" decoding="async" fetchpriority="high" />
+              <img src={cintiaImage} alt="Cintia, Licentiate Kinesitherapie en Pilatesdocent" className="w-full max-w-md mx-auto lg:mr-0 rounded-2xl object-cover shadow-xl aspect-[3/4]" width={1013} height={1033} loading="eager" decoding="async" {...({ fetchpriority: "high" } as any)} />
             </div>
           </div>
         </div>
