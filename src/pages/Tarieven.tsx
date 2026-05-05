@@ -11,12 +11,21 @@ const pricingData = [
 ];
 const policyIcons = [Clock, Ban, CreditCard, Calendar];
 
-const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = {
-  nl: { title: "Tarieven — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Tarieven" },
-  en: { title: "Pricing — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Pricing" },
-  fr: { title: "Tarifs — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Tarifs" },
-  pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
-};
+// SEO copy for POA mode. To revert when SHOW_PRICING is re-enabled, restore
+// the previous "Transparent pricing… packages of 1, 5 or 10 sessions" wording.
+const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string }> = SHOW_PRICING
+  ? {
+      nl: { title: "Tarieven — Pilates Prijzen Schilde 2026", desc: "Transparante prijzen voor individuele en duo Pilates sessies bij Spessirits in Schilde. Pakketten van 1, 5 of 10 sessies.", breadcrumb: "Tarieven" },
+      en: { title: "Pricing — Pilates Prices Schilde 2026", desc: "Transparent pricing for individual and duo Pilates sessions at Spessirits in Schilde. Packages of 1, 5 or 10 sessions.", breadcrumb: "Pricing" },
+      fr: { title: "Tarifs — Prix Pilates Schilde 2026", desc: "Tarifs transparents pour les séances de Pilates individuelles et duo chez Spessirits à Schilde. Forfaits de 1, 5 ou 10 séances.", breadcrumb: "Tarifs" },
+      pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
+    }
+  : {
+      nl: { title: "Tarieven op aanvraag — Spessirits Pilates Schilde", desc: "Persoonlijke Pilates begeleiding door een kinesitherapeut in Schilde. Tarieven op aanvraag — neem contact op voor een offerte op maat.", breadcrumb: "Tarieven" },
+      en: { title: "Pricing on application — Spessirits Pilates Schilde", desc: "Personal Pilates coaching by a physiotherapist in Schilde. Pricing on application — get in touch for a tailored quote.", breadcrumb: "Pricing" },
+      fr: { title: "Tarifs sur demande — Spessirits Pilates Schilde", desc: "Coaching Pilates personnel par une kinésithérapeute à Schilde. Tarifs sur demande — contactez-nous pour un devis sur mesure.", breadcrumb: "Tarifs" },
+      pt: { title: "Preços sob consulta — Spessirits Pilates Schilde", desc: "Coaching Pilates pessoal por uma fisioterapeuta em Schilde. Preços sob consulta — entre em contato para um orçamento personalizado.", breadcrumb: "Preços" },
+    };
 
 export default function Tarieven() {
   const { t, lang } = useLanguage();
