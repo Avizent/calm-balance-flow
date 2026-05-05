@@ -207,7 +207,7 @@ export default function Boeken() {
                 <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                   {copy.fieldNaam} <span className="text-destructive">*</span>
                 </label>
-                <input type="text" value={form.naam} onChange={(e) => set("naam", e.target.value)} placeholder={copy.fieldNaamPlaceholder} className={inputCls(errors.naam)} />
+                <input type="text" value={form.naam} onChange={(e) => set("naam", e.target.value)} placeholder={copy.fieldNaamPlaceholder} maxLength={FIELD_LIMITS.name} autoComplete="name" className={inputCls(errors.naam)} />
                 {errors.naam && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.naam}</p>}
               </div>
 
@@ -216,14 +216,14 @@ export default function Boeken() {
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {copy.fieldEmail} <span className="text-destructive">*</span>
                   </label>
-                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={copy.fieldEmailPlaceholder} className={inputCls(errors.email)} />
+                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={copy.fieldEmailPlaceholder} maxLength={FIELD_LIMITS.email} autoComplete="email" className={inputCls(errors.email)} />
                   {errors.email && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.email}</p>}
                 </div>
                 <div>
                   <label className="block font-sans text-sm font-medium text-foreground mb-1.5">
                     {copy.fieldTelefoon} <span className="text-destructive">*</span>
                   </label>
-                  <input type="tel" value={form.telefoon} onChange={(e) => set("telefoon", e.target.value)} placeholder={copy.fieldTelefoonPlaceholder} className={inputCls(errors.telefoon)} />
+                  <input type="tel" value={form.telefoon} onChange={(e) => set("telefoon", e.target.value)} placeholder={copy.fieldTelefoonPlaceholder} maxLength={FIELD_LIMITS.phone} autoComplete="tel" className={inputCls(errors.telefoon)} />
                   {errors.telefoon && <p className="mt-1.5 font-sans text-xs text-destructive">{errors.telefoon}</p>}
                 </div>
               </div>
@@ -265,7 +265,7 @@ export default function Boeken() {
                   {copy.fieldOpmerking}{" "}
                   <span className="font-normal text-muted-foreground">({isPt ? "opcional" : isFr ? "optionnel" : isNl ? "optioneel" : "optional"})</span>
                 </label>
-                <textarea rows={4} value={form.opmerking} onChange={(e) => set("opmerking", e.target.value)} placeholder={copy.fieldOpmerkingPlaceholder} className={inputCls()} />
+                <textarea rows={4} value={form.opmerking} onChange={(e) => set("opmerking", e.target.value)} placeholder={copy.fieldOpmerkingPlaceholder} maxLength={FIELD_LIMITS.notes} className={inputCls()} />
               </div>
 
               <ConsentCheckbox checked={consent} onCheckedChange={(v) => { setConsent(v); if (errors.consent) setErrors(p => ({ ...p, consent: undefined })); }} error={errors.consent} />
