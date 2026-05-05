@@ -38,10 +38,11 @@ export function Footer() {
     }
   };
 
+  const sessionsLabel = lang === "nl" ? "Sessies" : lang === "fr" ? "Séances" : lang === "pt" ? "Sessões" : "Sessions";
   const navItems = [
     { label: t.nav.over,    type: "route"   as const, href: "/over" },
     { label: t.nav.lessen,  type: "section" as const, id: "lessen" },
-    { label: lang === "nl" ? "Sessies" : "Sessions", type: "section" as const, id: "prive" },
+    { label: sessionsLabel, type: "section" as const, id: "prive" },
     { label: t.medicalProfessionals.navLabel, type: "route" as const, href: "/medical-professionals" },
     { label: t.nav.contact, type: "section" as const, id: "contact" },
   ];

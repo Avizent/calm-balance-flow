@@ -64,12 +64,13 @@ export function Navigation() {
     return () => observers.forEach(o => o.disconnect());
   }, [isHome]);
 
-  /* Nav items — 5 items as requested */
+  /* Nav items — 5 items */
+  const sessionsLabel = lang === "nl" ? "Sessies" : lang === "fr" ? "Séances" : lang === "pt" ? "Sessões" : "Sessions";
   const navItems = [
     { label: t.nav.over,    type: "route",   href: "/over" },
     { label: t.nav.lessen,  type: "section", id: "lessen" },
-    { label: lang === "nl" ? "Sessies" : "Sessions", type: "section", id: "prive" },
-    { label: "Medical Professionals", type: "route", href: "/medical-professionals" },
+    { label: sessionsLabel, type: "section", id: "prive" },
+    { label: t.medicalProfessionals.navLabel, type: "route", href: "/medical-professionals" },
     { label: t.nav.contact, type: "section", id: "contact" },
   ] as const;
 
