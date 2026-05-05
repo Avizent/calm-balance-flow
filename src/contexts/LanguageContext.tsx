@@ -128,6 +128,10 @@ export interface Translations {
     giftBtn: string;
     tiers: { label: string }[];
     policies: { title: string; desc: string }[];
+    poaTitle?: string;
+    poaBody?: string;
+    poaContactBtn?: string;
+    poaWhatsappBtn?: string;
   };
   contact: {
     tag: string;
