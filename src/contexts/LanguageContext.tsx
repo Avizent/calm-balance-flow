@@ -455,7 +455,7 @@ const nl: Translations = {
     tag: "Contact",
     heroTitle: "Neem contact op",
     heroSub:
-      "Voor reservaties, vragen over lessen of tarieven — Cintia helpt je graag verder.",
+      "Voor reservaties, vragen over lessen of fees — Cintia helpt je graag verder.",
     infoTitle: "Contactgegevens",
     formTitle: "Stuur een bericht",
     fieldNaam: "Naam",
@@ -815,7 +815,7 @@ const en: Translations = {
     tag: "Contact",
     heroTitle: "Get in touch",
     heroSub:
-      "For bookings, questions about classes or pricing — Cintia is happy to help.",
+      "For bookings, questions about classes or fees — Cintia is happy to help.",
     infoTitle: "Contact details",
     formTitle: "Send a message",
     fieldNaam: "Name",
@@ -1179,7 +1179,7 @@ const fr: Translations = {
     tag: "Contact",
     heroTitle: "Contactez-nous",
     heroSub:
-      "Pour les réservations, les questions sur les cours ou les tarifs — Cintia est à votre disposition.",
+      "Pour les réservations, les questions sur les cours ou les fees — Cintia est à votre disposition.",
     infoTitle: "Coordonnées",
     formTitle: "Envoyez un message",
     fieldNaam: "Nom",
@@ -1544,7 +1544,7 @@ const pt: Translations = {
     tag: "Contato",
     heroTitle: "Entre em contato",
     heroSub:
-      "Para agendamentos, dúvidas sobre aulas ou preços — a Cintia está à sua disposição.",
+      "Para agendamentos, dúvidas sobre aulas ou fees — a Cintia está à sua disposição.",
     infoTitle: "Dados de Contato",
     formTitle: "Envie uma mensagem",
     fieldNaam: "Nome",
