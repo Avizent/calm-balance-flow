@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { SEO, SITE_URL } from "@/components/SEO";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
+import { FIELD_LIMITS, validateField, type Lang } from "@/lib/form-validation";
 
 interface BookingForm {
   naam: string;
@@ -42,19 +43,25 @@ export default function Boeken() {
   const location = useLocation();
   const seo = seoMeta[lang] || seoMeta.nl;
 
+  // Smooth-scroll to #reservatie whenever the hash changes (or on initial
+  // mount with that hash). Polls briefly because the section may not be in
+  // the DOM yet on first render after route change.
   useEffect(() => {
     if (location.hash !== "#reservatie") return;
     let attempts = 0;
+    let timer: number | undefined;
     const tryScroll = () => {
       const el = document.getElementById("reservatie");
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (attempts++ < 15) {
-        setTimeout(tryScroll, 100);
+        timer = window.setTimeout(tryScroll, 100);
       }
     };
-    setTimeout(tryScroll, 250);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    timer = window.setTimeout(tryScroll, 250);
+    return () => { if (timer !== undefined) window.clearTimeout(timer); };
+  }, [location.hash]);
+
 
   const isNl = lang === "nl";
   const isFr = lang === "fr";
@@ -114,13 +121,18 @@ export default function Boeken() {
 
   const validate = (): boolean => {
     const e: BookingErrors = {};
-    if (!form.naam.trim()) e.naam = copy.errNaam;
-    if (!form.email.trim()) { e.email = copy.errEmail; }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { e.email = copy.errEmailInvalid; }
-    if (!form.telefoon.trim()) e.telefoon = copy.errTelefoon;
+    const L = lang as Lang;
+    e.naam = validateField({ value: form.naam, max: FIELD_LIMITS.name, lang: L, fieldLabel: copy.fieldNaam, emptyError: copy.errNaam });
+    const emailEmpty = !form.email.trim();
+    e.email = validateField({ value: form.email, max: FIELD_LIMITS.email, lang: L, fieldLabel: copy.fieldEmail, emptyError: copy.errEmail });
+    if (!emailEmpty && !e.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      e.email = copy.errEmailInvalid;
+    }
+    e.telefoon = validateField({ value: form.telefoon, max: FIELD_LIMITS.phone, lang: L, fieldLabel: copy.fieldTelefoon, emptyError: copy.errTelefoon });
     if (!form.sessieType) e.sessieType = copy.errSessie;
     if (!form.format) e.format = copy.errFormat;
     if (!consent) e.consent = consentErrors[lang] || consentErrors.nl;
+    (Object.keys(e) as (keyof BookingErrors)[]).forEach((k) => e[k] === undefined && delete e[k]);
     setErrors(e);
     return Object.keys(e).length === 0;
   };
