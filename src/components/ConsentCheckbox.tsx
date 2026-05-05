@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,28 +16,31 @@ interface ConsentCheckboxProps {
   error?: string;
 }
 
-export function ConsentCheckbox({ checked, onCheckedChange, error }: ConsentCheckboxProps) {
-  const { lang } = useLanguage();
-  const l = labels[lang] || labels.nl;
+export const ConsentCheckbox = forwardRef<HTMLDivElement, ConsentCheckboxProps>(
+  ({ checked, onCheckedChange, error }, ref) => {
+    const { lang } = useLanguage();
+    const l = labels[lang] || labels.nl;
 
-  return (
-    <div>
-      <div className="flex items-start gap-2.5">
-        <Checkbox
-          id="consent"
-          checked={checked}
-          onCheckedChange={(v) => onCheckedChange(v === true)}
-          className="mt-0.5"
-        />
-        <label htmlFor="consent" className="font-sans text-sm text-muted-foreground leading-relaxed cursor-pointer">
-          {l.agree}{" "}
-          <Link to="/legal" className="text-primary underline hover:text-primary/80" target="_blank">
-            {l.link}
-          </Link>
-          . <span className="text-destructive">*</span>
-        </label>
+    return (
+      <div ref={ref}>
+        <div className="flex items-start gap-2.5">
+          <Checkbox
+            id="consent"
+            checked={checked}
+            onCheckedChange={(v) => onCheckedChange(v === true)}
+            className="mt-0.5"
+          />
+          <label htmlFor="consent" className="font-sans text-sm text-muted-foreground leading-relaxed cursor-pointer">
+            {l.agree}{" "}
+            <Link to="/legal" className="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">
+              {l.link}
+            </Link>
+            . <span className="text-destructive">*</span>
+          </label>
+        </div>
+        {error && <p className="mt-1.5 font-sans text-xs text-destructive">{error}</p>}
       </div>
-      {error && <p className="mt-1.5 font-sans text-xs text-destructive">{error}</p>}
-    </div>
-  );
-}
+    );
+  }
+);
+ConsentCheckbox.displayName = "ConsentCheckbox";

@@ -20,7 +20,7 @@ interface SEOProps {
   imageAlt?: string;
 }
 
-const SITE_URL = "https://calm-balance-flow.lovable.app";
+const SITE_URL = "https://spessirits-pilates.lovable.app";
 const SITE_NAME = "Spessirits Pilates";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
