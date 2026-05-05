@@ -30,7 +30,7 @@ export function ConsentCheckbox({ checked, onCheckedChange, error }: ConsentChec
         />
         <label htmlFor="consent" className="font-sans text-sm text-muted-foreground leading-relaxed cursor-pointer">
           {l.agree}{" "}
-          <Link to="/legal" className="text-primary underline hover:text-primary/80" target="_blank">
+          <Link to="/legal" className="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">
             {l.link}
           </Link>
           . <span className="text-destructive">*</span>
