@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -14,7 +15,7 @@ function scrollToSection(id: string) {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function Footer() {
+export const Footer = forwardRef<HTMLElement>((_props, ref) => {
   const { t, lang } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
