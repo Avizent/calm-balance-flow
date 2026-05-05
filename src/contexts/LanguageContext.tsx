@@ -423,8 +423,8 @@ const nl: Translations = {
     ],
   },
   tarieven: {
-    tag: "Tarieven 2026",
-    heroTitle: "Transparante Prijzen",
+    tag: "SESSION FEES 2026",
+    heroTitle: "Session Fees",
     heroSub:
       "Kies het pakket dat bij jou past. Alle sessies zijn individueel afgestemd op jouw lichaam en doelen.",
     pricingNote:
@@ -446,7 +446,7 @@ const nl: Translations = {
       { title: "Vooraf Betalen", desc: "Sessies en pakketten dienen vooraf betaald te worden." },
       { title: "3 Maanden Geldig", desc: "Sessies zijn persoonlijk en drie maanden geldig vanaf de factuurdatum." },
     ],
-    poaTitle: "Tarieven op aanvraag",
+    poaTitle: "Fees available upon request",
     poaBody: "Elke traject is persoonlijk en wordt afgestemd op jouw lichaam, doelen en frequentie. Neem contact op voor een offerte op maat.",
     poaContactBtn: "Contact",
     poaWhatsappBtn: "WhatsApp",
@@ -784,8 +784,8 @@ const en: Translations = {
     ],
   },
   tarieven: {
-    tag: "Pricing 2026",
-    heroTitle: "Transparent Pricing",
+    tag: "SESSION FEES 2026",
+    heroTitle: "Session Fees",
     heroSub:
       "Choose the package that suits you. All sessions are individually tailored to your body and goals.",
     pricingNote: "(*) Prices excluding VAT, not valid for private sales.",
@@ -806,7 +806,7 @@ const en: Translations = {
       { title: "Pay in Advance", desc: "Sessions and packages must be paid in advance." },
       { title: "Valid 3 Months", desc: "Sessions are personal and valid for three months from the invoice date." },
     ],
-    poaTitle: "Pricing on application",
+    poaTitle: "Fees available upon request",
     poaBody: "Every programme is personal and tailored to your body, goals and frequency. Contact us for a custom quote.",
     poaContactBtn: "Contact",
     poaWhatsappBtn: "WhatsApp",
@@ -1147,8 +1147,8 @@ const fr: Translations = {
     ],
   },
   tarieven: {
-    tag: "Tarifs 2026",
-    heroTitle: "Tarifs transparents",
+    tag: "SESSION FEES 2026",
+    heroTitle: "Session Fees",
     heroSub:
       "Choisissez la formule qui vous convient. Toutes les séances sont individuellement adaptées à votre corps et à vos objectifs.",
     pricingNote:
@@ -1170,7 +1170,7 @@ const fr: Translations = {
       { title: "Paiement à l'avance", desc: "Les séances et forfaits doivent être réglés à l'avance." },
       { title: "Valable 3 mois", desc: "Les séances sont personnelles et valables trois mois à compter de la date de facturation." },
     ],
-    poaTitle: "Tarifs sur demande",
+    poaTitle: "Fees available upon request",
     poaBody: "Chaque parcours est personnel et adapté à votre corps, vos objectifs et votre fréquence. Contactez-nous pour un devis sur mesure.",
     poaContactBtn: "Contact",
     poaWhatsappBtn: "WhatsApp",
@@ -1513,8 +1513,8 @@ const pt: Translations = {
     ],
   },
   tarieven: {
-    tag: "Preços 2026",
-    heroTitle: "Preços Transparentes",
+    tag: "SESSION FEES 2026",
+    heroTitle: "Session Fees",
     heroSub:
       "Escolha o pacote que melhor se adapta a você. Todas as sessões são individualmente personalizadas para o seu corpo e objetivos.",
     pricingNote: "(*) Preços sem IVA, não válidos para venda a particulares.",
@@ -1535,7 +1535,7 @@ const pt: Translations = {
       { title: "Pagamento antecipado", desc: "As sessões e pacotes devem ser pagos antecipadamente." },
       { title: "Válido por 3 meses", desc: "As sessões são pessoais e válidas por três meses a partir da data da fatura." },
     ],
-    poaTitle: "Preços sob consulta",
+    poaTitle: "Fees available upon request",
     poaBody: "Cada percurso é pessoal e adaptado ao seu corpo, objetivos e frequência. Entre em contato para um orçamento personalizado.",
     poaContactBtn: "Contato",
     poaWhatsappBtn: "WhatsApp",

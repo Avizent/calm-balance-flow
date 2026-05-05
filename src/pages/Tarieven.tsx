@@ -21,10 +21,10 @@ const seoMeta: Record<string, { title: string; desc: string; breadcrumb: string 
       pt: { title: "Preços — Pilates em Schilde 2026", desc: "Preços transparentes para sessões de Pilates individuais e duo na Spessirits em Schilde. Pacotes de 1, 5 ou 10 sessões.", breadcrumb: "Preços" },
     }
   : {
-      nl: { title: "Tarieven op aanvraag — Spessirits Pilates Schilde", desc: "Persoonlijke Pilates begeleiding door een kinesitherapeut in Schilde. Tarieven op aanvraag — neem contact op voor een offerte op maat.", breadcrumb: "Tarieven" },
-      en: { title: "Pricing on application — Spessirits Pilates Schilde", desc: "Personal Pilates coaching by a physiotherapist in Schilde. Pricing on application — get in touch for a tailored quote.", breadcrumb: "Pricing" },
-      fr: { title: "Tarifs sur demande — Spessirits Pilates Schilde", desc: "Coaching Pilates personnel par une kinésithérapeute à Schilde. Tarifs sur demande — contactez-nous pour un devis sur mesure.", breadcrumb: "Tarifs" },
-      pt: { title: "Preços sob consulta — Spessirits Pilates Schilde", desc: "Coaching Pilates pessoal por uma fisioterapeuta em Schilde. Preços sob consulta — entre em contato para um orçamento personalizado.", breadcrumb: "Preços" },
+      nl: { title: "Session Fees — Spessirits Pilates Schilde", desc: "Persoonlijke Pilates begeleiding door een kinesitherapeut in Schilde. Session fees available upon request — neem contact op voor een offerte op maat.", breadcrumb: "Session Fees" },
+      en: { title: "Session Fees — Spessirits Pilates Schilde", desc: "Personal Pilates coaching by a physiotherapist in Schilde. Session fees available upon request — get in touch for a tailored quote.", breadcrumb: "Session Fees" },
+      fr: { title: "Session Fees — Spessirits Pilates Schilde", desc: "Coaching Pilates personnel par une kinésithérapeute à Schilde. Session fees available upon request — contactez-nous pour un devis sur mesure.", breadcrumb: "Session Fees" },
+      pt: { title: "Session Fees — Spessirits Pilates Schilde", desc: "Coaching Pilates pessoal por uma fisioterapeuta em Schilde. Session fees available upon request — entre em contato para um orçamento personalizado.", breadcrumb: "Session Fees" },
     };
 
 export default function Tarieven() {
